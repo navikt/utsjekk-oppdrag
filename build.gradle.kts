@@ -38,7 +38,7 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 
-    implementation("io.ktor:ktor-server-swagger:$ktorVersion")
+    implementation("dev.forst:ktor-openapi-generator:0.6.1")
 
     implementation("ch.qos.logback:logback-classic:1.4.5")
 
