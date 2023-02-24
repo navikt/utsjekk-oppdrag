@@ -37,11 +37,13 @@ dependencies {
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+    implementation("no.nav.security:token-validation-ktor-v2:3.0.0")
 
     implementation("dev.forst:ktor-openapi-generator:0.6.1")
 
     implementation("ch.qos.logback:logback-classic:1.4.5")
 
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     // Use the Kotlin JUnit 5 integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
@@ -57,4 +59,16 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+tasks {
+    register("runServerTest", JavaExec::class) {
+        systemProperties["IDPORTEN_WELL_KNOWN_URL"] = "https://idporten.dev.nav.no"
+        systemProperties["IDPORTEN_ACCEPTED_AUDIENCE"] = "nav.no"
+        systemProperties["TOKEN_X_WELL_KNOWN_URL"] = "https://tokenx.dev.nav.no"
+        systemProperties["TOKEN_X_ACCEPTED_AUDIENCE"] = "nav.no"
+
+        classpath = sourceSets["main"].runtimeClasspath
+        mainClass.set("dp.oppdrag.AppKt")
+    }
 }
