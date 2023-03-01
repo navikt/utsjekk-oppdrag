@@ -43,7 +43,7 @@ dependencies {
     implementation("dev.forst:ktor-openapi-generator:0.6.1")
 
     implementation("ch.qos.logback:logback-classic:1.4.5")
-    implementation("net.logstash.logback:logstash-logback-encoder:7.2")
+    implementation("net.logstash.logback:logstash-logback-encoder:7.3")
 
     // Test
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
