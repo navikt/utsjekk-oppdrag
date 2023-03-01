@@ -38,7 +38,7 @@ dependencies {
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
-    implementation("no.nav.security:token-validation-ktor-v2:3.0.0")
+    implementation("no.nav.security:token-validation-ktor-v2:3.0.4")
 
     implementation("dev.forst:ktor-openapi-generator:0.6.1")
 
