@@ -3,11 +3,15 @@
  * User Manual available at https://docs.gradle.org/7.6/userguide/building_java_projects.html
  */
 
+project.setProperty("mainClassName", "dp.oppdrag.AppKt")
+
 val ktorVersion = "2.2.3"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.8.0"
+    // Apply io.ktor.plugin to build a fat JAR
+    id("io.ktor.plugin") version "2.2.3"
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
@@ -52,7 +56,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("dp.oppdrag.AppKt")
+    mainClass.set(project.property("mainClassName").toString())
 }
 
 tasks.named<Test>("test") {
@@ -62,14 +66,18 @@ tasks.named<Test>("test") {
     environment("NAIS_APP_NAME", "test")
 }
 
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = project.property("mainClassName").toString()
+    }
+}
+
 tasks {
     register("runServerTest", JavaExec::class) {
-        systemProperties["IDPORTEN_WELL_KNOWN_URL"] = "https://idporten.dev.nav.no"
-        systemProperties["IDPORTEN_ACCEPTED_AUDIENCE"] = "nav.no"
-        systemProperties["TOKEN_X_WELL_KNOWN_URL"] = "https://tokenx.dev.nav.no"
-        systemProperties["TOKEN_X_ACCEPTED_AUDIENCE"] = "nav.no"
+        systemProperties["AZURE_APP_WELL_KNOWN_URL"] = "https://login.microsoftonline.com/77678b69-1daf-47b6-9072-771d270ac800/v2.0/.well-known/openid-configuration"
+        systemProperties["AZURE_APP_CLIENT_ID"] = "test"
 
         classpath = sourceSets["main"].runtimeClasspath
-        mainClass.set("dp.oppdrag.AppKt")
+        mainClass.set(project.property("mainClassName").toString())
     }
 }
