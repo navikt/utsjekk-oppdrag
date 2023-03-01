@@ -1,0 +1,7 @@
+limitsMemory: 4096Mi
+limitsCpu: 2000m
+requestsMemory: 1Gi
+requestsCpu: 500m
+ingresses:
+  - https://dp-oppdrag.nais.adeo.no
+  - https://dp-oppdrag.prod-fss-pub.nais.io

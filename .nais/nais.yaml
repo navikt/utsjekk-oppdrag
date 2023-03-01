@@ -1,0 +1,47 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: dp-oppdrag
+  namespace: teamiver
+  labels:
+    team: teamiver
+
+spec:
+  image: {{ image }}
+  port: 8087
+  liveness:
+    path: /internal/liveness
+    initialDelay: 30
+    failureThreshold: 10
+  readiness:
+    path: /internal/readyness
+    initialDelay: 30
+    failureThreshold: 10
+  prometheus:
+    enabled: true
+    path: /internal/prometheus
+  replicas:
+    min: 2
+    max: 4
+    cpuThresholdPercentage: 50
+  resources:
+    limits:
+      memory: {{ limitsMemory }}
+      cpu: {{ limitsCpu }}
+    requests:
+      memory: {{ requestsMemory }}
+      cpu: {{ requestsCpu }}
+  ingresses:
+  {{ #each ingresses as |url| }}
+      - {{ url }}
+  {{/each}}
+  accessPolicy:
+    inbound:
+      rules:
+        - application: dp-iverksette
+  env:
+    - name: JAVA_OPTS
+      value: "-XX:MinRAMPercentage=25.0 -XX:MaxRAMPercentage=75.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
+  azure:
+    application:
+      enabled: true
