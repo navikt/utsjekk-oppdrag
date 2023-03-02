@@ -10,14 +10,13 @@ import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.util.pipeline.*
-
-data class UserPrincipal(val userId: String, val name: String?) : Principal
+import no.nav.security.token.support.v2.TokenValidationContextPrincipal
 
 enum class Scopes(override val description: String) : Described {
     Profile("Some scope")
 }
 
-class JwtProvider : AuthProvider<UserPrincipal> {
+class JwtProvider : AuthProvider<TokenValidationContextPrincipal?> {
     override val security: Iterable<Iterable<AuthProvider.Security<*>>> =
         listOf(
             listOf(
@@ -33,12 +32,24 @@ class JwtProvider : AuthProvider<UserPrincipal> {
             )
         )
 
-    override suspend fun getAuth(pipeline: PipelineContext<Unit, ApplicationCall>): UserPrincipal {
-        return pipeline.context.authentication.principal() ?: throw RuntimeException("No JWTPrincipal")
+    override suspend fun getAuth(pipeline: PipelineContext<Unit, ApplicationCall>): TokenValidationContextPrincipal? {
+        return pipeline.context.authentication.principal() // ?: throw RuntimeException("No JWTPrincipal")
     }
 
-    override fun apply(route: NormalOpenAPIRoute): OpenAPIAuthenticatedRoute<UserPrincipal> {
+    override fun apply(route: NormalOpenAPIRoute): OpenAPIAuthenticatedRoute<TokenValidationContextPrincipal?> {
         val authenticatedKtorRoute = route.ktorRoute.authenticate { }
         return OpenAPIAuthenticatedRoute(authenticatedKtorRoute, route.provider.child(), this)
+    }
+}
+
+inline fun NormalOpenAPIRoute.auth(route: OpenAPIAuthenticatedRoute<TokenValidationContextPrincipal?>.() -> Unit): OpenAPIAuthenticatedRoute<TokenValidationContextPrincipal?> {
+    val authenticatedKtorRoute = this.ktorRoute.authenticate { }
+    val openAPIAuthenticatedRoute = OpenAPIAuthenticatedRoute(
+        authenticatedKtorRoute,
+        this.provider.child(),
+        authProvider = authProvider
+    )
+    return openAPIAuthenticatedRoute.apply {
+        route()
     }
 }
