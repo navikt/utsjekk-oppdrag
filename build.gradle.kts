@@ -5,7 +5,7 @@
 
 project.setProperty("mainClassName", "dp.oppdrag.AppKt")
 
-val ktorVersion = "2.2.3"
+val ktorVersion = "2.2.4"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
