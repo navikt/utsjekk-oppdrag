@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: dp-oppdrag
-  namespace: teamiver
+  namespace: teamdagpenger
   labels:
-    team: teamiver
+    team: teamdagpenger
 
 spec:
   image: {{ image }}
