@@ -3,5 +3,4 @@ limitsCpu: 1000m
 requestsMemory: 512Mi
 requestsCpu: 500m
 ingresses:
-  - https://dp-oppdrag.dev-fss-pub.nais.io
   - https://dp-oppdrag.dev.intern.nav.no
