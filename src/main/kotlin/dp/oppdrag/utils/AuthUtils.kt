@@ -1,4 +1,4 @@
-package dp.oppdrag
+package dp.oppdrag.utils
 
 import com.papsign.ktor.openapigen.model.Described
 import com.papsign.ktor.openapigen.model.security.HttpSecurityScheme
@@ -7,6 +7,7 @@ import com.papsign.ktor.openapigen.model.security.SecuritySchemeType
 import com.papsign.ktor.openapigen.modules.providers.AuthProvider
 import com.papsign.ktor.openapigen.route.path.auth.OpenAPIAuthenticatedRoute
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
+import dp.oppdrag.authProvider
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.util.pipeline.*

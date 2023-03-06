@@ -1,4 +1,4 @@
-package dp.oppdrag
+package dp.oppdrag.utils
 
 
 fun isCurrentlyRunningOnNais(): Boolean {
