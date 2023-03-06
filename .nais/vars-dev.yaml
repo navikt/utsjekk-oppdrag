@@ -4,3 +4,4 @@ requestsMemory: 512Mi
 requestsCpu: 500m
 ingresses:
   - https://dp-oppdrag.dev.intern.nav.no
+  - https://dp-oppdrag.dev.nav.no
