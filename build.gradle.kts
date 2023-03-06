@@ -7,8 +7,9 @@ project.setProperty("mainClassName", "dp.oppdrag.AppKt")
 
 val ktorVersion = "2.2.4"
 val micrometerVersion = "1.10.4"
-val tokenValidationVersion = "3.0.4"
+val jacksonVersion = "2.14.2"
 val openApiGeneratorVersion = "0.6.1"
+val tokenValidationVersion = "3.0.4"
 val logbackVersion = "1.4.5"
 val logstashVersion = "7.3"
 val mockOauth2Version = "0.5.8"
@@ -36,8 +37,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.navikt.tjenestespesifikasjoner:nav-virksomhet-oppdragsbehandling-v1-meldingsdefinisjon:2612.db4dc68")
-
+    // Ktor
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
@@ -48,15 +48,22 @@ dependencies {
     implementation("io.ktor:ktor-server-metrics-micrometer:$ktorVersion")
     implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
 
-    // Security
-    implementation("no.nav.security:token-validation-ktor-v2:$tokenValidationVersion")
+    // Jackson
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
     // OpenAPI / Swagger UI
     implementation("dev.forst:ktor-openapi-generator:$openApiGeneratorVersion")
 
+    // Security
+    implementation("no.nav.security:token-validation-ktor-v2:$tokenValidationVersion")
+
     // Log
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
+
+    //
+    implementation("com.github.navikt.tjenestespesifikasjoner:nav-virksomhet-oppdragsbehandling-v1-meldingsdefinisjon:2612.db4dc68")
 
     // Test
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
