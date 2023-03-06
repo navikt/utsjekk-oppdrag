@@ -1,5 +1,6 @@
 package dp.oppdrag
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.papsign.ktor.openapigen.OpenAPIGen
 import com.papsign.ktor.openapigen.annotations.parameters.PathParam
 import com.papsign.ktor.openapigen.route.apiRouting
@@ -9,6 +10,9 @@ import com.papsign.ktor.openapigen.route.path.normal.get
 import com.papsign.ktor.openapigen.route.path.normal.post
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
+import dp.oppdrag.model.Utbetalingsoppdrag
+import dp.oppdrag.model.Utbetalingsperiode
+import dp.oppdrag.utils.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -26,7 +30,11 @@ import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import no.nav.security.token.support.v2.TokenValidationContextPrincipal
 import no.nav.security.token.support.v2.tokenValidationSupport
+import java.math.BigDecimal
+import java.time.LocalDate
+import java.time.LocalDateTime
 import com.papsign.ktor.openapigen.route.path.auth.get as authGet
+import com.papsign.ktor.openapigen.route.path.auth.post as authPost
 
 
 val authProvider = JwtProvider()
@@ -62,7 +70,27 @@ fun Application.module() {
 
     // Install JSON support
     install(ContentNegotiation) {
-        jackson()
+        jackson {
+            val javaTimeModule = JavaTimeModule()
+            javaTimeModule.addSerializer(
+                LocalDate::class.java,
+                LocalDateSerializer()
+            )
+            javaTimeModule.addDeserializer(
+                LocalDate::class.java,
+                LocalDateDeserializer()
+            )
+            javaTimeModule.addSerializer(
+                LocalDateTime::class.java,
+                LocalDateTimeSerializer()
+            )
+            javaTimeModule.addDeserializer(
+                LocalDateTime::class.java,
+                LocalDateTimeDeserializer()
+            )
+
+            registerModule(javaTimeModule)
+        }
     }
 
     // Install Authentication
@@ -100,7 +128,7 @@ fun Application.module() {
 
         // API
         auth {
-            route("/{name}") {
+            route("/example/{name}") {
                 authGet<StringParam, String, TokenValidationContextPrincipal?>(
                     info("String Param Endpoint", "This is a String Param Endpoint"),
                     example = "Hi"
@@ -109,7 +137,47 @@ fun Application.module() {
                     respond("Hello, ${params.name}! Validated token " + principal?.context?.firstValidToken?.get()?.tokenAsString)
                 }
             }
+
+            route("/oppdrag") {
+                authPost<Unit, String, Utbetalingsoppdrag, TokenValidationContextPrincipal?>(
+                    info("Oppdrag", "Send Oppdrag"),
+                    exampleRequest = Utbetalingsoppdrag(
+                        kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+                        fagSystem = "",
+                        saksnummer = "",
+                        aktoer = "",
+                        saksbehandlerId = "",
+                        avstemmingTidspunkt = LocalDateTime.now(),
+                        utbetalingsperiode = listOf(
+                            Utbetalingsperiode(
+                                erEndringPaaEksisterendePeriode = false,
+                                opphoer = null,
+                                periodeId = 2L,
+                                forrigePeriodeId = 1L,
+                                datoForVedtak = LocalDate.now(),
+                                klassifisering = "",
+                                vedtakdatoFom = LocalDate.now(),
+                                vedtakdatoTom = LocalDate.now(),
+                                sats = BigDecimal.TEN,
+                                satsType = Utbetalingsperiode.SatsType.DAG,
+                                utbetalesTil = "",
+                                behandlingId = 3L,
+                                utbetalingsgrad = 100
+                            )
+                        ),
+                        gOmregning = false
+                    ),
+                    exampleResponse = "OK"
+                ) { params, request ->
+                    val oppdragMapper = OppdragMapper()
+                    val oppdrag110 = oppdragMapper.tilOppdrag110(request)
+                    val oppdrag = oppdragMapper.tilOppdrag(oppdrag110)
+
+                    respond("OK")
+                }
+            }
         }
+
 
         route("/example/{name}") {
             // SomeParams are parameters (query or path), SomeResponse is what the backend returns and SomeRequest
