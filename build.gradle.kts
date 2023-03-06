@@ -6,6 +6,13 @@
 project.setProperty("mainClassName", "dp.oppdrag.AppKt")
 
 val ktorVersion = "2.2.4"
+val micrometerVersion = "1.10.4"
+val tokenValidationVersion = "3.0.4"
+val openApiGeneratorVersion = "0.6.1"
+val logbackVersion = "1.4.5"
+val logstashVersion = "7.3"
+val mockOauth2Version = "0.5.8"
+val jupiterVersion = "5.9.2"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -39,22 +46,25 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
     implementation("io.ktor:ktor-server-metrics-micrometer:$ktorVersion")
-    implementation("io.micrometer:micrometer-registry-prometheus:1.10.4")
+    implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
 
-    implementation("no.nav.security:token-validation-ktor-v2:3.0.4")
+    // Security
+    implementation("no.nav.security:token-validation-ktor-v2:$tokenValidationVersion")
 
-    implementation("dev.forst:ktor-openapi-generator:0.6.1")
+    // OpenAPI / Swagger UI
+    implementation("dev.forst:ktor-openapi-generator:$openApiGeneratorVersion")
 
-    implementation("ch.qos.logback:logback-classic:1.4.5")
-    implementation("net.logstash.logback:logstash-logback-encoder:7.3")
+    // Log
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
 
     // Test
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-    testImplementation("no.nav.security:mock-oauth2-server:0.5.8")
+    testImplementation("no.nav.security:mock-oauth2-server:$mockOauth2Version")
     // Use the Kotlin JUnit 5 integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     // Use the JUnit 5 integration.
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
 }
 
 application {
