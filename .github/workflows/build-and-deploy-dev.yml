@@ -41,15 +41,19 @@ jobs:
 
       - name: Push Docker image
         run: docker push $IMAGE
+
   deploy:
     name: Deploy to GCP
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Deploy til dev-gcp team namespace
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/nais.yaml
-          VARS: .nais/vars-dev.yaml
+          CLUSTER: "dev-gcp"
+          RESOURCE: ".nais/nais.yaml"
+          VARS: ".nais/vars-dev.yaml"

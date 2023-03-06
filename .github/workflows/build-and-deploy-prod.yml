@@ -44,11 +44,15 @@ jobs:
 
       - name: Push Docker image med 'latest' tag
         run: docker push ${IMAGE_LATEST}
+
   deploy:
     name: Deploy to GCP
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Deploy til dev-gcp team namespace
         uses: nais/deploy/actions/deploy@v1
         env:
