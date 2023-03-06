@@ -32,7 +32,7 @@ spec:
       memory: {{ requestsMemory }}
       cpu: {{ requestsCpu }}
   ingresses:
-  {{ #each ingresses as |url| }}
+  {{#each ingresses as |url|}}
       - {{ url }}
   {{/each}}
   accessPolicy:
