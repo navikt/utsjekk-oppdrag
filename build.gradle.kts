@@ -38,6 +38,9 @@ dependencies {
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-server-metrics-micrometer:$ktorVersion")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.10.4")
+
     implementation("no.nav.security:token-validation-ktor-v2:3.0.4")
 
     implementation("dev.forst:ktor-openapi-generator:0.6.1")

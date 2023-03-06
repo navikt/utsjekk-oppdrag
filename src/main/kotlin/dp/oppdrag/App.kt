@@ -14,6 +14,7 @@ import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.engine.*
+import io.ktor.server.metrics.micrometer.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
@@ -21,6 +22,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.*
 import io.ktor.util.pipeline.*
+import io.micrometer.prometheus.PrometheusConfig
+import io.micrometer.prometheus.PrometheusMeterRegistry
 import no.nav.security.token.support.v2.TokenValidationContextPrincipal
 import no.nav.security.token.support.v2.tokenValidationSupport
 import com.papsign.ktor.openapigen.route.path.auth.get as authGet
@@ -31,6 +34,12 @@ val authProvider = JwtProvider()
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
+    // Install Micrometer/Prometheus
+    val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+    install(MicrometerMetrics) {
+        registry = appMicrometerRegistry
+    }
+
     // Install CORS
     install(CORS) {
         anyHost()
@@ -70,6 +79,7 @@ fun Application.module() {
     }
 
     apiRouting {
+        // Internal API
         route("/internal/liveness") {
             get<Unit, String> {
                 respond("Alive")
@@ -82,6 +92,13 @@ fun Application.module() {
             }
         }
 
+        route("/internal/prometheus") {
+            get<Unit, String> {
+                respond(appMicrometerRegistry.scrape())
+            }
+        }
+
+        // API
         auth {
             route("/{name}") {
                 authGet<StringParam, String, TokenValidationContextPrincipal?>(
