@@ -12,6 +12,9 @@ val openApiGeneratorVersion = "0.6.1"
 val tokenValidationVersion = "3.0.4"
 val logbackVersion = "1.4.5"
 val logstashVersion = "7.3"
+val postgresVersion = "42.5.4"
+val hikariVersion = "5.0.1"
+val ibmMqVersion = "9.3.2.0"
 val mockOauth2Version = "0.5.8"
 val jupiterVersion = "5.9.2"
 
@@ -63,8 +66,13 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
 
+    // DB
+    implementation("org.postgresql:postgresql:$postgresVersion")
+    implementation ("com.zaxxer:HikariCP:$hikariVersion")
+
     //
     implementation("com.github.navikt.tjenestespesifikasjoner:nav-virksomhet-oppdragsbehandling-v1-meldingsdefinisjon:2612.db4dc68")
+    implementation("com.ibm.mq:com.ibm.mq.allclient:$ibmMqVersion")
 
     // Test
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
