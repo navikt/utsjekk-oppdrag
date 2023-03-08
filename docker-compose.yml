@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  db:
+    image: "postgres:14-alpine"
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: "dp-oppdrag-user"
+      POSTGRES_PASSWORD: "dp-oppdrag-password"
+      POSTGRES_DB: "dp-oppdrag"
