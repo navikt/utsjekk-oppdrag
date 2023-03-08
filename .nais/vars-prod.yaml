@@ -2,5 +2,6 @@ limitsMemory: 4096Mi
 limitsCpu: 2000m
 requestsMemory: 1Gi
 requestsCpu: 500m
+db_tier: "db-custom-4-8192"
 ingresses:
   - https://dp-oppdrag.intern.nav.no
