@@ -10,6 +10,7 @@ val micrometerVersion = "1.10.4"
 val jacksonVersion = "2.14.2"
 val openApiGeneratorVersion = "0.6.1"
 val tokenValidationVersion = "3.0.4"
+val kotlinLoggerVersion = "3.0.5"
 val logbackVersion = "1.4.5"
 val logstashVersion = "7.3"
 val postgresVersion = "42.5.4"
@@ -64,6 +65,7 @@ dependencies {
     implementation("no.nav.security:token-validation-ktor-v2:$tokenValidationVersion")
 
     // Log
+    implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
 

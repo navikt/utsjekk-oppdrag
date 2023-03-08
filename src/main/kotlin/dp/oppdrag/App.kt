@@ -28,6 +28,7 @@ import io.ktor.util.*
 import io.ktor.util.pipeline.*
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
+import mu.KotlinLogging
 import no.nav.security.token.support.v2.TokenValidationContextPrincipal
 import no.nav.security.token.support.v2.tokenValidationSupport
 import org.flywaydb.core.Flyway
@@ -36,7 +37,8 @@ import java.time.LocalDateTime
 import javax.sql.DataSource
 import com.papsign.ktor.openapigen.route.path.auth.get as authGet
 
-val authProvider = JwtProvider()
+val defaultAuthProvider = JwtProvider()
+val defaultLogger = KotlinLogging.logger {}
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
@@ -67,7 +69,7 @@ fun Application.module() {
             title = "DP oppdrag API"
         }
         // Use JWT authentication (Authorize button appears in Swagger UI)
-        addModules(authProvider)
+        addModules(defaultAuthProvider)
     }
 
     // Install JSON support

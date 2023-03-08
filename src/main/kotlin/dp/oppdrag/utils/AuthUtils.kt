@@ -7,7 +7,7 @@ import com.papsign.ktor.openapigen.model.security.SecuritySchemeType
 import com.papsign.ktor.openapigen.modules.providers.AuthProvider
 import com.papsign.ktor.openapigen.route.path.auth.OpenAPIAuthenticatedRoute
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
-import dp.oppdrag.authProvider
+import dp.oppdrag.defaultAuthProvider
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.util.pipeline.*
@@ -48,7 +48,7 @@ inline fun NormalOpenAPIRoute.auth(route: OpenAPIAuthenticatedRoute<TokenValidat
     val openAPIAuthenticatedRoute = OpenAPIAuthenticatedRoute(
         authenticatedKtorRoute,
         this.provider.child(),
-        authProvider = authProvider
+        authProvider = defaultAuthProvider
     )
     return openAPIAuthenticatedRoute.apply {
         route()
