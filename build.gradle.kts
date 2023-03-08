@@ -14,6 +14,7 @@ val logbackVersion = "1.4.5"
 val logstashVersion = "7.3"
 val postgresVersion = "42.5.4"
 val hikariVersion = "5.0.1"
+val flywayVersion = "9.15.2"
 val ibmMqVersion = "9.3.2.0"
 val mockOauth2Version = "0.5.8"
 val jupiterVersion = "5.9.2"
@@ -68,7 +69,8 @@ dependencies {
 
     // DB
     implementation("org.postgresql:postgresql:$postgresVersion")
-    implementation ("com.zaxxer:HikariCP:$hikariVersion")
+    implementation("com.zaxxer:HikariCP:$hikariVersion")
+    implementation("org.flywaydb:flyway-core:$flywayVersion")
 
     //
     implementation("com.github.navikt.tjenestespesifikasjoner:nav-virksomhet-oppdragsbehandling-v1-meldingsdefinisjon:2612.db4dc68")
@@ -103,8 +105,14 @@ tasks.withType<Jar> {
 
 tasks {
     register("runServerTest", JavaExec::class) {
-        systemProperties["AZURE_APP_WELL_KNOWN_URL"] = "https://login.microsoftonline.com/77678b69-1daf-47b6-9072-771d270ac800/v2.0/.well-known/openid-configuration"
-        systemProperties["AZURE_APP_CLIENT_ID"] = "test"
+        environment["AZURE_APP_WELL_KNOWN_URL"] = "https://login.microsoftonline.com/77678b69-1daf-47b6-9072-771d270ac800/v2.0/.well-known/openid-configuration"
+        environment["AZURE_APP_CLIENT_ID"] = "test"
+
+        environment["DB_HOST"] = "localhost"
+        environment["DB_PORT"] = "5433"
+        environment["DB_DATABASE"] = "dp-oppdrag"
+        environment["DB_USERNAME"] = "dp-oppdrag-user"
+        environment["DB_PASSWORD"] = "dp-oppdrag-password"
 
         classpath = sourceSets["main"].runtimeClasspath
         mainClass.set(project.property("mainClassName").toString())
