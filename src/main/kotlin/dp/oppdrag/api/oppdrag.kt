@@ -41,7 +41,7 @@ fun NormalOpenAPIRoute.oppdragApi(dataSource: DataSource) {
                         if (it is OppdragAlleredeSendtException) {
                             respondConflict("Oppdrag er allerede sendt for saksnr ${request.saksnummer}.")
                         } else {
-                            respondError("Klarte ikke sende oppdrag for saksnr ${request.saksnummer}")
+                            respondError("Klarte ikke sende oppdrag for saksnr ${request.saksnummer}", it)
                         }
                     },
                     onSuccess = {
@@ -55,10 +55,10 @@ fun NormalOpenAPIRoute.oppdragApi(dataSource: DataSource) {
 
 private val utbetalingsoppdragExample = Utbetalingsoppdrag(
     kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-    fagSystem = "",
-    saksnummer = "",
-    aktoer = "",
-    saksbehandlerId = "",
+    fagSystem = "EFOG",
+    saksnummer = "12345",
+    aktoer = "01020312345",
+    saksbehandlerId = "S123456",
     avstemmingTidspunkt = LocalDateTime.now(),
     utbetalingsperiode = listOf(
         Utbetalingsperiode(
