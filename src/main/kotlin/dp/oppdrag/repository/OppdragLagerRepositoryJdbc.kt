@@ -1,8 +1,8 @@
 package dp.oppdrag.repository
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dp.oppdrag.model.*
+import dp.oppdrag.utils.defaultObjectMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import java.sql.PreparedStatement
 import java.sql.Timestamp
@@ -12,8 +12,6 @@ import javax.sql.DataSource
 import kotlin.NoSuchElementException
 
 class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLagerRepository {
-
-    private val objectMapper = ObjectMapper()
 
     override fun hentOppdrag(oppdragId: OppdragId, versjon: Int): OppdragLager {
         val hentStatement = """
@@ -68,7 +66,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
                 it.setString(7, oppdragLager.behandlingId)
                 it.setString(8, oppdragLager.fagsystem)
                 it.setTimestamp(9, Timestamp.valueOf(oppdragLager.avstemmingTidspunkt))
-                it.setString(10, objectMapper.writeValueAsString(oppdragLager.utbetalingsoppdrag))
+                it.setString(10, defaultObjectMapper.writeValueAsString(oppdragLager.utbetalingsoppdrag))
                 it.setInt(11, versjon)
 
                 it.executeUpdate()
@@ -116,7 +114,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             """.trimIndent()
 
         dataSource.connection.prepareStatement(updateStatement).use {
-            it.setString(1, objectMapper.writeValueAsString(kvittering))
+            it.setString(1, defaultObjectMapper.writeValueAsString(kvittering))
             it.setString(2, oppdragId.personIdent)
             it.setString(3, oppdragId.fagsystem)
             it.setString(4, oppdragId.behandlingsId)
@@ -183,7 +181,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
                 throw NoSuchElementException("Feil ved henting av Utbetalingsoppdrag. Fant ingen oppdrag med id $oppdragId og versjon $versjon")
             }
 
-            1 -> objectMapper.readValue(list[0])
+            1 -> defaultObjectMapper.readValue(list[0])
 
             else -> {
                 throw Exception("Feil ved henting av Utbetalingsoppdrag. Fant fler oppdrag med id $oppdragId og versjon $versjon")
@@ -246,7 +244,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
                                     UtbetalingsoppdragForKonsistensavstemming(
                                         resultSet.getString("fagsak_id"),
                                         resultSet.getString("behandling_id"),
-                                        objectMapper.readValue(resultSet.getString("utbetalingsoppdrag"))
+                                        defaultObjectMapper.readValue(resultSet.getString("utbetalingsoppdrag"))
                                     )
                                 )
                             }
@@ -270,12 +268,12 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
                             resultSet.getString(4),
                             resultSet.getString(5),
                             resultSet.getString(6),
-                            objectMapper.readValue(resultSet.getString(9)),
+                            defaultObjectMapper.readValue(resultSet.getString(9)),
                             resultSet.getString(1),
                             OppdragStatus.valueOf(resultSet.getString(2)),
                             resultSet.getTimestamp(8).toLocalDateTime(),
                             resultSet.getTimestamp(3).toLocalDateTime(),
-                            if (kvittering == null) null else objectMapper.readValue(kvittering),
+                            if (kvittering == null) null else defaultObjectMapper.readValue(kvittering),
                             resultSet.getInt(11)
                         )
                     )
