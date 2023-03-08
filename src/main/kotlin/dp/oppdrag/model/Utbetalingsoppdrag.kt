@@ -1,5 +1,6 @@
 package dp.oppdrag.model
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -13,6 +14,7 @@ data class Utbetalingsoppdrag(
     val saksbehandlerId: String,
     val avstemmingTidspunkt: LocalDateTime = LocalDateTime.now(),
     val utbetalingsperiode: List<Utbetalingsperiode>,
+    @JsonAlias("gOmregning", "gomregning")
     val gOmregning: Boolean = false
 ) {
     enum class KodeEndring {
