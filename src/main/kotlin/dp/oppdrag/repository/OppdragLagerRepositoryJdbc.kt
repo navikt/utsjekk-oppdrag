@@ -1,8 +1,8 @@
 package dp.oppdrag.repository
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import dp.oppdrag.defaultObjectMapper
 import dp.oppdrag.model.*
-import dp.oppdrag.utils.defaultObjectMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import java.sql.PreparedStatement
 import java.sql.Timestamp
@@ -55,7 +55,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             """.trimIndent()
 
 
-        dataSource.connection.prepareStatement(insertStatement, arrayOf("oppdrag_lager_id"))
+        dataSource.connection.prepareStatement(insertStatement)
             .use {
                 it.setString(1, UUID.randomUUID().toString())
                 it.setString(2, oppdragLager.utgaaendeOppdrag)
@@ -70,17 +70,6 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
                 it.setInt(11, versjon)
 
                 it.executeUpdate()
-
-                var oppdragLagerId = 0L
-                it.generatedKeys.use { keys ->
-                    if (keys.next()) {
-                        oppdragLagerId = keys.getLong(1) // Can't refer to the returned keys by name in Oracle
-                    }
-                }
-
-                if (oppdragLagerId == 0L) {
-                    throw OppdragAlleredeSendtException()
-                }
             }
     }
 

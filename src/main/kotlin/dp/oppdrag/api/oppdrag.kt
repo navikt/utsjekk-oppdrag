@@ -10,7 +10,6 @@ import dp.oppdrag.service.OppdragServiceImpl
 import dp.oppdrag.model.Utbetalingsoppdrag
 import dp.oppdrag.model.Utbetalingsperiode
 import dp.oppdrag.utils.auth
-import dp.oppdrag.utils.defaultObjectMapper
 import dp.oppdrag.utils.respondConflict
 import dp.oppdrag.utils.respondError
 import no.nav.security.token.support.v2.TokenValidationContextPrincipal
@@ -39,7 +38,7 @@ fun NormalOpenAPIRoute.oppdragApi(dataSource: DataSource) {
                 }.fold(
                     onFailure = {
                         if (it is OppdragAlleredeSendtException) {
-                            respondConflict("Oppdrag er allerede sendt for saksnr ${request.saksnummer}.")
+                            respondConflict("Oppdrag er allerede sendt for saksnr ${request.saksnummer}")
                         } else {
                             respondError("Klarte ikke sende oppdrag for saksnr ${request.saksnummer}", it)
                         }

@@ -23,6 +23,8 @@ suspend inline fun <reified TResponse : Any> OpenAPIPipelineResponseContext<TRes
 }
 
 suspend inline fun <reified TResponse : Any> OpenAPIPipelineResponseContext<TResponse>.respondConflict(message: String) {
+    defaultLogger.info { message }
+
     responder.respond(
         HttpStatusCode.Conflict,
         message,
