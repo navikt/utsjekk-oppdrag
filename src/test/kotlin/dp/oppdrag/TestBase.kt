@@ -1,5 +1,6 @@
 package dp.oppdrag
 
+import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import no.nav.security.mock.oauth2.MockOAuth2Server
@@ -44,6 +45,14 @@ open class TestBase {
             }
             application {
                 module()
+            }
+
+            defaultDataSource = HikariDataSource().apply {
+                jdbcUrl = "jdbc:h2:mem:testDb;MODE=PostgreSQL"
+                username = "sa"
+                password = ""
+
+                validate()
             }
 
             block()

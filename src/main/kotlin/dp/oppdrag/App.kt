@@ -39,12 +39,13 @@ import com.papsign.ktor.openapigen.route.path.auth.get as authGet
 
 val defaultAuthProvider = JwtProvider()
 val defaultLogger = KotlinLogging.logger {}
+lateinit var defaultDataSource: DataSource
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
     // Create DataSource and run migrations
-    val dataSource = prepareDataSource()
+    prepareDataSource()
 
     // Install Micrometer/Prometheus
     val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
@@ -113,7 +114,7 @@ fun Application.module() {
     apiRouting {
         internalApi(appMicrometerRegistry)
 
-        oppdragApi(dataSource)
+        oppdragApi(defaultDataSource)
 
         // Example API
         // Will be deleted soon
@@ -140,28 +141,28 @@ fun Application.module() {
     }
 }
 
-fun prepareDataSource(): DataSource {
-    val url = "jdbc:postgresql://" + System.getenv("DB_HOST") +
-            ":" + System.getenv("DB_PORT") +
-            "/" + System.getenv("DB_DATABASE")
+fun prepareDataSource() {
+    if (!::defaultDataSource.isInitialized) {
+        val url = "jdbc:postgresql://" + System.getenv("DB_HOST") +
+                ":" + System.getenv("DB_PORT") +
+                "/" + System.getenv("DB_DATABASE")
 
-    val dataSource = HikariDataSource().apply {
-        driverClassName = "org.postgresql.Driver"
-        jdbcUrl = url
-        username = System.getenv("DB_USERNAME")
-        password = System.getenv("DB_PASSWORD")
-        connectionTimeout = 10000 // 10s
-        maxLifetime = 30000 // 30s
-        maximumPoolSize = 5
+        defaultDataSource = HikariDataSource().apply {
+            driverClassName = "org.postgresql.Driver"
+            jdbcUrl = url
+            username = System.getenv("DB_USERNAME")
+            password = System.getenv("DB_PASSWORD")
+            connectionTimeout = 10000 // 10s
+            maxLifetime = 30000 // 30s
+            maximumPoolSize = 5
+        }
     }
 
     val flyway = Flyway.configure()
         .connectRetries(20)
-        .dataSource(dataSource)
+        .dataSource(defaultDataSource)
         .load()
     flyway.migrate()
-
-    return dataSource
 }
 
 // Example API classes
