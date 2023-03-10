@@ -23,6 +23,11 @@ class OppdragSenderMQ : OppdragSender {
         val oppdragId = oppdrag.oppdrag110?.oppdragsLinje150?.lastOrNull()?.henvisning
         val oppdragXml = xmlMapper.writeValueAsString(oppdrag)
 
+        if (!System.getenv("MQ_ENABLED").toBoolean()) {
+            defaultLogger.info { "MQ-integrasjon mot oppdrag er skrudd av" }
+            return ""
+        }
+
         defaultLogger.info {
             "Sender oppdrag for fagsystem=${oppdrag.oppdrag110.kodeFagomraade} og " +
                     "fagsak=${oppdrag.oppdrag110.fagsystemId} behandling=$oppdragId til Oppdragsystemet"

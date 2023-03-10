@@ -118,6 +118,7 @@ tasks {
         environment["DB_USERNAME"] = "dp-oppdrag-user"
         environment["DB_PASSWORD"] = "dp-oppdrag-password"
 
+        environment["MQ_ENABLED"] = "false"
         environment["MQ_HOSTNAME"] = "localhost"
         environment["MQ_PORT"] = "1414"
         environment["MQ_QUEUEMANAGER"] = "QM1"
