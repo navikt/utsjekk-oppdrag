@@ -51,7 +51,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
         val insertStatement = """
             INSERT INTO oppdrag_lager
             (id, utgaaende_oppdrag, status, opprettet_tidspunkt, person_ident, fagsak_id, behandling_id, fagsystem, avstemming_tidspunkt, utbetalingsoppdrag, versjon)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?)
+            VALUES (?::uuid,?,?,?,?,?,?,?,?,?::json,?)
             """.trimIndent()
 
 
@@ -95,7 +95,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
 
     override fun oppdaterKvitteringsmelding(oppdragId: OppdragId, kvittering: Mmel, versjon: Int) {
         val updateStatement = """
-            UPDATE oppdrag_lager SET kvitteringsmelding = ?
+            UPDATE oppdrag_lager SET kvitteringsmelding = ?::json
             WHERE person_ident = ?
             AND fagsystem = ?
             AND behandling_id = ?
