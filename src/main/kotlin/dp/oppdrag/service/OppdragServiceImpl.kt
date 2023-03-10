@@ -7,6 +7,7 @@ import dp.oppdrag.repository.OppdragAlleredeSendtException
 import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
 import dp.oppdrag.sender.OppdragSenderMQ
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
+import org.postgresql.util.PSQLException
 import java.sql.SQLIntegrityConstraintViolationException
 import javax.sql.DataSource
 
@@ -19,11 +20,18 @@ class OppdragServiceImpl(dataSource: DataSource) : OppdragService {
 
         try {
             oppdragLagerRepository.opprettOppdrag(OppdragLager.lagFraOppdrag(utbetalingsoppdrag, oppdrag), versjon)
-        } catch (e: SQLIntegrityConstraintViolationException) {
+        } catch (exception: SQLIntegrityConstraintViolationException) { // H2
             throw OppdragAlleredeSendtException()
+        } catch (exception: PSQLException) { // PostgreSQL
+            if (exception.sqlState == "23505") {
+                throw OppdragAlleredeSendtException()
+            }
+            else {
+                throw exception
+            }
         }
 
-        // oppdragSender.sendOppdrag(oppdrag)
+        oppdragSender.sendOppdrag(oppdrag)
     }
 
     override fun hentStatusForOppdrag(oppdragId: OppdragId): OppdragLager {
