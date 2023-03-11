@@ -13,7 +13,6 @@ import javax.jms.*
 
 class OppdragSenderMQ : OppdragSender {
 
-    private val UTF_8_WITH_PUA = 1208
     private lateinit var producer: MessageProducer
     private lateinit var connection: Connection
     private lateinit var session: Session
@@ -50,7 +49,7 @@ class OppdragSenderMQ : OppdragSender {
             cf.setStringProperty(WMQConstants.USERID, System.getenv("MQ_USER"))
             cf.setStringProperty(WMQConstants.PASSWORD, System.getenv("MQ_PASSWORD"))
             cf.setIntProperty(JmsConstants.JMS_IBM_ENCODING, CMQC.MQENC_NATIVE)
-            cf.setIntProperty(JmsConstants.JMS_IBM_CHARACTER_SET, UTF_8_WITH_PUA)
+            cf.setIntProperty(JmsConstants.JMS_IBM_CHARACTER_SET, JmsConstants.CCSID_UTF8)
 
             // Create JMS objects
             connection = cf.createConnection()
@@ -74,7 +73,7 @@ class OppdragSenderMQ : OppdragSender {
         } finally {
             if (::producer.isInitialized) {
                 try {
-                    producer.close();
+                    producer.close()
                 } catch (jmsex: JMSException) {
                     defaultLogger.warn { "Producer could not be closed." }
                 }
@@ -82,7 +81,7 @@ class OppdragSenderMQ : OppdragSender {
 
             if (::session.isInitialized) {
                 try {
-                    session.close();
+                    session.close()
                 } catch (jmsex: JMSException) {
                     defaultLogger.warn { "Session could not be closed." }
                 }
@@ -90,7 +89,7 @@ class OppdragSenderMQ : OppdragSender {
 
             if (::connection.isInitialized) {
                 try {
-                    connection.close();
+                    connection.close()
                 } catch (jmsex: JMSException) {
                     defaultLogger.warn { "Connection could not be closed." }
                 }
