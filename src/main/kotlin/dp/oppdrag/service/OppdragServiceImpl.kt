@@ -25,8 +25,7 @@ class OppdragServiceImpl(dataSource: DataSource) : OppdragService {
         } catch (exception: PSQLException) { // PostgreSQL
             if (exception.sqlState == "23505") {
                 throw OppdragAlleredeSendtException()
-            }
-            else {
+            } else {
                 throw exception
             }
         }

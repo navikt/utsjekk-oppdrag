@@ -118,7 +118,7 @@ tasks {
         environment["DB_USERNAME"] = "dp-oppdrag-user"
         environment["DB_PASSWORD"] = "dp-oppdrag-password"
 
-        environment["MQ_ENABLED"] = "false"
+        environment["MQ_ENABLED"] = "true"
         environment["MQ_HOSTNAME"] = "localhost"
         environment["MQ_PORT"] = "1414"
         environment["MQ_QUEUEMANAGER"] = "QM1"
@@ -126,7 +126,7 @@ tasks {
         environment["MQ_QUEUE"] = "DEV.QUEUE.1"
         environment["MQ_MOTTAK"] = "DEV.QUEUE.2"
         environment["MQ_USER"] = "app"
-        environment["MQ_PASSWORD"] = "SomePassword12345"
+        environment["MQ_PASSWORD"] = "passw0rd"
 
         classpath = sourceSets["main"].runtimeClasspath
         mainClass.set(project.property("mainClassName").toString())
