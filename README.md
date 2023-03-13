@@ -5,6 +5,10 @@ Generell proxy mot Oppdragsystemet (OS) for dagpenger
 Bygg ved å kjøre `./gradlew clean build`. Dette vil også kjøre testene.  
 Det er også mulig å kjøre `gradle clean build`, men da må man ha en riktig versjon av gradle installert (som støtter Java 17)
 
+## Kubernetes secrets
+Applikasjonen benytter én egendefinert Kubernetes secret i henholdsvis `dev-gcp` og `prod-gcp`.  
+Secret inneholder et passord til IBM MQ. Passordet er representert gjennom miljøvariabelen `MQ_PASSWORD`
+
 ## Lokalkjøring
 1. Start lokal instans av PostgreSQL database og IBM MQ `docker-compose up -d`
 2. Start appen `./gradlew runServerTest`
