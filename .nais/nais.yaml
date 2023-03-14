@@ -45,11 +45,11 @@ spec:
     - name: JAVA_OPTS
       value: "-XX:MinRAMPercentage=25.0 -XX:MaxRAMPercentage=75.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
     - name: MQ_ENABLED
-      value: {{ mqEnabled }}
+      value: "{{ mqEnabled }}"
     - name: MQ_HOSTNAME
       value: {{ mqHostname }}
     - name: MQ_PORT
-      value: {{ mqPort }}
+      value: "{{ mqPort }}"
     - name: MQ_CHANNEL
       value: {{ mqChannel }}
     - name: MQ_QUEUEMANAGER
