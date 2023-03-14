@@ -4,11 +4,11 @@ requestsMemory: 512Mi
 requestsCpu: 500m
 db_tier: "db-f1-micro"
 ingresses:
-  - https://dp-oppdrag.intern.dev.nav.no
-mqEnabled: true
-mqHostname: b27apvl220.preprod.local
-mqPort: 1413
-mqChannel: Q1_DP_OPPDRAG
-mqQueuemanager: MQLS02
-mqQueue: OPPDRAG_XML
-mqMottak: OPPDRAG_KVITTERING
+  - "https://dp-oppdrag.intern.dev.nav.no"
+mqEnabled: "true"
+mqHostname: "b27apvl220.preprod.local"
+mqPort: "1413"
+mqChannel: "Q1_DP_OPPDRAG"
+mqQueuemanager: "MQLS02"
+mqQueue: "OPPDRAG_XML"
+mqMottak: "OPPDRAG_KVITTERING"
