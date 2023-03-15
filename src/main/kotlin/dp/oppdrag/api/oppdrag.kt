@@ -4,11 +4,12 @@ import com.papsign.ktor.openapigen.route.info
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
-import dp.oppdrag.repository.OppdragAlleredeSendtException
 import dp.oppdrag.OppdragMapper
-import dp.oppdrag.service.OppdragServiceImpl
 import dp.oppdrag.model.Utbetalingsoppdrag
 import dp.oppdrag.model.Utbetalingsperiode
+import dp.oppdrag.repository.OppdragAlleredeSendtException
+import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
+import dp.oppdrag.service.OppdragServiceImpl
 import dp.oppdrag.utils.auth
 import dp.oppdrag.utils.respondConflict
 import dp.oppdrag.utils.respondError
@@ -16,11 +17,10 @@ import no.nav.security.token.support.v2.TokenValidationContextPrincipal
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
-import javax.sql.DataSource
 import com.papsign.ktor.openapigen.route.path.auth.post as authPost
 
-fun NormalOpenAPIRoute.oppdragApi(dataSource: DataSource) {
-    val oppdragService = OppdragServiceImpl(dataSource)
+fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepositoryJdbc) {
+    val oppdragService = OppdragServiceImpl(oppdragLagerRepository)
 
     auth {
         route("/oppdrag") {

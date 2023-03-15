@@ -16,6 +16,7 @@ import com.zaxxer.hikari.HikariDataSource
 import dp.oppdrag.api.internalApi
 import dp.oppdrag.api.oppdragApi
 import dp.oppdrag.listener.OppdragListenerMQ
+import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
 import dp.oppdrag.utils.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
@@ -54,6 +55,9 @@ fun main(args: Array<String>): Unit = EngineMain.main(args)
 fun Application.module() {
     // Create DataSource and run migrations
     prepareDataSource()
+
+    // Create repository object
+    val oppdragLagerRepository = OppdragLagerRepositoryJdbc(defaultDataSource)
 
     // Install Micrometer/Prometheus
     val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
@@ -120,12 +124,12 @@ fun Application.module() {
     }
 
     // Listen to receipt queue
-    OppdragListenerMQ()
+    OppdragListenerMQ(oppdragLagerRepository)
 
     apiRouting {
         internalApi(appMicrometerRegistry)
 
-        oppdragApi(defaultDataSource)
+        oppdragApi(oppdragLagerRepository)
 
         // Example API
         // Will be deleted soon

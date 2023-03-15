@@ -23,13 +23,30 @@ class OppdragSkjemaConstants {
     }
 }
 
-enum class OppdragStatus {
+enum class OppdragLagerStatus {
     LAGT_PAA_KOE,
     KVITTERT_OK,
     KVITTERT_MED_MANGLER,
     KVITTERT_FUNKSJONELL_FEIL,
     KVITTERT_TEKNISK_FEIL,
     KVITTERT_UKJENT;
+}
+
+enum class OppdragStatus(val kode: String) {
+    OK("00"),
+    AKSEPTERT_MEN_NOE_ER_FEIL("04"),
+    AVVIST_FUNKSJONELLE_FEIL("08"),
+    AVVIST_TEKNISK_FEIL("12"),
+    UKJENT("Ukjent");
+
+    companion object {
+        fun fraKode(kode: String): OppdragStatus {
+            values().forEach {
+                if (it.kode == kode) return it
+            }
+            throw IllegalArgumentException("No enum constant with kode=$kode")
+        }
+    }
 }
 
 enum class EndringsKode(val kode: String) {

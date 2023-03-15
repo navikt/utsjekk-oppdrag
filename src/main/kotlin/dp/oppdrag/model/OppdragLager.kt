@@ -1,7 +1,6 @@
 package dp.oppdrag.model
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import dp.oppdrag.OppdragMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import java.time.LocalDateTime
@@ -15,7 +14,7 @@ data class OppdragLager(
     val behandlingId: String,
     val utbetalingsoppdrag: Utbetalingsoppdrag,
     val utgaaendeOppdrag: String,
-    var status: OppdragStatus = OppdragStatus.LAGT_PAA_KOE,
+    var status: OppdragLagerStatus = OppdragLagerStatus.LAGT_PAA_KOE,
     val avstemmingTidspunkt: LocalDateTime,
     val opprettetTidspunkt: LocalDateTime = LocalDateTime.now(),
     val kvitteringsmelding: Mmel?,
@@ -41,23 +40,3 @@ data class OppdragLager(
         }
     }
 }
-
-fun Utbetalingsoppdrag.somOppdragLagerMedVersjon(versjon: Int): OppdragLager {
-    val oppdragMapper = OppdragMapper()
-    val tilOppdrag110 = oppdragMapper.tilOppdrag110(this)
-    val oppdrag = oppdragMapper.tilOppdrag(tilOppdrag110)
-    return OppdragLager.lagFraOppdrag(this, oppdrag, versjon)
-}
-
-val Utbetalingsoppdrag.somOppdragLager: OppdragLager
-    get() {
-        val oppdragMapper = OppdragMapper()
-        val tilOppdrag110 = oppdragMapper.tilOppdrag110(this)
-        val oppdrag = oppdragMapper.tilOppdrag(tilOppdrag110)
-        return OppdragLager.lagFraOppdrag(this, oppdrag)
-    }
-
-val OppdragLager.id: OppdragId
-    get() {
-        return OppdragId(this.fagsystem, this.personIdent, this.behandlingId)
-    }

@@ -9,11 +9,9 @@ import dp.oppdrag.sender.OppdragSenderMQ
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import org.postgresql.util.PSQLException
 import java.sql.SQLIntegrityConstraintViolationException
-import javax.sql.DataSource
 
-class OppdragServiceImpl(dataSource: DataSource) : OppdragService {
+class OppdragServiceImpl(private val oppdragLagerRepository: OppdragLagerRepositoryJdbc) : OppdragService {
 
-    private val oppdragLagerRepository = OppdragLagerRepositoryJdbc(dataSource)
     private val oppdragSender = OppdragSenderMQ()
 
     override fun opprettOppdrag(utbetalingsoppdrag: Utbetalingsoppdrag, oppdrag: Oppdrag, versjon: Int) {

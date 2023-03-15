@@ -73,7 +73,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             }
     }
 
-    override fun oppdaterStatus(oppdragId: OppdragId, oppdragStatus: OppdragStatus, versjon: Int) {
+    override fun oppdaterStatus(oppdragId: OppdragId, oppdragLagerStatus: OppdragLagerStatus, versjon: Int) {
         val updateStatement = """
             UPDATE oppdrag_lager SET status = ?
             WHERE person_ident = ?
@@ -83,7 +83,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             """.trimIndent()
 
         dataSource.connection.prepareStatement(updateStatement).use {
-            it.setString(1, oppdragStatus.name)
+            it.setString(1, oppdragLagerStatus.name)
             it.setString(2, oppdragId.personIdent)
             it.setString(3, oppdragId.fagsystem)
             it.setString(4, oppdragId.behandlingsId)
@@ -213,7 +213,9 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
                         WHERE rn = 1"""
         val statement = dataSource.connection.prepareStatement(query)
 
-        val status = setOf(OppdragStatus.KVITTERT_OK, OppdragStatus.KVITTERT_MED_MANGLER).map { it.name }.toTypedArray()
+        val status = setOf(OppdragLagerStatus.KVITTERT_OK, OppdragLagerStatus.KVITTERT_MED_MANGLER)
+            .map { it.name }
+            .toTypedArray()
 
         val list = mutableListOf<UtbetalingsoppdragForKonsistensavstemming>()
 
@@ -259,7 +261,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
                             resultSet.getString(6),
                             defaultObjectMapper.readValue(resultSet.getString(9)),
                             resultSet.getString(1),
-                            OppdragStatus.valueOf(resultSet.getString(2)),
+                            OppdragLagerStatus.valueOf(resultSet.getString(2)),
                             resultSet.getTimestamp(8).toLocalDateTime(),
                             resultSet.getTimestamp(3).toLocalDateTime(),
                             if (kvittering == null) null else defaultObjectMapper.readValue(kvittering),
