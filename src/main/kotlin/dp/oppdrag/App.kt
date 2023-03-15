@@ -15,6 +15,7 @@ import com.papsign.ktor.openapigen.route.route
 import com.zaxxer.hikari.HikariDataSource
 import dp.oppdrag.api.internalApi
 import dp.oppdrag.api.oppdragApi
+import dp.oppdrag.listener.OppdragListenerMQ
 import dp.oppdrag.utils.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
@@ -117,6 +118,9 @@ fun Application.module() {
             }
         }
     }
+
+    // Listen to receipt queue
+    OppdragListenerMQ()
 
     apiRouting {
         internalApi(appMicrometerRegistry)
