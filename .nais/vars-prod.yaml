@@ -4,12 +4,12 @@ requestsMemory: 1Gi
 requestsCpu: 500m
 db_tier: "db-custom-4-8192"
 ingresses:
-  - "https://dp-oppdrag.intern.nav.no"
-mqEnabled: "true"
-mqHostname: "mpls02.adeo.no"
-mqPort: "1414"
-mqChannel: "P_DP_OPPDRAG"
-mqQueuemanager: "MQLS02"
-mqUser: "srvdp-oppdrag"
-mqQueue: "OPPDRAG_XML"
-mqMottak: "OPPDRAG_KVITTERING"
+  - https://dp-oppdrag.intern.nav.no
+mqEnabled: true
+mqHostname: mpls02.adeo.no
+mqPort: 1414
+mqChannel: P_DP_OPPDRAG
+mqQueuemanager: MQLS02
+mqUser: srvdp-oppdrag
+mqQueue: QA.P231.OB04_OPPDRAG_XML
+mqMottak: QA.P_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
