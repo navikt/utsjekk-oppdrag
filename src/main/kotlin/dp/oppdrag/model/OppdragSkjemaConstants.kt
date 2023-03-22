@@ -2,10 +2,6 @@ package dp.oppdrag.model
 
 import no.trygdeetaten.skjema.oppdrag.TfradragTillegg
 import java.time.LocalDate
-import java.time.ZoneId
-import java.util.*
-import javax.xml.datatype.DatatypeFactory
-import javax.xml.datatype.XMLGregorianCalendar
 
 class OppdragSkjemaConstants {
 
@@ -97,9 +93,4 @@ enum class GradTypeKode(val kode: String) {
     UTBETALINGSGRAD("UBGR"),
     UTTAKSGRAD_ALDERSPENSJON("UTAP"),
     UTTAKSGRAD_AFP("AFPG")
-}
-
-fun LocalDate.toXMLDate(): XMLGregorianCalendar {
-    return DatatypeFactory.newInstance()
-        .newXMLGregorianCalendar(GregorianCalendar.from(atStartOfDay(ZoneId.systemDefault())))
 }

@@ -1,6 +1,7 @@
 package dp.oppdrag
 
 import dp.oppdrag.model.*
+import dp.oppdrag.utils.toXMLDate
 import no.trygdeetaten.skjema.oppdrag.*
 import java.time.format.DateTimeFormatter
 

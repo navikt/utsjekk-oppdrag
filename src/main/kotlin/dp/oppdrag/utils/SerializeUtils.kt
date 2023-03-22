@@ -10,8 +10,12 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import java.io.IOException
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
 import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
+import java.util.*
+import javax.xml.datatype.DatatypeFactory
+import javax.xml.datatype.XMLGregorianCalendar
 
 
 class LocalDateSerializer : StdSerializer<LocalDate>(LocalDate::class.java) {
@@ -44,4 +48,9 @@ class LocalDateTimeDeserializer : StdDeserializer<LocalDateTime>(LocalDateTime::
     override fun deserialize(jp: JsonParser, ctxt: DeserializationContext): LocalDateTime {
         return LocalDateTime.parse(jp.readValueAs(String::class.java))
     }
+}
+
+fun LocalDate.toXMLDate(): XMLGregorianCalendar {
+    return DatatypeFactory.newInstance()
+        .newXMLGregorianCalendar(GregorianCalendar.from(atStartOfDay(ZoneId.systemDefault())))
 }
