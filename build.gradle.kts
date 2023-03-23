@@ -18,8 +18,8 @@ val hikariVersion = "5.0.1"
 val flywayVersion = "9.15.2"
 val ibmMqVersion = "9.3.2.0"
 val mockOauth2Version = "0.5.8"
-val h2Version = "2.1.214"
 val jupiterVersion = "5.9.2"
+val testcontainersVersion = "1.17.6"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -82,11 +82,13 @@ dependencies {
     // Test
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("no.nav.security:mock-oauth2-server:$mockOauth2Version")
-    testImplementation("com.h2database:h2:$h2Version")
     // Use the Kotlin JUnit 5 integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     // Use the JUnit 5 integration.
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
+    // Testcontainers
+    testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
 }
 
 application {

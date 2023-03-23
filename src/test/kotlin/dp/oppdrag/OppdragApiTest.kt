@@ -104,8 +104,8 @@ class OppdragApiTest : TestBase() {
             setBody(defaultObjectMapper.writeValueAsString(oppdragId))
         }
 
-        // assertEquals(HttpStatusCode.OK, response3.status)
-        // assertEquals(OppdragLagerStatus.LAGT_PAA_KOE.name, response3.bodyAsText())
+        assertEquals(HttpStatusCode.OK, response3.status)
+        assertEquals(OppdragLagerStatus.LAGT_PAA_KOE.name, response3.bodyAsText())
     }
 
     @Test

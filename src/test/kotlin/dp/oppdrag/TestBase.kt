@@ -6,7 +6,11 @@ import io.ktor.server.testing.*
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 
+@Testcontainers
 open class TestBase {
 
     companion object {
@@ -15,11 +19,22 @@ open class TestBase {
 
         var mockOAuth2Server = MockOAuth2Server()
 
+        @Container
+        private val container: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:14-alpine")
+
         @BeforeAll
         @JvmStatic
         fun setup() {
             mockOAuth2Server = MockOAuth2Server()
             mockOAuth2Server.start(8091)
+
+            defaultDataSource = HikariDataSource().apply {
+                jdbcUrl = container.jdbcUrl
+                username = container.username
+                password = container.password
+
+                validate()
+            }
         }
 
         @AfterAll
@@ -45,14 +60,6 @@ open class TestBase {
             }
             application {
                 module()
-            }
-
-            defaultDataSource = HikariDataSource().apply {
-                jdbcUrl = "jdbc:h2:mem:testDb;MODE=PostgreSQL"
-                username = "sa"
-                password = ""
-
-                validate()
             }
 
             block()

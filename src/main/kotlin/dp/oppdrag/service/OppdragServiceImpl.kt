@@ -8,7 +8,6 @@ import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
 import dp.oppdrag.sender.OppdragSenderMQ
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import org.postgresql.util.PSQLException
-import java.sql.SQLIntegrityConstraintViolationException
 
 class OppdragServiceImpl(private val oppdragLagerRepository: OppdragLagerRepositoryJdbc) : OppdragService {
 
@@ -18,10 +17,8 @@ class OppdragServiceImpl(private val oppdragLagerRepository: OppdragLagerReposit
 
         try {
             oppdragLagerRepository.opprettOppdrag(OppdragLager.lagFraOppdrag(utbetalingsoppdrag, oppdrag), versjon)
-        } catch (exception: SQLIntegrityConstraintViolationException) { // H2
-            throw OppdragAlleredeSendtException()
-        } catch (exception: PSQLException) { // PostgreSQL
-            if (exception.sqlState == "23505") {
+        } catch (exception: PSQLException) {
+            if (exception.sqlState == "23505") { //  Integrity Constraint Violation (Unique Violation)
                 throw OppdragAlleredeSendtException()
             } else {
                 throw exception

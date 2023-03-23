@@ -54,10 +54,10 @@ fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepository
         }
 
         route("/status") {
-            authPost<Unit, OppdragLagerStatus, OppdragId, TokenValidationContextPrincipal?>(
+            authPost<Unit, String, OppdragId, TokenValidationContextPrincipal?>(
                 info("Status", "Hent oppdragsstatus"),
                 exampleRequest = oppdragIdExample,
-                exampleResponse = OppdragLagerStatus.KVITTERT_OK
+                exampleResponse = OppdragLagerStatus.KVITTERT_OK.name
             ) { _, request ->
                 Result.runCatching {
                     oppdragService.hentStatusForOppdrag(request)
@@ -66,7 +66,7 @@ fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepository
                         respondNotFound("Fant ikke oppdrag med $request")
                     },
                     onSuccess = {
-                        respond(it.status)
+                        respond(it.status.name)
                     }
                 )
             }
