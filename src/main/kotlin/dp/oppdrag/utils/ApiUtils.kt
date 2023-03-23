@@ -31,3 +31,13 @@ suspend inline fun <reified TResponse : Any> OpenAPIPipelineResponseContext<TRes
         this.pipeline
     )
 }
+
+suspend inline fun <reified TResponse : Any> OpenAPIPipelineResponseContext<TResponse>.respondNotFound(message: String) {
+    defaultLogger.info { message }
+
+    responder.respond(
+        HttpStatusCode.NotFound,
+        message,
+        this.pipeline
+    )
+}

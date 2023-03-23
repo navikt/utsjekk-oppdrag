@@ -9,7 +9,6 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.util.*
 import javax.sql.DataSource
-import kotlin.NoSuchElementException
 
 class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLagerRepository {
 
@@ -53,7 +52,6 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             (id, utgaaende_oppdrag, status, opprettet_tidspunkt, person_ident, fagsak_id, behandling_id, fagsystem, avstemming_tidspunkt, utbetalingsoppdrag, versjon)
             VALUES (?::uuid,?,?,?,?,?,?,?,?,?::json,?)
             """.trimIndent()
-
 
         dataSource.connection.prepareStatement(insertStatement)
             .use {
@@ -250,22 +248,27 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
         this.executeQuery()
             .use { resultSet ->
                 while (resultSet.next()) {
-                    val kvittering = resultSet.getString(10)
+                    val kvitteringsmeldingStr = resultSet.getString(11)
+                    val kvitteringsmelding = if (kvitteringsmeldingStr != null) {
+                        defaultObjectMapper.readValue<Mmel>(kvitteringsmeldingStr)
+                    } else {
+                        null
+                    }
 
                     list.add(
                         OppdragLager(
-                            UUID.fromString(resultSet.getString(12) ?: UUID.randomUUID().toString()),
-                            resultSet.getString(7),
-                            resultSet.getString(4),
-                            resultSet.getString(5),
-                            resultSet.getString(6),
-                            defaultObjectMapper.readValue(resultSet.getString(9)),
-                            resultSet.getString(1),
-                            OppdragLagerStatus.valueOf(resultSet.getString(2)),
-                            resultSet.getTimestamp(8).toLocalDateTime(),
-                            resultSet.getTimestamp(3).toLocalDateTime(),
-                            if (kvittering == null) null else defaultObjectMapper.readValue(kvittering),
-                            resultSet.getInt(11)
+                            uuid = UUID.fromString(resultSet.getString(1) ?: UUID.randomUUID().toString()),
+                            fagsystem = resultSet.getString(8),
+                            personIdent = resultSet.getString(5),
+                            fagsakId = resultSet.getString(6),
+                            behandlingId = resultSet.getString(7),
+                            utbetalingsoppdrag = defaultObjectMapper.readValue(resultSet.getString(10)),
+                            utgaaendeOppdrag = resultSet.getString(2),
+                            status = OppdragLagerStatus.valueOf(resultSet.getString(3)),
+                            avstemmingTidspunkt = resultSet.getTimestamp(9).toLocalDateTime(),
+                            opprettetTidspunkt = resultSet.getTimestamp(4).toLocalDateTime(),
+                            kvitteringsmelding = kvitteringsmelding,
+                            versjon = resultSet.getInt(12)
                         )
                     )
                 }

@@ -1,8 +1,7 @@
 package dp.oppdrag
 
 import com.nimbusds.jwt.SignedJWT
-import dp.oppdrag.model.Utbetalingsoppdrag
-import dp.oppdrag.model.Utbetalingsperiode
+import dp.oppdrag.model.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -17,32 +16,8 @@ class OppdragApiTest : TestBase() {
 
     @Test
     fun shouldGet200FirstTimeAnd409SecondTime() = setUpTestApplication {
-        val utbetalingsoppdrag = Utbetalingsoppdrag(
-            kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-            fagSystem = "EFOG",
-            saksnummer = "12345",
-            aktoer = "01020312345",
-            saksbehandlerId = "S123456",
-            avstemmingTidspunkt = LocalDateTime.now(),
-            utbetalingsperiode = listOf(
-                Utbetalingsperiode(
-                    erEndringPaaEksisterendePeriode = false,
-                    opphoer = null,
-                    periodeId = 2L,
-                    forrigePeriodeId = 1L,
-                    datoForVedtak = LocalDate.now(),
-                    klassifisering = "",
-                    vedtakdatoFom = LocalDate.now(),
-                    vedtakdatoTom = LocalDate.now(),
-                    sats = BigDecimal.TEN,
-                    satsType = Utbetalingsperiode.SatsType.DAG,
-                    utbetalesTil = "",
-                    behandlingId = 3L,
-                    utbetalingsgrad = 100
-                )
-            ),
-            gOmregning = false
-        )
+
+        val utbetalingsoppdrag = opprettUtbetalingsoppdrag(1L)
 
         val token: SignedJWT = mockOAuth2Server.issueToken(ISSUER_ID, "someclientid", DefaultOAuth2TokenCallback())
 
@@ -70,7 +45,7 @@ class OppdragApiTest : TestBase() {
     }
 
     @Test
-    fun shouldGet401WithoutToken() = setUpTestApplication {
+    fun shouldGet401WhenSendOppdragWithoutToken() = setUpTestApplication {
         val response = client.post("/oppdrag") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
@@ -79,5 +54,105 @@ class OppdragApiTest : TestBase() {
 
         assertEquals(HttpStatusCode.Unauthorized, response.status)
         assertEquals("", response.bodyAsText())
+    }
+
+    @Test
+    fun shouldGet404ForNonexistentOppdragAndStatusForExistingOppdrag() = setUpTestApplication {
+        val behandlingsId = 2L
+        val utbetalingsoppdrag = opprettUtbetalingsoppdrag(behandlingsId)
+        val oppdragId = OppdragId(
+            fagsystem = "EFOG",
+            personIdent = "01020312345",
+            behandlingsId = behandlingsId.toString()
+        )
+
+        val token: SignedJWT = mockOAuth2Server.issueToken(ISSUER_ID, "someclientid", DefaultOAuth2TokenCallback())
+
+        // Get status before creating Oppdrag
+        val response1 = client.post("/status") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+            }
+            setBody(defaultObjectMapper.writeValueAsString(oppdragId))
+        }
+
+        assertEquals(HttpStatusCode.NotFound, response1.status)
+        assertEquals(
+            "Fant ikke oppdrag med OppdragId(fagsystem=EFOG, behandlingsId=$behandlingsId)",
+            response1.bodyAsText()
+        )
+
+        // Create Oppdrag
+        val response2 = client.post("/oppdrag") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+            }
+            setBody(defaultObjectMapper.writeValueAsString(utbetalingsoppdrag))
+        }
+
+        assertEquals(HttpStatusCode.OK, response2.status)
+        assertEquals("OK", response2.bodyAsText())
+
+        // Get status after creating Oppdrag
+        val response3 = client.post("/status") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+            }
+            setBody(defaultObjectMapper.writeValueAsString(oppdragId))
+        }
+
+        // assertEquals(HttpStatusCode.OK, response3.status)
+        // assertEquals(OppdragLagerStatus.LAGT_PAA_KOE.name, response3.bodyAsText())
+    }
+
+    @Test
+    fun shouldGet401WhenGetStatusWithoutToken() = setUpTestApplication {
+        val oppdragId = OppdragId(
+            fagsystem = "EFOG",
+            personIdent = "01020312345",
+            behandlingsId = "3"
+        )
+
+        val response = client.post("/status") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+            }
+            setBody(defaultObjectMapper.writeValueAsString(oppdragId))
+        }
+
+        assertEquals(HttpStatusCode.Unauthorized, response.status)
+        assertEquals("", response.bodyAsText())
+    }
+
+    private fun opprettUtbetalingsoppdrag(behandlingId: Long): Utbetalingsoppdrag {
+        return Utbetalingsoppdrag(
+            kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+            fagSystem = "EFOG",
+            saksnummer = "12345",
+            aktoer = "01020312345",
+            saksbehandlerId = "S123456",
+            avstemmingTidspunkt = LocalDateTime.now(),
+            utbetalingsperiode = listOf(
+                Utbetalingsperiode(
+                    erEndringPaaEksisterendePeriode = false,
+                    opphoer = null,
+                    periodeId = 2L,
+                    forrigePeriodeId = 1L,
+                    datoForVedtak = LocalDate.now(),
+                    klassifisering = "",
+                    vedtakdatoFom = LocalDate.now(),
+                    vedtakdatoTom = LocalDate.now(),
+                    sats = BigDecimal.TEN,
+                    satsType = Utbetalingsperiode.SatsType.DAG,
+                    utbetalesTil = "",
+                    behandlingId = behandlingId,
+                    utbetalingsgrad = 100
+                )
+            ),
+            gOmregning = false
+        )
     }
 }

@@ -5,6 +5,8 @@ import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
 import dp.oppdrag.OppdragMapper
+import dp.oppdrag.model.OppdragId
+import dp.oppdrag.model.OppdragLagerStatus
 import dp.oppdrag.model.Utbetalingsoppdrag
 import dp.oppdrag.model.Utbetalingsperiode
 import dp.oppdrag.repository.OppdragAlleredeSendtException
@@ -13,6 +15,7 @@ import dp.oppdrag.service.OppdragServiceImpl
 import dp.oppdrag.utils.auth
 import dp.oppdrag.utils.respondConflict
 import dp.oppdrag.utils.respondError
+import dp.oppdrag.utils.respondNotFound
 import no.nav.security.token.support.v2.TokenValidationContextPrincipal
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -49,6 +52,25 @@ fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepository
                 )
             }
         }
+
+        route("/status") {
+            authPost<Unit, OppdragLagerStatus, OppdragId, TokenValidationContextPrincipal?>(
+                info("Status", "Hent oppdragsstatus"),
+                exampleRequest = oppdragIdExample,
+                exampleResponse = OppdragLagerStatus.KVITTERT_OK
+            ) { _, request ->
+                Result.runCatching {
+                    oppdragService.hentStatusForOppdrag(request)
+                }.fold(
+                    onFailure = {
+                        respondNotFound("Fant ikke oppdrag med $request")
+                    },
+                    onSuccess = {
+                        respond(it.status)
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -77,4 +99,10 @@ private val utbetalingsoppdragExample = Utbetalingsoppdrag(
         )
     ),
     gOmregning = false
+)
+
+private val oppdragIdExample = OppdragId(
+    fagsystem = "EFOG",
+    personIdent = "01020312345",
+    behandlingsId = "3"
 )
