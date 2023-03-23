@@ -27,7 +27,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Bygg og test
-        run: ./gradlew buildFatJar
+        run: ./gradlew clean build
 
       - name: Bygg Fat Jar
         run: ./gradlew buildFatJar
