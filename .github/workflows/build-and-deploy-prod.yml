@@ -26,7 +26,10 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Bygg med Gradle
+      - name: Bygg og test
+        run: ./gradlew buildFatJar
+
+      - name: Bygg Fat Jar
         run: ./gradlew buildFatJar
 
       - name: Bygg Docker image
