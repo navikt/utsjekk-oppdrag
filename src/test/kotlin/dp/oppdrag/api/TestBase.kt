@@ -1,6 +1,8 @@
-package dp.oppdrag
+package dp.oppdrag.api
 
 import com.zaxxer.hikari.HikariDataSource
+import dp.oppdrag.defaultDataSource
+import dp.oppdrag.module
 import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import no.nav.security.mock.oauth2.MockOAuth2Server
