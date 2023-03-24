@@ -1,4 +1,4 @@
-package dp.oppdrag
+package dp.oppdrag.api
 
 import com.nimbusds.jwt.SignedJWT
 import io.ktor.client.request.*

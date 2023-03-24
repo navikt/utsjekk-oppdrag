@@ -1,4 +1,4 @@
-package dp.oppdrag
+package dp.oppdrag.api
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

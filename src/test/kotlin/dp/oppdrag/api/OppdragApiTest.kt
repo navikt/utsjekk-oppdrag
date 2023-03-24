@@ -1,6 +1,7 @@
-package dp.oppdrag
+package dp.oppdrag.api
 
 import com.nimbusds.jwt.SignedJWT
+import dp.oppdrag.defaultObjectMapper
 import dp.oppdrag.model.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
