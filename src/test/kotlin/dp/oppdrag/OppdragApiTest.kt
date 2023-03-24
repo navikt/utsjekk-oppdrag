@@ -21,6 +21,7 @@ class OppdragApiTest : TestBase() {
 
         val token: SignedJWT = mockOAuth2Server.issueToken(ISSUER_ID, "someclientid", DefaultOAuth2TokenCallback())
 
+        // Send Oppdrag
         val response1 = client.post("/oppdrag") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
@@ -32,6 +33,7 @@ class OppdragApiTest : TestBase() {
         assertEquals(HttpStatusCode.OK, response1.status)
         assertEquals("OK", response1.bodyAsText())
 
+        // Send Oppdrag again
         val response2 = client.post("/oppdrag") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
@@ -57,8 +59,64 @@ class OppdragApiTest : TestBase() {
     }
 
     @Test
+    fun shouldSendOppdragPaaNytt() = setUpTestApplication {
+
+        val utbetalingsoppdrag = opprettUtbetalingsoppdrag(2L)
+
+        val token: SignedJWT = mockOAuth2Server.issueToken(ISSUER_ID, "someclientid", DefaultOAuth2TokenCallback())
+
+        // Send Oppdrag
+        val response1 = client.post("/oppdrag") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+            }
+            setBody(defaultObjectMapper.writeValueAsString(utbetalingsoppdrag))
+        }
+
+        assertEquals(HttpStatusCode.OK, response1.status)
+        assertEquals("OK", response1.bodyAsText())
+
+        // Send Oppdrag again but with the same version
+        val response2 = client.post("/oppdragPaaNytt/0") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+            }
+            setBody(defaultObjectMapper.writeValueAsString(utbetalingsoppdrag))
+        }
+
+        assertEquals(HttpStatusCode.Conflict, response2.status)
+        assertEquals("Oppdrag er allerede sendt for saksnr 12345", response2.bodyAsText())
+
+        // Send Oppdrag again with another version
+        val response3 = client.post("/oppdragPaaNytt/1") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+            }
+            setBody(defaultObjectMapper.writeValueAsString(utbetalingsoppdrag))
+        }
+
+        assertEquals(HttpStatusCode.OK, response3.status)
+        assertEquals("OK", response3.bodyAsText())
+    }
+
+    @Test
+    fun shouldGet401WhenSendOppdragPaaNyttWithoutToken() = setUpTestApplication {
+        val response = client.post("/oppdragPaaNytt/1") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+            }
+        }
+
+        assertEquals(HttpStatusCode.Unauthorized, response.status)
+        assertEquals("", response.bodyAsText())
+    }
+
+    @Test
     fun shouldGet404ForNonexistentOppdragAndStatusForExistingOppdrag() = setUpTestApplication {
-        val behandlingsId = 2L
+        val behandlingsId = 3L
         val utbetalingsoppdrag = opprettUtbetalingsoppdrag(behandlingsId)
         val oppdragId = OppdragId(
             fagsystem = "EFOG",
@@ -68,7 +126,7 @@ class OppdragApiTest : TestBase() {
 
         val token: SignedJWT = mockOAuth2Server.issueToken(ISSUER_ID, "someclientid", DefaultOAuth2TokenCallback())
 
-        // Get status before creating Oppdrag
+        // Get status before sending Oppdrag
         val response1 = client.post("/status") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
@@ -83,7 +141,7 @@ class OppdragApiTest : TestBase() {
             response1.bodyAsText()
         )
 
-        // Create Oppdrag
+        // Send Oppdrag
         val response2 = client.post("/oppdrag") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")
@@ -95,7 +153,7 @@ class OppdragApiTest : TestBase() {
         assertEquals(HttpStatusCode.OK, response2.status)
         assertEquals("OK", response2.bodyAsText())
 
-        // Get status after creating Oppdrag
+        // Get status after sending Oppdrag
         val response3 = client.post("/status") {
             headers {
                 append(HttpHeaders.ContentType, "application/json")

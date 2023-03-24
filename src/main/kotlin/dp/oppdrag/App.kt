@@ -9,7 +9,6 @@ import com.papsign.ktor.openapigen.annotations.parameters.PathParam
 import com.papsign.ktor.openapigen.route.apiRouting
 import com.papsign.ktor.openapigen.route.info
 import com.papsign.ktor.openapigen.route.path.auth.principal
-import com.papsign.ktor.openapigen.route.path.normal.post
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
 import com.zaxxer.hikari.HikariDataSource
@@ -144,15 +143,6 @@ fun Application.module() {
                 }
             }
         }
-
-
-        route("/example/{name}") {
-            // SomeParams are parameters (query or path), SomeResponse is what the backend returns and SomeRequest
-            // is what was passed in the body of the request
-            post<SomeParams, SomeResponse, SomeRequest> { params, request ->
-                respond(SomeResponse(bar = "Hello, ${params.name}! From body: ${request.foo}."))
-            }
-        }
     }
 }
 
@@ -183,6 +173,3 @@ fun prepareDataSource() {
 // Example API classes
 // Will be deleted soon
 data class StringParam(@PathParam("A simple String Param") val name: String)
-data class SomeParams(@PathParam("Who to say hello to") val name: String)
-data class SomeRequest(val foo: String)
-data class SomeResponse(val bar: String)

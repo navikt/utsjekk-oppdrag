@@ -1,8 +1,9 @@
 package dp.oppdrag.api
 
+import com.papsign.ktor.openapigen.annotations.parameters.PathParam
 import com.papsign.ktor.openapigen.route.info
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
-import com.papsign.ktor.openapigen.route.response.respond
+import com.papsign.ktor.openapigen.route.response.OpenAPIPipelineResponseContext
 import com.papsign.ktor.openapigen.route.route
 import dp.oppdrag.OppdragMapper
 import dp.oppdrag.model.OppdragId
@@ -11,11 +12,9 @@ import dp.oppdrag.model.Utbetalingsoppdrag
 import dp.oppdrag.model.Utbetalingsperiode
 import dp.oppdrag.repository.OppdragAlleredeSendtException
 import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
+import dp.oppdrag.service.OppdragService
 import dp.oppdrag.service.OppdragServiceImpl
-import dp.oppdrag.utils.auth
-import dp.oppdrag.utils.respondConflict
-import dp.oppdrag.utils.respondError
-import dp.oppdrag.utils.respondNotFound
+import dp.oppdrag.utils.*
 import no.nav.security.token.support.v2.TokenValidationContextPrincipal
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -28,34 +27,27 @@ fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepository
     auth {
         route("/oppdrag") {
             authPost<Unit, String, Utbetalingsoppdrag, TokenValidationContextPrincipal?>(
-                info("Oppdrag", "Send Oppdrag"),
+                info("Send Oppdrag"),
                 exampleRequest = utbetalingsoppdragExample,
                 exampleResponse = "OK"
             ) { _, request ->
-                Result.runCatching {
-                    val oppdragMapper = OppdragMapper()
-                    val oppdrag110 = oppdragMapper.tilOppdrag110(request)
-                    val oppdrag = oppdragMapper.tilOppdrag(oppdrag110)
+                sendOppdrag(oppdragService, request, 0)
+            }
+        }
 
-                    oppdragService.opprettOppdrag(request, oppdrag, 0)
-                }.fold(
-                    onFailure = {
-                        if (it is OppdragAlleredeSendtException) {
-                            respondConflict("Oppdrag er allerede sendt for saksnr ${request.saksnummer}")
-                        } else {
-                            respondError("Klarte ikke sende oppdrag for saksnr ${request.saksnummer}", it)
-                        }
-                    },
-                    onSuccess = {
-                        respond("OK")
-                    }
-                )
+        route("/oppdragPaaNytt/{versjon}") {
+            authPost<OppdragPaaNyttParams, String, Utbetalingsoppdrag, TokenValidationContextPrincipal?>(
+                info("Send Oppdrag på nytt"),
+                exampleRequest = utbetalingsoppdragExample,
+                exampleResponse = "OK"
+            ) { params, request ->
+                sendOppdrag(oppdragService, request, params.versjon)
             }
         }
 
         route("/status") {
             authPost<Unit, String, OppdragId, TokenValidationContextPrincipal?>(
-                info("Status", "Hent oppdragsstatus"),
+                info("Hent oppdragsstatus"),
                 exampleRequest = oppdragIdExample,
                 exampleResponse = OppdragLagerStatus.KVITTERT_OK.name
             ) { _, request ->
@@ -66,13 +58,40 @@ fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepository
                         respondNotFound("Fant ikke oppdrag med $request")
                     },
                     onSuccess = {
-                        respond(it.status.name)
+                        respondOk(it.status.name)
                     }
                 )
             }
         }
     }
 }
+
+private suspend inline fun <reified TResponse : Any> OpenAPIPipelineResponseContext<TResponse>.sendOppdrag(
+    oppdragService: OppdragService,
+    request: Utbetalingsoppdrag,
+    versjon: Int
+) {
+    Result.runCatching {
+        val oppdragMapper = OppdragMapper()
+        val oppdrag110 = oppdragMapper.tilOppdrag110(request)
+        val oppdrag = oppdragMapper.tilOppdrag(oppdrag110)
+
+        oppdragService.opprettOppdrag(request, oppdrag, versjon)
+    }.fold(
+        onFailure = {
+            if (it is OppdragAlleredeSendtException) {
+                respondConflict("Oppdrag er allerede sendt for saksnr ${request.saksnummer}")
+            } else {
+                respondError("Klarte ikke sende oppdrag for saksnr ${request.saksnummer}", it)
+            }
+        },
+        onSuccess = {
+            respondOk("OK")
+        }
+    )
+}
+
+data class OppdragPaaNyttParams(@PathParam("Versjon") val versjon: Int)
 
 private val utbetalingsoppdragExample = Utbetalingsoppdrag(
     kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
