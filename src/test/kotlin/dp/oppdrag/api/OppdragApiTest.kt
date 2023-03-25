@@ -2,7 +2,10 @@ package dp.oppdrag.api
 
 import com.nimbusds.jwt.SignedJWT
 import dp.oppdrag.defaultObjectMapper
-import dp.oppdrag.model.*
+import dp.oppdrag.model.OppdragId
+import dp.oppdrag.model.OppdragLagerStatus
+import dp.oppdrag.model.Utbetalingsoppdrag
+import dp.oppdrag.model.Utbetalingsperiode
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -10,6 +13,7 @@ import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -45,6 +49,26 @@ class OppdragApiTest : TestBase() {
 
         assertEquals(HttpStatusCode.Conflict, response2.status)
         assertEquals("Oppdrag er allerede sendt for saksnr 12345", response2.bodyAsText())
+    }
+
+    @Test
+    fun shouldGet500WhenAnotherPSQLException() = setUpTestApplication {
+        val tooBigSakId = (1..51).joinToString("") { "A" }
+        val utbetalingsoppdrag = opprettUtbetalingsoppdrag(1L, tooBigSakId)
+
+        val token: SignedJWT = mockOAuth2Server.issueToken(ISSUER_ID, "someclientid", DefaultOAuth2TokenCallback())
+
+        // Send Oppdrag
+        val response = client.post("/oppdrag") {
+            headers {
+                append(HttpHeaders.ContentType, "application/json")
+                append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+            }
+            setBody(defaultObjectMapper.writeValueAsString(utbetalingsoppdrag))
+        }
+
+        assertEquals(HttpStatusCode.InternalServerError, response.status)
+        assertEquals("Klarte ikke sende oppdrag for saksnr $tooBigSakId", response.bodyAsText())
     }
 
     @Test
@@ -186,11 +210,11 @@ class OppdragApiTest : TestBase() {
         assertEquals("", response.bodyAsText())
     }
 
-    private fun opprettUtbetalingsoppdrag(behandlingId: Long): Utbetalingsoppdrag {
+    private fun opprettUtbetalingsoppdrag(behandlingId: Long, saksnummer: String = "12345"): Utbetalingsoppdrag {
         return Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
             fagSystem = "EFOG",
-            saksnummer = "12345",
+            saksnummer = saksnummer,
             aktoer = "01020312345",
             saksbehandlerId = "S123456",
             avstemmingTidspunkt = LocalDateTime.now(),
