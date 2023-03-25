@@ -13,7 +13,6 @@ import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
