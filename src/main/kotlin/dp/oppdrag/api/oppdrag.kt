@@ -72,9 +72,7 @@ private suspend inline fun <reified TResponse : Any> OpenAPIPipelineResponseCont
     versjon: Int
 ) {
     Result.runCatching {
-        val oppdragMapper = OppdragMapper()
-        val oppdrag110 = oppdragMapper.tilOppdrag110(request)
-        val oppdrag = oppdragMapper.tilOppdrag(oppdrag110)
+        val oppdrag = OppdragMapper().tilOppdrag(request)
 
         oppdragService.opprettOppdrag(request, oppdrag, versjon)
     }.fold(

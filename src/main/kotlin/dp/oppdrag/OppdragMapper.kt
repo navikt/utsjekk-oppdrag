@@ -10,7 +10,15 @@ class OppdragMapper {
     private val objectFactory = ObjectFactory()
     private val tidspunktFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")
 
-    fun tilOppdrag110(utbetalingsoppdrag: Utbetalingsoppdrag): Oppdrag110 {
+    fun tilOppdrag(utbetalingsoppdrag: Utbetalingsoppdrag): Oppdrag {
+        val oppdrag110 = tilOppdrag110(utbetalingsoppdrag)
+
+        return objectFactory.createOppdrag().apply {
+            this.oppdrag110 = oppdrag110
+        }
+    }
+
+    private fun tilOppdrag110(utbetalingsoppdrag: Utbetalingsoppdrag): Oppdrag110 {
 
         val avstemming = objectFactory.createAvstemming115().apply {
             nokkelAvstemming = utbetalingsoppdrag.avstemmingTidspunkt.format(tidspunktFormatter)
@@ -96,7 +104,7 @@ class OppdragMapper {
         }
     }
 
-    fun fagomraadeTilAvleverendeKomponentKode(fagomraade: String): String {
+    private fun fagomraadeTilAvleverendeKomponentKode(fagomraade: String): String {
         return when (fagomraade) {
             "EFOG" -> "EF"
             "EFBT" -> "EF"
@@ -104,12 +112,6 @@ class OppdragMapper {
             "BA" -> "BA"
             "KS" -> "KS"
             else -> throw Error("$fagomraade støttes ikke ennå")
-        }
-    }
-
-    fun tilOppdrag(oppdrag110: Oppdrag110): Oppdrag {
-        return objectFactory.createOppdrag().apply {
-            this.oppdrag110 = oppdrag110
         }
     }
 }
