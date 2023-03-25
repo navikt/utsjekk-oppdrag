@@ -11,7 +11,7 @@ import dp.oppdrag.model.OppdragLagerStatus
 import dp.oppdrag.model.Utbetalingsoppdrag
 import dp.oppdrag.model.Utbetalingsperiode
 import dp.oppdrag.repository.OppdragAlleredeSendtException
-import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
+import dp.oppdrag.repository.OppdragLagerRepository
 import dp.oppdrag.service.OppdragService
 import dp.oppdrag.service.OppdragServiceImpl
 import dp.oppdrag.utils.*
@@ -21,7 +21,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import com.papsign.ktor.openapigen.route.path.auth.post as authPost
 
-fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepositoryJdbc) {
+fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepository) {
     val oppdragService = OppdragServiceImpl(oppdragLagerRepository)
 
     auth {

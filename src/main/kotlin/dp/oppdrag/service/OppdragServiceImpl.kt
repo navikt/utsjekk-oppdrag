@@ -4,12 +4,12 @@ import dp.oppdrag.model.OppdragId
 import dp.oppdrag.model.OppdragLager
 import dp.oppdrag.model.Utbetalingsoppdrag
 import dp.oppdrag.repository.OppdragAlleredeSendtException
-import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
+import dp.oppdrag.repository.OppdragLagerRepository
 import dp.oppdrag.sender.OppdragSenderMQ
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import org.postgresql.util.PSQLException
 
-class OppdragServiceImpl(private val oppdragLagerRepository: OppdragLagerRepositoryJdbc) : OppdragService {
+class OppdragServiceImpl(private val oppdragLagerRepository: OppdragLagerRepository) : OppdragService {
 
     private val oppdragSender = OppdragSenderMQ()
 
