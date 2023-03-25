@@ -6,13 +6,16 @@ import dp.oppdrag.defaultLogger
 import dp.oppdrag.model.OppdragId
 import dp.oppdrag.model.OppdragLagerStatus
 import dp.oppdrag.model.OppdragStatus
-import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
+import dp.oppdrag.repository.OppdragLagerRepository
 import dp.oppdrag.utils.createQueueConnection
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
-import javax.jms.*
+import javax.jms.Message
+import javax.jms.MessageListener
+import javax.jms.Session
+import javax.jms.TextMessage
 
 
-class OppdragListenerMQ(private val oppdragLagerRepository: OppdragLagerRepositoryJdbc) : MessageListener {
+class OppdragListenerMQ(private val oppdragLagerRepository: OppdragLagerRepository) : MessageListener {
 
     init {
         if (!System.getenv("MQ_ENABLED").toBoolean()) {
@@ -28,18 +31,17 @@ class OppdragListenerMQ(private val oppdragLagerRepository: OppdragLagerReposito
     }
 
     override fun onMessage(message: Message?) {
-
         try {
             if (message is TextMessage) {
                 processMessage(message)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            defaultLogger.error { "Klarte ikke prosessere kvittering. Feil: $e" }
         }
     }
 
     private fun processMessage(message: TextMessage) {
-        defaultLogger.info("String message recieved >> " + message.text)
+        defaultLogger.info { "String message recieved >> " + message.text }
 
         val xmlMapper = XmlMapper()
         val svarFraOppdrag = message.text
