@@ -143,7 +143,7 @@ class OppdragApiTest : TestBase() {
         val behandlingsId = 3L
         val utbetalingsoppdrag = opprettUtbetalingsoppdrag(behandlingsId)
         val oppdragId = OppdragId(
-            fagsystem = "EFOG",
+            fagsystem = "DP",
             personIdent = "01020312345",
             behandlingsId = behandlingsId.toString()
         )
@@ -161,7 +161,7 @@ class OppdragApiTest : TestBase() {
 
         assertEquals(HttpStatusCode.NotFound, response1.status)
         assertEquals(
-            "Fant ikke oppdrag med OppdragId(fagsystem=EFOG, behandlingsId=$behandlingsId)",
+            "Fant ikke oppdrag med OppdragId(fagsystem=DP, behandlingsId=$behandlingsId)",
             response1.bodyAsText()
         )
 
@@ -193,7 +193,7 @@ class OppdragApiTest : TestBase() {
     @Test
     fun shouldGet401WhenGetStatusWithoutToken() = setUpTestApplication {
         val oppdragId = OppdragId(
-            fagsystem = "EFOG",
+            fagsystem = "DP",
             personIdent = "01020312345",
             behandlingsId = "3"
         )
@@ -212,7 +212,7 @@ class OppdragApiTest : TestBase() {
     private fun opprettUtbetalingsoppdrag(behandlingId: Long, saksnummer: String = "12345"): Utbetalingsoppdrag {
         return Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-            fagSystem = "EFOG",
+            fagSystem = "DP",
             saksnummer = saksnummer,
             aktoer = "01020312345",
             saksbehandlerId = "S123456",

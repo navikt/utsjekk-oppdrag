@@ -93,7 +93,7 @@ data class OppdragPaaNyttParams(@PathParam("Versjon") val versjon: Int)
 
 private val utbetalingsoppdragExample = Utbetalingsoppdrag(
     kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-    fagSystem = "EFOG",
+    fagSystem = "DP",
     saksnummer = "12345",
     aktoer = "01020312345",
     saksbehandlerId = "S123456",
@@ -119,7 +119,7 @@ private val utbetalingsoppdragExample = Utbetalingsoppdrag(
 )
 
 private val oppdragIdExample = OppdragId(
-    fagsystem = "EFOG",
+    fagsystem = "DP",
     personIdent = "01020312345",
     behandlingsId = "3"
 )

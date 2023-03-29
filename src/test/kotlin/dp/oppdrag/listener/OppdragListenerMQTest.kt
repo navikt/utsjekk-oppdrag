@@ -82,7 +82,7 @@ class OppdragListenerMQTest {
             behandlingId = "2",
             utbetalingsoppdrag = Utbetalingsoppdrag(
                 kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-                fagSystem = "EFOG",
+                fagSystem = "DP",
                 saksnummer = "12345",
                 aktoer = "01020312345",
                 saksbehandlerId = "S123456",

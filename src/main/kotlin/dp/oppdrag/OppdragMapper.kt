@@ -22,7 +22,7 @@ class OppdragMapper {
 
         val avstemming = objectFactory.createAvstemming115().apply {
             nokkelAvstemming = utbetalingsoppdrag.avstemmingTidspunkt.format(tidspunktFormatter)
-            kodeKomponent = fagomraadeTilAvleverendeKomponentKode(utbetalingsoppdrag.fagSystem)
+            kodeKomponent = utbetalingsoppdrag.fagSystem
             tidspktMelding = utbetalingsoppdrag.avstemmingTidspunkt.format(tidspunktFormatter)
         }
 
@@ -101,17 +101,6 @@ class OppdragMapper {
                     }
                 )
             }
-        }
-    }
-
-    private fun fagomraadeTilAvleverendeKomponentKode(fagomraade: String): String {
-        return when (fagomraade) {
-            "EFOG" -> "EF"
-            "EFBT" -> "EF"
-            "EFSP" -> "EF"
-            "BA" -> "BA"
-            "KS" -> "KS"
-            else -> throw Error("$fagomraade støttes ikke ennå")
         }
     }
 }
