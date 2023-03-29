@@ -39,6 +39,13 @@ spec:
     inbound:
       rules:
         - application: dp-iverksette
+    outbound:
+      external:
+        - host: {{ mqHostname }}
+          ports:
+            - name: mq
+              port: {{ mqPort }}
+              protocol: TCP
   envFrom:
     - secret: dp-oppdrag
   env:
