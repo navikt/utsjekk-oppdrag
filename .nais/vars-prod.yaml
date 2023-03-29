@@ -9,7 +9,7 @@ mqEnabled: true
 mqHostname: mpls02.adeo.no
 mqPort: 1414
 mqChannel: P_DP_OPPDRAG
-mqQueuemanager: MQLS02
+mqQueuemanager: MPLS02
 mqUser: srvdp-oppdrag
 mqQueue: QA.P231.OB04_OPPDRAG_XML
 mqMottak: QA.P_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT

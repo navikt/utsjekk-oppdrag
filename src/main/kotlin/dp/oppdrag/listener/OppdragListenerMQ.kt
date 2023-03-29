@@ -41,6 +41,7 @@ class OppdragListenerMQ(private val oppdragLagerRepository: OppdragLagerReposito
     }
 
     private fun processMessage(message: TextMessage) {
+        // TODO: Delete logging
         defaultLogger.info { "String message recieved >> " + message.text }
 
         val svarFraOppdrag = message.text
