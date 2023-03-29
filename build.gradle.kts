@@ -59,6 +59,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:$jacksonVersion")
 
     // OpenAPI / Swagger UI
     implementation("dev.forst:ktor-openapi-generator:$openApiGeneratorVersion")
@@ -126,12 +127,12 @@ tasks {
         environment["MQ_ENABLED"] = "true"
         environment["MQ_HOSTNAME"] = "localhost"
         environment["MQ_PORT"] = "1414"
-        environment["MQ_QUEUEMANAGER"] = "QM1"
         environment["MQ_CHANNEL"] = "DEV.APP.SVRCONN"
-        environment["MQ_QUEUE"] = "DEV.QUEUE.1"
-        environment["MQ_MOTTAK"] = "DEV.QUEUE.2"
+        environment["MQ_QUEUEMANAGER"] = "QM1"
         environment["MQ_USER"] = "app"
         environment["MQ_PASSWORD"] = "passw0rd"
+        environment["MQ_QUEUE"] = "DEV.QUEUE.1"
+        environment["MQ_MOTTAK"] = "DEV.QUEUE.2"
 
         classpath = sourceSets["main"].runtimeClasspath
         mainClass.set(project.property("mainClassName").toString())

@@ -1,8 +1,8 @@
 package dp.oppdrag.listener
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.ibm.mq.jms.MQQueue
 import dp.oppdrag.defaultLogger
+import dp.oppdrag.defaultXmlMapper
 import dp.oppdrag.model.OppdragId
 import dp.oppdrag.model.OppdragLagerStatus
 import dp.oppdrag.model.OppdragStatus
@@ -43,9 +43,8 @@ class OppdragListenerMQ(private val oppdragLagerRepository: OppdragLagerReposito
     private fun processMessage(message: TextMessage) {
         defaultLogger.info { "String message recieved >> " + message.text }
 
-        val xmlMapper = XmlMapper()
         val svarFraOppdrag = message.text
-        val kvittering = xmlMapper.readValue(svarFraOppdrag, Oppdrag::class.java)
+        val kvittering = defaultXmlMapper.readValue(svarFraOppdrag, Oppdrag::class.java)
         val oppdragId = OppdragId(
             kvittering.oppdrag110.kodeFagomraade,
             kvittering.oppdrag110.oppdragGjelderId,

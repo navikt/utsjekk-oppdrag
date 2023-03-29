@@ -1,8 +1,6 @@
 package dp.oppdrag.model
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
-import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import java.time.LocalDateTime
 import java.util.*
 
@@ -23,9 +21,7 @@ data class OppdragLager(
 
     companion object {
 
-        fun lagFraOppdrag(utbetalingsoppdrag: Utbetalingsoppdrag, oppdrag: Oppdrag, versjon: Int = 0): OppdragLager {
-            val xmlMapper = XmlMapper()
-
+        fun lagFraOppdrag(utbetalingsoppdrag: Utbetalingsoppdrag, utgaaendeOppdrag: String, versjon: Int = 0): OppdragLager {
             return OppdragLager(
                 personIdent = utbetalingsoppdrag.aktoer,
                 fagsystem = utbetalingsoppdrag.fagSystem,
@@ -33,7 +29,7 @@ data class OppdragLager(
                 behandlingId = utbetalingsoppdrag.behandlingsIdForFoersteUtbetalingsperiode(),
                 avstemmingTidspunkt = utbetalingsoppdrag.avstemmingTidspunkt,
                 utbetalingsoppdrag = utbetalingsoppdrag,
-                utgaaendeOppdrag = xmlMapper.writeValueAsString(oppdrag),
+                utgaaendeOppdrag = utgaaendeOppdrag,
                 kvitteringsmelding = null,
                 versjon = versjon
             )

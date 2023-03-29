@@ -1,6 +1,6 @@
 package dp.oppdrag.listener
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import dp.oppdrag.defaultXmlMapper
 import dp.oppdrag.model.*
 import dp.oppdrag.repository.OppdragLagerRepository
 import io.mockk.*
@@ -125,8 +125,7 @@ class OppdragListenerMQTest {
         }
 
         val message = mockk<TextMessage>()
-        val xmlMapper = XmlMapper()
-        every { message.text } returns xmlMapper.writeValueAsString(oppdrag)
+        every { message.text } returns defaultXmlMapper.writeValueAsString(oppdrag)
 
         // Run
         val oppdragListenerMQ = OppdragListenerMQ(oppdragLagerRepository)

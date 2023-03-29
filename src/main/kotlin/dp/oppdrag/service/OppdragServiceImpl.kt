@@ -1,5 +1,6 @@
 package dp.oppdrag.service
 
+import dp.oppdrag.defaultXmlMapper
 import dp.oppdrag.model.OppdragId
 import dp.oppdrag.model.OppdragLager
 import dp.oppdrag.model.Utbetalingsoppdrag
@@ -16,7 +17,11 @@ class OppdragServiceImpl(private val oppdragLagerRepository: OppdragLagerReposit
     override fun opprettOppdrag(utbetalingsoppdrag: Utbetalingsoppdrag, oppdrag: Oppdrag, versjon: Int) {
 
         try {
-            oppdragLagerRepository.opprettOppdrag(OppdragLager.lagFraOppdrag(utbetalingsoppdrag, oppdrag), versjon)
+            val utgaaendeOppdrag = defaultXmlMapper.writeValueAsString(oppdrag)
+            oppdragLagerRepository.opprettOppdrag(
+                OppdragLager.lagFraOppdrag(utbetalingsoppdrag, utgaaendeOppdrag),
+                versjon
+            )
         } catch (exception: PSQLException) {
             if (exception.sqlState == "23505") { //  Integrity Constraint Violation (Unique Violation)
                 throw OppdragAlleredeSendtException()
