@@ -54,6 +54,8 @@ spec:
       value: {{ mqChannel }}
     - name: MQ_QUEUEMANAGER
       value: {{ mqQueuemanager }}
+    - name: MQ_USER
+      value: {{ mqUser }}
     - name: MQ_QUEUE
       value: {{ mqQueue }}
     - name: MQ_MOTTAK
