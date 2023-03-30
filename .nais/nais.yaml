@@ -27,7 +27,6 @@ spec:
   resources:
     limits:
       memory: {{ limitsMemory }}
-      cpu: {{ limitsCpu }}
     requests:
       memory: {{ requestsMemory }}
       cpu: {{ requestsCpu }}

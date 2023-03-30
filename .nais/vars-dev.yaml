@@ -1,5 +1,4 @@
 limitsMemory: 1024Mi
-limitsCpu: 1000m
 requestsMemory: 512Mi
 requestsCpu: 500m
 db_tier: "db-f1-micro"
