@@ -41,7 +41,7 @@ class OppdragMapper {
             oppdragGjelderId = utbetalingsoppdrag.aktoer
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
             saksbehId = utbetalingsoppdrag.saksbehandlerId
-            bilagstype113 = Bilagstype113().withBilagsType("U ")
+            bilagstype113 = Bilagstype113().withBilagsType("O")
             avstemming115 = avstemming
             oppdragsEnhet120.add(oppdragsEnhet)
             utbetalingsoppdrag.utbetalingsperiode.map { periode ->
