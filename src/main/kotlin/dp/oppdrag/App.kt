@@ -49,7 +49,9 @@ val defaultObjectMapper: ObjectMapper = ObjectMapper()
     .registerKotlinModule()
     .registerModule(JavaTimeModule())
     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-val defaultXmlMapper: ObjectMapper = XmlMapper().registerModule(JaxbAnnotationModule())
+val defaultXmlMapper: ObjectMapper = XmlMapper()
+    .registerModule(JaxbAnnotationModule())
+    .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 lateinit var defaultDataSource: DataSource
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
