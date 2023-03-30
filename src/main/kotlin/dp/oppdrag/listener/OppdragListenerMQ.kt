@@ -8,6 +8,7 @@ import dp.oppdrag.model.OppdragLagerStatus
 import dp.oppdrag.model.OppdragStatus
 import dp.oppdrag.repository.OppdragLagerRepository
 import dp.oppdrag.utils.createQueueConnection
+import dp.oppdrag.utils.getProperty
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import javax.jms.Message
 import javax.jms.MessageListener
@@ -18,10 +19,10 @@ import javax.jms.TextMessage
 class OppdragListenerMQ(private val oppdragLagerRepository: OppdragLagerRepository) : MessageListener {
 
     init {
-        if (!System.getenv("MQ_ENABLED").toBoolean()) {
+        if (!getProperty("MQ_ENABLED").toBoolean()) {
             defaultLogger.info { "MQ-integrasjon mot oppdrag er skrudd av" }
         } else {
-            val queue = MQQueue(System.getenv("MQ_MOTTAK"))
+            val queue = MQQueue(getProperty("MQ_MOTTAK"))
             val queueConnection = createQueueConnection()
             val queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
             val queueReceiver = queueSession.createReceiver(queue)

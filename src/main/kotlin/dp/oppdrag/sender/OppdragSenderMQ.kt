@@ -4,6 +4,7 @@ import com.ibm.mq.jms.MQQueue
 import dp.oppdrag.defaultLogger
 import dp.oppdrag.defaultXmlMapper
 import dp.oppdrag.utils.createQueueConnection
+import dp.oppdrag.utils.getProperty
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import javax.jms.*
 
@@ -18,7 +19,7 @@ class OppdragSenderMQ : OppdragSender {
         val oppdragId = oppdrag.oppdrag110?.oppdragsLinje150?.lastOrNull()?.henvisning
         val oppdragXml = defaultXmlMapper.writeValueAsString(oppdrag)
 
-        if (!System.getenv("MQ_ENABLED").toBoolean()) {
+        if (!getProperty("MQ_ENABLED").toBoolean()) {
             defaultLogger.info { "MQ-integrasjon mot oppdrag er skrudd av" }
             return ""
         }
@@ -30,14 +31,14 @@ class OppdragSenderMQ : OppdragSender {
 
         try {
             // Create JMS objects
-            val queue = MQQueue(System.getenv("MQ_QUEUE"))
+            val queue = MQQueue(getProperty("MQ_QUEUE"))
             queueConnection = createQueueConnection()
             queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
             queueSender = queueSession.createSender(queue)
 
             // Create a message
             val message = queueSession.createTextMessage(oppdragXml)
-            message.jmsReplyTo = MQQueue(System.getenv("MQ_MOTTAK")) // kvitteringsKø
+            message.jmsReplyTo = MQQueue(getProperty("MQ_MOTTAK")) // kvitteringsKø
 
             // Send the message
             queueSender.send(message)

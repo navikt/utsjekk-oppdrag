@@ -151,15 +151,15 @@ fun Application.module() {
 
 fun prepareDataSource() {
     if (!::defaultDataSource.isInitialized) {
-        val url = "jdbc:postgresql://" + System.getenv("DB_HOST") +
-                ":" + System.getenv("DB_PORT") +
-                "/" + System.getenv("DB_DATABASE")
+        val url = "jdbc:postgresql://" + getProperty("DB_HOST") +
+                ":" + getProperty("DB_PORT") +
+                "/" + getProperty("DB_DATABASE")
 
         defaultDataSource = HikariDataSource().apply {
             driverClassName = "org.postgresql.Driver"
             jdbcUrl = url
-            username = System.getenv("DB_USERNAME")
-            password = System.getenv("DB_PASSWORD")
+            username = getProperty("DB_USERNAME")
+            password = getProperty("DB_PASSWORD")
             connectionTimeout = 10000 // 10s
             maxLifetime = 30000 // 30s
             maximumPoolSize = 5

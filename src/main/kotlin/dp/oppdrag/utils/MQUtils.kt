@@ -6,11 +6,11 @@ import javax.jms.QueueConnection
 
 fun createQueueConnection(): QueueConnection {
     val qcf = MQQueueConnectionFactory()
-    qcf.hostName = System.getenv("MQ_HOSTNAME")
-    qcf.port = System.getenv("MQ_PORT").toInt()
-    qcf.channel = System.getenv("MQ_CHANNEL")
+    qcf.hostName = getProperty("MQ_HOSTNAME")
+    qcf.port = getProperty("MQ_PORT")?.toInt() ?: 0
+    qcf.channel = getProperty("MQ_CHANNEL")
     qcf.transportType = WMQConstants.WMQ_CM_CLIENT
-    qcf.queueManager = System.getenv("MQ_QUEUEMANAGER")
+    qcf.queueManager = getProperty("MQ_QUEUEMANAGER")
 
-    return qcf.createQueueConnection(System.getenv("MQ_USER"), System.getenv("MQ_PASSWORD"))
+    return qcf.createQueueConnection(getProperty("MQ_USER"), getProperty("MQ_PASSWORD"))
 }
