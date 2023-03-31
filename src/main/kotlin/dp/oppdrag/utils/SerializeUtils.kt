@@ -51,6 +51,9 @@ class LocalDateTimeDeserializer : StdDeserializer<LocalDateTime>(LocalDateTime::
 }
 
 fun LocalDate.toXMLDate(): XMLGregorianCalendar {
-    return DatatypeFactory.newInstance()
-        .newXMLGregorianCalendar(GregorianCalendar.from(atStartOfDay(ZoneId.systemDefault())))
+    return DatatypeFactory.newInstance().newXMLGregorianCalendar(
+        GregorianCalendar.from(
+            this.atStartOfDay(ZoneId.systemDefault())
+        )
+    )
 }

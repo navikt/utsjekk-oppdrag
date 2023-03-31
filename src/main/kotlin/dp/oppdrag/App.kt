@@ -1,5 +1,6 @@
 package dp.oppdrag
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
@@ -38,6 +39,7 @@ import mu.KotlinLogging
 import no.nav.security.token.support.v2.TokenValidationContextPrincipal
 import no.nav.security.token.support.v2.tokenValidationSupport
 import org.flywaydb.core.Flyway
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.sql.DataSource
@@ -49,9 +51,13 @@ val defaultObjectMapper: ObjectMapper = ObjectMapper()
     .registerKotlinModule()
     .registerModule(JavaTimeModule())
     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-val defaultXmlMapper: ObjectMapper = XmlMapper()
-    .registerModule(JaxbAnnotationModule())
+val defaultXmlMapper: ObjectMapper = XmlMapper.builder()
+    .defaultUseWrapper(false)
+    .addModules(JaxbAnnotationModule())
     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    .serializationInclusion(JsonInclude.Include.NON_EMPTY)
+    .defaultDateFormat(SimpleDateFormat("yyyy-MM-dd"))
+    .build()
 lateinit var defaultDataSource: DataSource
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)

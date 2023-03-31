@@ -41,7 +41,6 @@ class OppdragMapper {
             oppdragGjelderId = utbetalingsoppdrag.aktoer
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
             saksbehId = utbetalingsoppdrag.saksbehandlerId
-            bilagstype113 = Bilagstype113().withBilagsType("O")
             avstemming115 = avstemming
             oppdragsEnhet120.add(oppdragsEnhet)
             utbetalingsoppdrag.utbetalingsperiode.map { periode ->
@@ -61,10 +60,6 @@ class OppdragMapper {
         utbetalingsperiode: Utbetalingsperiode,
         utbetalingsoppdrag: Utbetalingsoppdrag
     ): OppdragsLinje150 {
-
-        val attestant = objectFactory.createAttestant180().apply {
-            attestantId = utbetalingsoppdrag.saksbehandlerId
-        }
 
         return objectFactory.createOppdragsLinje150().apply {
             kodeEndringLinje =
@@ -92,16 +87,9 @@ class OppdragMapper {
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
             henvisning = utbetalingsperiode.behandlingId.toString()
-            attestant180.add(attestant)
-
-            utbetalingsperiode.utbetalingsgrad?.let { utbetalingsgrad ->
-                grad170.add(
-                    objectFactory.createGrad170().apply {
-                        typeGrad = GradTypeKode.UTBETALINGSGRAD.kode
-                        grad = utbetalingsgrad.toBigInteger()
-                    }
-                )
-            }
+            attestant180.add(
+                Attestant180().withAttestantId(utbetalingsoppdrag.saksbehandlerId)
+            )
         }
     }
 }
