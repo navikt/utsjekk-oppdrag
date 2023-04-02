@@ -24,7 +24,7 @@ val mockkVersion = "1.13.4"
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    id("org.jetbrains.kotlin.jvm") version "1.8.20"
     // Apply io.ktor.plugin to build a fat JAR
     id("io.ktor.plugin") version "2.2.4"
 
