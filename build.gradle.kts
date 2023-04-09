@@ -19,7 +19,7 @@ val flywayVersion = "9.16.1"
 val ibmMqVersion = "9.3.2.0"
 val mockOauth2Version = "0.5.8"
 val jupiterVersion = "5.9.2"
-val testcontainersVersion = "1.17.6"
+val testcontainersVersion = "1.18.0"
 val mockkVersion = "1.13.4"
 
 plugins {
