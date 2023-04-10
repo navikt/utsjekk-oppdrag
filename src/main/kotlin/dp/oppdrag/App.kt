@@ -170,6 +170,7 @@ fun prepareDataSource() {
             password = getProperty("DB_PASSWORD")
             connectionTimeout = 10000 // 10s
             maxLifetime = 30000 // 30s
+            keepaliveTime = 20000 // 20s
             maximumPoolSize = 5
         }
     }
