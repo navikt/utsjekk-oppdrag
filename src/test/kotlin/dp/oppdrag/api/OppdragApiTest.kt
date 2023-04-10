@@ -2,10 +2,7 @@ package dp.oppdrag.api
 
 import com.nimbusds.jwt.SignedJWT
 import dp.oppdrag.defaultObjectMapper
-import dp.oppdrag.model.OppdragId
-import dp.oppdrag.model.OppdragLagerStatus
-import dp.oppdrag.model.Utbetalingsoppdrag
-import dp.oppdrag.model.Utbetalingsperiode
+import dp.oppdrag.model.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -220,7 +217,7 @@ class OppdragApiTest : TestBase() {
             utbetalingsperiode = listOf(
                 Utbetalingsperiode(
                     erEndringPaaEksisterendePeriode = false,
-                    opphoer = null,
+                    opphoer = Opphoer(LocalDate.now().plusDays(101)),
                     periodeId = 2L,
                     forrigePeriodeId = 1L,
                     datoForVedtak = LocalDate.now(),
@@ -234,7 +231,7 @@ class OppdragApiTest : TestBase() {
                     utbetalingsgrad = 100
                 )
             ),
-            gOmregning = false
+            gOmregning = true
         )
     }
 }

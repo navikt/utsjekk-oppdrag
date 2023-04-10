@@ -3,6 +3,7 @@ package dp.oppdrag.listener
 import dp.oppdrag.defaultXmlMapper
 import dp.oppdrag.model.*
 import dp.oppdrag.repository.OppdragLagerRepository
+import dp.oppdrag.utils.createQueueConnection
 import io.mockk.*
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
@@ -12,11 +13,45 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
+import javax.jms.QueueConnection
+import javax.jms.QueueReceiver
+import javax.jms.QueueSession
 import javax.jms.TextMessage
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class OppdragListenerMQTest {
+
+    @Test
+    fun shouldCreateListener() {
+        // Override environmental variables
+        System.setProperty("MQ_ENABLED", "true")
+        System.setProperty("MQ_MOTTAK", "TestQeue2")
+
+        // Mock
+        val queueReceiver = mockk<QueueReceiver>()
+        every { queueReceiver.messageListener = any() } just Runs
+
+        val queueSession = mockk<QueueSession>()
+        every { queueSession.createReceiver(any()) } returns queueReceiver
+
+        val queueConnection = mockk<QueueConnection>()
+        every { queueConnection.createQueueSession(false, 1) } returns queueSession
+        every { queueConnection.start() } just Runs
+
+        mockkStatic(::createQueueConnection)
+        every { createQueueConnection() } returns queueConnection
+
+        val oppdragLagerRepository = mockk<OppdragLagerRepository>()
+
+        // Run
+        OppdragListenerMQ(oppdragLagerRepository)
+
+        // Check
+        verify { createQueueConnection() }
+        verify { queueConnection.createQueueSession(false, 1) }
+        verify { queueConnection.start() }
+    }
 
     @Test
     fun shouldProcessMessageOk() {
