@@ -87,10 +87,3 @@ enum class SatsTypeKode(val kode: String) {
         }
     }
 }
-
-enum class GradTypeKode(val kode: String) {
-    UFOEREGRAD("UFOR"),
-    UTBETALINGSGRAD("UBGR"),
-    UTTAKSGRAD_ALDERSPENSJON("UTAP"),
-    UTTAKSGRAD_AFP("AFPG")
-}
