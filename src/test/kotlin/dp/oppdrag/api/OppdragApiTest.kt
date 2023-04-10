@@ -221,7 +221,7 @@ class OppdragApiTest : TestBase() {
                     periodeId = 2L,
                     forrigePeriodeId = 1L,
                     datoForVedtak = LocalDate.now(),
-                    klassifisering = "DP",
+                    klassifisering = "DPORAS",
                     vedtakdatoFom = LocalDate.now(),
                     vedtakdatoTom = LocalDate.now().plusDays(100),
                     sats = BigDecimal.valueOf(10000),

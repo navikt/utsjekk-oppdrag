@@ -129,7 +129,7 @@ class OppdragListenerMQTest {
                         periodeId = 2L,
                         forrigePeriodeId = 1L,
                         datoForVedtak = LocalDate.now(),
-                        klassifisering = "",
+                        klassifisering = "DPORAS",
                         vedtakdatoFom = LocalDate.now(),
                         vedtakdatoTom = LocalDate.now(),
                         sats = BigDecimal.TEN,
