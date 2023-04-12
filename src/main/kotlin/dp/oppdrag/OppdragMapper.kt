@@ -74,8 +74,8 @@ class OppdragMapper {
                     refFagsystemId = utbetalingsoppdrag.saksnummer
                 }
             }
-            // vedtakId = utbetalingsperiode.datoForVedtak.toString()
-            delytelseId = utbetalingsoppdrag.saksnummer + utbetalingsperiode.periodeId
+            vedtakId = utbetalingsperiode.datoForVedtak.toString()
+            // delytelseId = utbetalingsoppdrag.saksnummer + utbetalingsperiode.periodeId
             kodeKlassifik = utbetalingsperiode.klassifisering
             datoVedtakFom = utbetalingsperiode.vedtakdatoFom.toXMLDate()
             datoVedtakTom = utbetalingsperiode.vedtakdatoTom.toXMLDate()
