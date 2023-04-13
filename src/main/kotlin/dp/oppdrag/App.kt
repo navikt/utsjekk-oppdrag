@@ -15,6 +15,7 @@ import com.papsign.ktor.openapigen.route.path.auth.principal
 import com.papsign.ktor.openapigen.route.response.respond
 import com.papsign.ktor.openapigen.route.route
 import com.zaxxer.hikari.HikariDataSource
+import dp.oppdrag.api.avstemmingApi
 import dp.oppdrag.api.internalApi
 import dp.oppdrag.api.oppdragApi
 import dp.oppdrag.listener.OppdragListenerMQ
@@ -140,6 +141,7 @@ fun Application.module() {
         internalApi(appMicrometerRegistry)
 
         oppdragApi(oppdragLagerRepository)
+        avstemmingApi(oppdragLagerRepository)
 
         // Example API
         // Will be deleted soon
