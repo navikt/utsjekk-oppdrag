@@ -110,7 +110,7 @@ private val utbetalingsoppdragExample = Utbetalingsoppdrag(
             vedtakdatoTom = LocalDate.now(),
             sats = BigDecimal.TEN,
             satsType = Utbetalingsperiode.SatsType.DAG,
-            utbetalesTil = "987654321",
+            utbetalesTil = "01020312345",
             behandlingId = 3L,
             utbetalingsgrad = 100
         )
