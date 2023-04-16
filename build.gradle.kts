@@ -6,7 +6,7 @@
 project.setProperty("mainClassName", "dp.oppdrag.AppKt")
 
 val ktorVersion = "2.2.4"
-val micrometerVersion = "1.10.5"
+val micrometerVersion = "1.10.6"
 val jacksonVersion = "2.14.2"
 val openApiGeneratorVersion = "0.6.1"
 val tokenValidationVersion = "3.0.9"
