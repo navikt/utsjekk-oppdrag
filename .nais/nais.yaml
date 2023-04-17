@@ -37,7 +37,7 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: dp-iverksette
+        - application: dp-iverksett
     outbound:
       external:
         - host: {{ mqHostname }}
