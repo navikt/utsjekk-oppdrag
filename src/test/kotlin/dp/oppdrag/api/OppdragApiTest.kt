@@ -3,6 +3,7 @@ package dp.oppdrag.api
 import com.nimbusds.jwt.SignedJWT
 import dp.oppdrag.defaultObjectMapper
 import dp.oppdrag.model.*
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -140,7 +141,7 @@ class OppdragApiTest : TestBase() {
         val behandlingsId = 3L
         val utbetalingsoppdrag = opprettUtbetalingsoppdrag(behandlingsId)
         val oppdragId = OppdragId(
-            fagsystem = "DP",
+            fagsystem = FAGSYSTEM,
             personIdent = "01020312345",
             behandlingsId = behandlingsId.toString()
         )
@@ -190,7 +191,7 @@ class OppdragApiTest : TestBase() {
     @Test
     fun shouldGet401WhenGetStatusWithoutToken() = setUpTestApplication {
         val oppdragId = OppdragId(
-            fagsystem = "DP",
+            fagsystem = FAGSYSTEM,
             personIdent = "01020312345",
             behandlingsId = "3"
         )
@@ -209,7 +210,7 @@ class OppdragApiTest : TestBase() {
     private fun opprettUtbetalingsoppdrag(behandlingId: Long, saksnummer: String = "12345"): Utbetalingsoppdrag {
         return Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-            fagSystem = "DP",
+            fagSystem = FAGSYSTEM,
             saksnummer = saksnummer,
             aktoer = "01020312345",
             saksbehandlerId = "S123456",

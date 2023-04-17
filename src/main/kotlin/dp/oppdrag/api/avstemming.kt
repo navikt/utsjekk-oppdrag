@@ -5,6 +5,7 @@ import com.papsign.ktor.openapigen.route.info
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.route
 import dp.oppdrag.model.*
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
 import dp.oppdrag.repository.OppdragLagerRepository
 import dp.oppdrag.service.GrensesnittavstemmingServiceImpl
 import dp.oppdrag.service.KonsistensavstemmingServiceImpl
@@ -51,7 +52,7 @@ fun NormalOpenAPIRoute.avstemmingApi(oppdragLagerRepository: OppdragLagerReposit
                 }
                     .fold(
                         onFailure = { respondError("Konsistensavstemming feilet", it) },
-                        onSuccess = { respondOk("Konsistensavstemming sendt ok") }
+                        onSuccess = { respondOk("Ikke implementert") }
                     )
             }
         }
@@ -65,13 +66,13 @@ data class KonsistensavstemmingParams(
 )
 
 private val grensesnittavstemmingRequestExample = GrensesnittavstemmingRequest(
-    fagsystem = "DP",
+    fagsystem = FAGSYSTEM,
     fra = LocalDateTime.now(),
     til = LocalDateTime.now().plusDays(1)
 )
 
 private val konsistensavstemmingRequestExample = KonsistensavstemmingRequest(
-    fagsystem = "DP",
+    fagsystem = FAGSYSTEM,
     perioderForBehandlinger = listOf(
         PerioderForBehandling(
             behandlingId = "12345",

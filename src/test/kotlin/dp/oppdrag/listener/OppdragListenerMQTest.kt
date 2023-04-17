@@ -2,6 +2,7 @@ package dp.oppdrag.listener
 
 import dp.oppdrag.defaultXmlMapper
 import dp.oppdrag.model.*
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
 import dp.oppdrag.repository.OppdragLagerRepository
 import dp.oppdrag.utils.createQueueConnection
 import io.mockk.*
@@ -117,7 +118,7 @@ class OppdragListenerMQTest {
             behandlingId = "2",
             utbetalingsoppdrag = Utbetalingsoppdrag(
                 kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-                fagSystem = "DP",
+                fagSystem = FAGSYSTEM,
                 saksnummer = "12345",
                 aktoer = "01020312345",
                 saksbehandlerId = "S123456",

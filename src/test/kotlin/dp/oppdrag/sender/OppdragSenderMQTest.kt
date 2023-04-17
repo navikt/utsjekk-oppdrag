@@ -1,6 +1,7 @@
 package dp.oppdrag.sender
 
 import dp.oppdrag.defaultXmlMapper
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
 import dp.oppdrag.utils.createQueueConnection
 import io.mockk.*
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
@@ -50,7 +51,7 @@ class OppdragSenderMQTest {
                     .withOppdragsLinje150(
                         OppdragsLinje150().withHenvisning("Henvisning")
                     )
-                    .withFagsystemId("DP")
+                    .withFagsystemId(FAGSYSTEM)
             )
 
         // Run

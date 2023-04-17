@@ -8,6 +8,7 @@ import com.papsign.ktor.openapigen.route.route
 import dp.oppdrag.OppdragMapper
 import dp.oppdrag.model.OppdragId
 import dp.oppdrag.model.OppdragLagerStatus
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
 import dp.oppdrag.model.Utbetalingsoppdrag
 import dp.oppdrag.model.Utbetalingsperiode
 import dp.oppdrag.repository.OppdragAlleredeSendtException
@@ -93,7 +94,7 @@ data class OppdragPaaNyttParams(@PathParam("Versjon") val versjon: Int)
 
 private val utbetalingsoppdragExample = Utbetalingsoppdrag(
     kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-    fagSystem = "DP",
+    fagSystem = FAGSYSTEM,
     saksnummer = "12345",
     aktoer = "01020312345",
     saksbehandlerId = "S123456",
@@ -119,7 +120,7 @@ private val utbetalingsoppdragExample = Utbetalingsoppdrag(
 )
 
 private val oppdragIdExample = OppdragId(
-    fagsystem = "DP",
+    fagsystem = FAGSYSTEM,
     personIdent = "01020312345",
     behandlingsId = "3"
 )
