@@ -16,6 +16,7 @@ val logstashVersion = "7.3"
 val postgresVersion = "42.6.0"
 val hikariVersion = "5.0.1"
 val flywayVersion = "9.16.3"
+val navTjenesterVersion = "2612.db4dc68"
 val ibmMqVersion = "9.3.2.0"
 val mockOauth2Version = "0.5.8"
 val jupiterVersion = "5.9.2"
@@ -78,7 +79,8 @@ dependencies {
     implementation("org.flywaydb:flyway-core:$flywayVersion")
 
     //
-    implementation("com.github.navikt.tjenestespesifikasjoner:nav-virksomhet-oppdragsbehandling-v1-meldingsdefinisjon:2612.db4dc68")
+    implementation("com.github.navikt.tjenestespesifikasjoner:nav-virksomhet-oppdragsbehandling-v1-meldingsdefinisjon:$navTjenesterVersion")
+    implementation("com.github.navikt.tjenestespesifikasjoner:avstemming-v1-tjenestespesifikasjon:$navTjenesterVersion")
     implementation("com.ibm.mq:com.ibm.mq.allclient:$ibmMqVersion")
 
     // Test
