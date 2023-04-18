@@ -22,7 +22,7 @@ class OppdragListenerMQ(private val oppdragLagerRepository: OppdragLagerReposito
         if (!getProperty("MQ_ENABLED").toBoolean()) {
             defaultLogger.info { "MQ-integrasjon mot oppdrag er skrudd av" }
         } else {
-            val queue = MQQueue(getProperty("MQ_MOTTAK"))
+            val queue = MQQueue(getProperty("MQ_KVITTERING_QUEUE"))
             val queueConnection = createQueueConnection()
             val queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
             val queueReceiver = queueSession.createReceiver(queue)

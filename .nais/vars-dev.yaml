@@ -10,5 +10,6 @@ mqPort: 1413
 mqChannel: Q1_DP_OPPDRAG
 mqQueuemanager: MQLS02
 mqUser: srvdp-oppdrag
-mqQueue: QA.Q1_231.OB04_OPPDRAG_XML
-mqMottak: QA.Q1_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
+mqOppdragQueue: QA.Q1_231.OB04_OPPDRAG_XML
+mqKvitteringQueue: QA.Q1_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
+mqAvstemmingQueue: QA.Q1_234.OB29_AVSTEMMING_XML

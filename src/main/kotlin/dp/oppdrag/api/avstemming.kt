@@ -66,7 +66,6 @@ data class KonsistensavstemmingParams(
 )
 
 private val grensesnittavstemmingRequestExample = GrensesnittavstemmingRequest(
-    fagsystem = FAGSYSTEM,
     fra = LocalDateTime.now(),
     til = LocalDateTime.now().plusDays(1)
 )

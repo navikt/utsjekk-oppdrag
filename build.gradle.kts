@@ -133,8 +133,9 @@ tasks {
         environment["MQ_QUEUEMANAGER"] = "QM1"
         environment["MQ_USER"] = "app"
         environment["MQ_PASSWORD"] = "passw0rd"
-        environment["MQ_QUEUE"] = "DEV.QUEUE.1"
-        environment["MQ_MOTTAK"] = "DEV.QUEUE.2"
+        environment["MQ_OPPDRAG_QUEUE"] = "DEV.QUEUE.1"
+        environment["MQ_KVITTERING_QUEUE"] = "DEV.QUEUE.2"
+        environment["MQ_AVSTEMMING_QUEUE"] = "DEV.QUEUE.3"
 
         classpath = sourceSets["main"].runtimeClasspath
         mainClass.set(project.property("mainClassName").toString())

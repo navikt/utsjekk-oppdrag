@@ -5,46 +5,37 @@ import dp.oppdrag.defaultLogger
 import dp.oppdrag.defaultXmlMapper
 import dp.oppdrag.utils.createQueueConnection
 import dp.oppdrag.utils.getProperty
-import no.trygdeetaten.skjema.oppdrag.Oppdrag
+import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Avstemmingsdata
 import javax.jms.*
 
-
-class OppdragSenderMQ : OppdragSender {
+class AvstemmingSenderMQ : AvstemmingSender {
 
     private lateinit var queueConnection: QueueConnection
     private lateinit var queueSession: QueueSession
     private lateinit var queueSender: QueueSender
 
-    override fun sendOppdrag(oppdrag: Oppdrag): String {
-        val oppdragId = oppdrag.oppdrag110?.oppdragsLinje150?.lastOrNull()?.henvisning
-        val oppdragXml = defaultXmlMapper.writeValueAsString(oppdrag)
-
+    override fun sendGrensesnittAvstemming(avstemmingsdata: Avstemmingsdata) {
         if (!getProperty("MQ_ENABLED").toBoolean()) {
-            defaultLogger.info { "MQ-integrasjon mot oppdrag er skrudd av" }
-            return ""
-        }
-
-        defaultLogger.info {
-            "Sender oppdrag for fagsystem=${oppdrag.oppdrag110.kodeFagomraade} og " +
-                    "fagsak=${oppdrag.oppdrag110.fagsystemId} behandling=$oppdragId til Oppdragsystemet"
+            defaultLogger.info { "MQ-integrasjon mot oppdrag er skrudd av. Kan ikke sende avstemming" }
+            throw UnsupportedOperationException("Kan ikke sende avstemming til oppdrag. Integrasjonen er skrudd av.")
         }
 
         try {
             // Create JMS objects
-            val queue = MQQueue(getProperty("MQ_OPPDRAG_QUEUE"))
+            val queue = MQQueue(getProperty("MQ_AVSTEMMING_QUEUE"))
             queueConnection = createQueueConnection()
             queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
             queueSender = queueSession.createSender(queue)
 
             // Create a message
-            val message = queueSession.createTextMessage(oppdragXml)
-            message.jmsReplyTo = MQQueue(getProperty("MQ_KVITTERING_QUEUE"))
+            val avstemmingsdataXml = defaultXmlMapper.writeValueAsString(avstemmingsdata)
+            val message = queueSession.createTextMessage(avstemmingsdataXml)
 
             // Send the message
             queueSender.send(message)
 
         } catch (e: Exception) {
-            defaultLogger.error { "Klarte ikke sende Oppdrag til OS. Feil: $e" }
+            defaultLogger.error { "Klarte ikke sende Avstemming til OS. Feil: $e" }
             throw e
         } finally {
             if (::queueSender.isInitialized) {
@@ -71,7 +62,5 @@ class OppdragSenderMQ : OppdragSender {
                 }
             }
         }
-
-        return oppdrag.oppdrag110.fagsystemId
     }
 }

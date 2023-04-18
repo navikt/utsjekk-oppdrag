@@ -19,8 +19,8 @@ class OppdragSenderMQTest {
     fun shouldSendMessage() {
         // Override environmental variables
         System.setProperty("MQ_ENABLED", "true")
-        System.setProperty("MQ_QUEUE", "TestQueue1")
-        System.setProperty("MQ_MOTTAK", "TestQeue2")
+        System.setProperty("MQ_OPPDRAG_QUEUE", "TestQueue1")
+        System.setProperty("MQ_KVITTERING_QUEUE", "TestQeue2")
 
         // Mock
         val queueSender = mockk<QueueSender>()

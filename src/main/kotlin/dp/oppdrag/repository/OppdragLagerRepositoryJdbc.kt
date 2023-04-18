@@ -3,6 +3,7 @@ package dp.oppdrag.repository
 import com.fasterxml.jackson.module.kotlin.readValue
 import dp.oppdrag.defaultObjectMapper
 import dp.oppdrag.model.*
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import java.sql.PreparedStatement
 import java.sql.Timestamp
@@ -113,8 +114,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
 
     override fun hentIverksettingerForGrensesnittavstemming(
         fomTidspunkt: LocalDateTime,
-        tomTidspunkt: LocalDateTime,
-        fagOmraade: String
+        tomTidspunkt: LocalDateTime
     ): List<OppdragLager> {
         val hentStatement = """
             SELECT *
@@ -129,7 +129,7 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             .use { preparedStatement ->
                 preparedStatement.setTimestamp(1, Timestamp.valueOf(fomTidspunkt))
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(tomTidspunkt))
-                preparedStatement.setString(3, fagOmraade)
+                preparedStatement.setString(3, FAGSYSTEM)
 
                 preparedStatement.mapOppdragLagerRows(list)
             }

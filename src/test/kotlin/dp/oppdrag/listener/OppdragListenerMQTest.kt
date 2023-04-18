@@ -27,7 +27,7 @@ class OppdragListenerMQTest {
     fun shouldCreateListener() {
         // Override environmental variables
         System.setProperty("MQ_ENABLED", "true")
-        System.setProperty("MQ_MOTTAK", "TestQeue2")
+        System.setProperty("MQ_KVITTERING_QUEUE", "TestQeue2")
 
         // Mock
         val queueReceiver = mockk<QueueReceiver>()
