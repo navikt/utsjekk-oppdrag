@@ -5,7 +5,7 @@ import com.papsign.ktor.openapigen.route.info
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.OpenAPIPipelineResponseContext
 import com.papsign.ktor.openapigen.route.route
-import dp.oppdrag.OppdragMapper
+import dp.oppdrag.mapper.OppdragMapper
 import dp.oppdrag.model.OppdragId
 import dp.oppdrag.model.OppdragLagerStatus
 import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM

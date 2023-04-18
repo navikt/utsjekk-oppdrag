@@ -1,4 +1,4 @@
-package dp.oppdrag
+package dp.oppdrag.mapper
 
 import dp.oppdrag.model.*
 import dp.oppdrag.utils.toXMLDate
