@@ -1,6 +1,7 @@
 package dp.oppdrag.repository
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import dp.oppdrag.defaultLogger
 import dp.oppdrag.defaultObjectMapper
 import dp.oppdrag.model.*
 import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
@@ -204,10 +205,15 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
     ): List<UtbetalingsoppdragForKonsistensavstemming> {
 
         val query = """SELECT fagsak_id, behandling_id, utbetalingsoppdrag FROM (
-                        SELECT fagsak_id, behandling_id, utbetalingsoppdrag, 
-                          row_number() OVER (PARTITION BY fagsak_id, behandling_id ORDER BY versjon DESC) rn
-                          FROM oppdrag_lager WHERE fagsystem = ? AND behandling_id IN (?)
-                          AND status IN (?)) q 
+                            SELECT fagsak_id,
+                                behandling_id,
+                                utbetalingsoppdrag, 
+                                row_number() OVER (PARTITION BY fagsak_id, behandling_id ORDER BY versjon DESC) rn
+                            FROM oppdrag_lager
+                            WHERE fagsystem = ?
+                                AND behandling_id = ANY(string_to_array(?, ','))
+                                AND status = ANY(string_to_array(?, ','))
+                        ) q 
                         WHERE rn = 1"""
         val statement = dataSource.connection.prepareStatement(query)
 
@@ -218,13 +224,11 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
         val list = mutableListOf<UtbetalingsoppdragForKonsistensavstemming>()
 
         behandlingIder.chunked(3000).map { behandlingIderChunked ->
-            val behandlingIderArray = behandlingIderChunked.toTypedArray()
-
             statement
                 .use { preparedStatement ->
                     preparedStatement.setString(1, fagsystem)
-                    preparedStatement.setArray(2, dataSource.connection.createArrayOf("CHAR", behandlingIderArray))
-                    preparedStatement.setArray(3, dataSource.connection.createArrayOf("CHAR", status))
+                    preparedStatement.setString(2, behandlingIderChunked.joinToString(","))
+                    preparedStatement.setString(3, status.joinToString(","))
 
                     preparedStatement.executeQuery()
                         .use { resultSet ->

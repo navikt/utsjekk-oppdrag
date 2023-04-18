@@ -2,6 +2,8 @@ package dp.oppdrag.utils
 
 import com.ibm.mq.jms.MQQueueConnectionFactory
 import com.ibm.msg.client.wmq.WMQConstants
+import java.nio.ByteBuffer
+import java.util.*
 import javax.jms.QueueConnection
 
 fun createQueueConnection(): QueueConnection {
@@ -13,4 +15,11 @@ fun createQueueConnection(): QueueConnection {
     qcf.queueManager = getProperty("MQ_QUEUEMANAGER")
 
     return qcf.createQueueConnection(getProperty("MQ_USER"), getProperty("MQ_PASSWORD"))
+}
+
+fun encodeUUIDBase64(uuid: UUID): String {
+    val bb = ByteBuffer.wrap(ByteArray(16))
+    bb.putLong(uuid.mostSignificantBits)
+    bb.putLong(uuid.leastSignificantBits)
+    return Base64.getUrlEncoder().encodeToString(bb.array()).substring(0, 22)
 }

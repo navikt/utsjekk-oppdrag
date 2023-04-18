@@ -5,7 +5,7 @@ import com.papsign.ktor.openapigen.route.info
 import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.route
 import dp.oppdrag.model.*
-import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
+import dp.oppdrag.repository.MellomlagringKonsistensavstemmingRepository
 import dp.oppdrag.repository.OppdragLagerRepository
 import dp.oppdrag.service.GrensesnittavstemmingServiceImpl
 import dp.oppdrag.service.KonsistensavstemmingServiceImpl
@@ -15,9 +15,15 @@ import java.time.LocalDateTime
 import java.util.*
 import com.papsign.ktor.openapigen.route.path.auth.post as authPost
 
-fun NormalOpenAPIRoute.avstemmingApi(oppdragLagerRepository: OppdragLagerRepository) {
+fun NormalOpenAPIRoute.avstemmingApi(
+    oppdragLagerRepository: OppdragLagerRepository,
+    mellomlagringKonsistensavstemmingRepository: MellomlagringKonsistensavstemmingRepository
+) {
     val grensesnittavstemmingService = GrensesnittavstemmingServiceImpl(oppdragLagerRepository)
-    val konsistensavstemmingService = KonsistensavstemmingServiceImpl(oppdragLagerRepository)
+    val konsistensavstemmingService = KonsistensavstemmingServiceImpl(
+        oppdragLagerRepository,
+        mellomlagringKonsistensavstemmingRepository
+    )
 
     auth {
         route("/grensesnittavstemming") {
@@ -52,7 +58,7 @@ fun NormalOpenAPIRoute.avstemmingApi(oppdragLagerRepository: OppdragLagerReposit
                 }
                     .fold(
                         onFailure = { respondError("Konsistensavstemming feilet", it) },
-                        onSuccess = { respondOk("Ikke implementert") }
+                        onSuccess = { respondOk("Konsistensavstemming sendt ok") }
                     )
             }
         }
@@ -71,7 +77,6 @@ private val grensesnittavstemmingRequestExample = GrensesnittavstemmingRequest(
 )
 
 private val konsistensavstemmingRequestExample = KonsistensavstemmingRequest(
-    fagsystem = FAGSYSTEM,
     perioderForBehandlinger = listOf(
         PerioderForBehandling(
             behandlingId = "12345",

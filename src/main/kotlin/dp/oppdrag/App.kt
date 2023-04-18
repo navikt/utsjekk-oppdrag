@@ -19,6 +19,7 @@ import dp.oppdrag.api.avstemmingApi
 import dp.oppdrag.api.internalApi
 import dp.oppdrag.api.oppdragApi
 import dp.oppdrag.listener.OppdragListenerMQ
+import dp.oppdrag.repository.MellomlagringKonsistensavstemmingRepositoryJdbc
 import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
 import dp.oppdrag.utils.*
 import io.ktor.http.*
@@ -69,6 +70,7 @@ fun Application.module() {
 
     // Create repository object
     val oppdragLagerRepository = OppdragLagerRepositoryJdbc(defaultDataSource)
+    val mellomlagringKonsistensavstemmingRepository = MellomlagringKonsistensavstemmingRepositoryJdbc(defaultDataSource)
 
     // Install Micrometer/Prometheus
     val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
@@ -141,7 +143,7 @@ fun Application.module() {
         internalApi(appMicrometerRegistry)
 
         oppdragApi(oppdragLagerRepository)
-        avstemmingApi(oppdragLagerRepository)
+        avstemmingApi(oppdragLagerRepository, mellomlagringKonsistensavstemmingRepository)
 
         // Example API
         // Will be deleted soon

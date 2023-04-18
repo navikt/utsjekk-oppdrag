@@ -1,6 +1,14 @@
 package dp.oppdrag.mapper
 
 import dp.oppdrag.model.*
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.BRUK_KJOEREPLAN_DEFAULT
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.BRUK_KJOEREPLAN_G_OMBEREGNING
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.ENHET
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.ENHET_DATO_FOM
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.ENHET_TYPE
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FRADRAG_TILLEGG
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.KODE_AKSJON
+import dp.oppdrag.model.OppdragSkjemaConstants.Companion.OPPDRAG_GJELDER_DATO_FOM
 import dp.oppdrag.utils.toXMLDate
 import no.trygdeetaten.skjema.oppdrag.*
 import java.time.format.DateTimeFormatter
@@ -27,19 +35,19 @@ class OppdragMapper {
         }
 
         val oppdragsEnhet = objectFactory.createOppdragsEnhet120().apply {
-            enhet = OppdragSkjemaConstants.ENHET
-            typeEnhet = OppdragSkjemaConstants.ENHET_TYPE
-            datoEnhetFom = OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate()
+            enhet = ENHET
+            typeEnhet = ENHET_TYPE
+            datoEnhetFom = ENHET_DATO_FOM.toXMLDate()
         }
 
         val oppdrag110 = objectFactory.createOppdrag110().apply {
-            kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
+            kodeAksjon = KODE_AKSJON
             kodeEndring = EndringsKode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
             kodeFagomraade = utbetalingsoppdrag.fagSystem
             fagsystemId = utbetalingsoppdrag.saksnummer
             utbetFrekvens = UtbetalingsfrekvensKode.MAANEDLIG.kode
             oppdragGjelderId = utbetalingsoppdrag.aktoer
-            datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
+            datoOppdragGjelderFom = OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             avstemming115 = avstemming
             oppdragsEnhet120.add(oppdragsEnhet)
@@ -80,10 +88,10 @@ class OppdragMapper {
             datoVedtakFom = utbetalingsperiode.vedtakdatoFom.toXMLDate()
             datoVedtakTom = utbetalingsperiode.vedtakdatoTom.toXMLDate()
             sats = utbetalingsperiode.sats
-            fradragTillegg = OppdragSkjemaConstants.FRADRAG_TILLEGG
+            fradragTillegg = FRADRAG_TILLEGG
             typeSats = SatsTypeKode.fromKode(utbetalingsperiode.satsType.name).kode
-            brukKjoreplan = if (utbetalingsoppdrag.gOmregning)
-                OppdragSkjemaConstants.BRUK_KJOEREPLAN_G_OMBEREGNING else OppdragSkjemaConstants.BRUK_KJOEREPLAN_DEFAULT
+            brukKjoreplan =
+                if (utbetalingsoppdrag.gOmregning) BRUK_KJOEREPLAN_G_OMBEREGNING else BRUK_KJOEREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
             henvisning = utbetalingsperiode.behandlingId.toString()

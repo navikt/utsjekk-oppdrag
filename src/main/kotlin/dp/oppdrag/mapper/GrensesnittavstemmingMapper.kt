@@ -4,9 +4,9 @@ import dp.oppdrag.model.OppdragLager
 import dp.oppdrag.model.OppdragLagerStatus
 import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
 import dp.oppdrag.model.OppdragSkjemaConstants.Companion.OPPDRAGSSYSTEMET
+import dp.oppdrag.utils.encodeUUIDBase64
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.*
 import java.math.BigDecimal
-import java.nio.ByteBuffer
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -198,11 +198,4 @@ class GrensesnittavstemmingMapper(
     private fun formaterTilPeriodedataFormat(stringTimestamp: String): String =
         LocalDateTime.parse(stringTimestamp, tidspunktFormatter)
             .format(DateTimeFormatter.ofPattern("yyyyMMddHH"))
-
-    private fun encodeUUIDBase64(uuid: UUID): String {
-        val bb = ByteBuffer.wrap(ByteArray(16))
-        bb.putLong(uuid.mostSignificantBits)
-        bb.putLong(uuid.leastSignificantBits)
-        return Base64.getUrlEncoder().encodeToString(bb.array()).substring(0, 22)
-    }
 }

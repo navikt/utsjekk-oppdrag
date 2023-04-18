@@ -5,7 +5,10 @@ import dp.oppdrag.defaultLogger
 import dp.oppdrag.defaultXmlMapper
 import dp.oppdrag.utils.createQueueConnection
 import dp.oppdrag.utils.getProperty
+import no.nav.virksomhet.tjenester.avstemming.informasjon.konsistensavstemmingsdata.v1.Konsistensavstemmingsdata
+import no.nav.virksomhet.tjenester.avstemming.informasjon.konsistensavstemmingsdata.v1.SendAsynkronKonsistensavstemmingsdataRequest
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Avstemmingsdata
+import no.nav.virksomhet.tjenester.avstemming.v1.SendAsynkronKonsistensavstemmingsdata
 import javax.jms.*
 
 class AvstemmingSenderMQ : AvstemmingSender {
@@ -15,6 +18,24 @@ class AvstemmingSenderMQ : AvstemmingSender {
     private lateinit var queueSender: QueueSender
 
     override fun sendGrensesnittAvstemming(avstemmingsdata: Avstemmingsdata) {
+        val avstemmingsdataXml = defaultXmlMapper.writeValueAsString(avstemmingsdata)
+
+        sendMessage(avstemmingsdataXml)
+    }
+
+    override fun sendKonsistensAvstemming(konsistensavstemmingsdata: Konsistensavstemmingsdata) {
+
+        val konsistensavstemmingRequest = SendAsynkronKonsistensavstemmingsdata().apply {
+            request = SendAsynkronKonsistensavstemmingsdataRequest()
+            request.konsistensavstemmingsdata = konsistensavstemmingsdata
+        }
+
+        val konsistensavstemmingRequestXml = defaultXmlMapper.writeValueAsString(konsistensavstemmingRequest)
+
+        sendMessage(konsistensavstemmingRequestXml)
+    }
+
+    private fun sendMessage(data: String) {
         if (!getProperty("MQ_ENABLED").toBoolean()) {
             defaultLogger.info { "MQ-integrasjon mot oppdrag er skrudd av. Kan ikke sende avstemming" }
             throw UnsupportedOperationException("Kan ikke sende avstemming til oppdrag. Integrasjonen er skrudd av.")
@@ -28,8 +49,7 @@ class AvstemmingSenderMQ : AvstemmingSender {
             queueSender = queueSession.createSender(queue)
 
             // Create a message
-            val avstemmingsdataXml = defaultXmlMapper.writeValueAsString(avstemmingsdata)
-            val message = queueSession.createTextMessage(avstemmingsdataXml)
+            val message = queueSession.createTextMessage(data)
 
             // Send the message
             queueSender.send(message)
