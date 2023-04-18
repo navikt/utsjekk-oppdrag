@@ -1,7 +1,6 @@
 package dp.oppdrag.repository
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import dp.oppdrag.defaultLogger
 import dp.oppdrag.defaultObjectMapper
 import dp.oppdrag.model.*
 import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM

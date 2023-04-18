@@ -21,7 +21,11 @@ data class OppdragLager(
 
     companion object {
 
-        fun lagFraOppdrag(utbetalingsoppdrag: Utbetalingsoppdrag, utgaaendeOppdrag: String, versjon: Int = 0): OppdragLager {
+        fun lagFraOppdrag(
+            utbetalingsoppdrag: Utbetalingsoppdrag,
+            utgaaendeOppdrag: String,
+            versjon: Int = 0
+        ): OppdragLager {
             return OppdragLager(
                 personIdent = utbetalingsoppdrag.aktoer,
                 fagsystem = utbetalingsoppdrag.fagSystem,

@@ -1,6 +1,5 @@
 package dp.oppdrag.repository
 
-import dp.oppdrag.defaultLogger
 import dp.oppdrag.model.MellomlagringKonsistensavstemming
 import java.util.*
 import javax.sql.DataSource
