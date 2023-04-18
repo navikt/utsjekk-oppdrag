@@ -67,7 +67,7 @@ spec:
     - name: MQ_KVITTERING_QUEUE
       value: {{ mqKvitteringQueue }}
     - name: MQ_AVSTEMMING_QUEUE
-      value: { { mqAvstemmingQueue } }
+      value: {{ mqAvstemmingQueue }}
   azure:
     application:
       enabled: true
