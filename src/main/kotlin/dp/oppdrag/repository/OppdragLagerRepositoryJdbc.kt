@@ -24,15 +24,16 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             """.trimIndent()
 
         val list = mutableListOf<OppdragLager>()
-        dataSource.connection.prepareStatement(hentStatement)
-            .use { preparedStatement ->
-                preparedStatement.setString(1, oppdragId.behandlingsId)
-                preparedStatement.setString(2, oppdragId.personIdent)
-                preparedStatement.setString(3, oppdragId.fagsystem)
-                preparedStatement.setInt(4, versjon)
+        dataSource.connection.use {
+            it.prepareStatement(hentStatement).apply {
+                    setString(1, oppdragId.behandlingsId)
+                    setString(2, oppdragId.personIdent)
+                    setString(3, oppdragId.fagsystem)
+                    setInt(4, versjon)
 
-                preparedStatement.mapOppdragLagerRows(list)
-            }
+                    mapOppdragLagerRows(list)
+                }
+        }
 
         return when (list.size) {
             0 -> {
@@ -54,22 +55,23 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             VALUES (?::uuid,?,?,?,?,?,?,?,?,?::json,?)
             """.trimIndent()
 
-        dataSource.connection.prepareStatement(insertStatement)
-            .use {
-                it.setString(1, UUID.randomUUID().toString())
-                it.setString(2, oppdragLager.utgaaendeOppdrag)
-                it.setString(3, oppdragLager.status.name)
-                it.setTimestamp(4, Timestamp.valueOf(oppdragLager.opprettetTidspunkt))
-                it.setString(5, oppdragLager.personIdent)
-                it.setString(6, oppdragLager.fagsakId)
-                it.setString(7, oppdragLager.behandlingId)
-                it.setString(8, oppdragLager.fagsystem)
-                it.setTimestamp(9, Timestamp.valueOf(oppdragLager.avstemmingTidspunkt))
-                it.setString(10, defaultObjectMapper.writeValueAsString(oppdragLager.utbetalingsoppdrag))
-                it.setInt(11, versjon)
+        dataSource.connection.use {
+            it.prepareStatement(insertStatement).apply {
+                setString(1, UUID.randomUUID().toString())
+                setString(2, oppdragLager.utgaaendeOppdrag)
+                setString(3, oppdragLager.status.name)
+                setTimestamp(4, Timestamp.valueOf(oppdragLager.opprettetTidspunkt))
+                setString(5, oppdragLager.personIdent)
+                setString(6, oppdragLager.fagsakId)
+                setString(7, oppdragLager.behandlingId)
+                setString(8, oppdragLager.fagsystem)
+                setTimestamp(9, Timestamp.valueOf(oppdragLager.avstemmingTidspunkt))
+                setString(10, defaultObjectMapper.writeValueAsString(oppdragLager.utbetalingsoppdrag))
+                setInt(11, versjon)
 
-                it.executeUpdate()
+                executeUpdate()
             }
+        }
     }
 
     override fun oppdaterStatus(oppdragId: OppdragId, oppdragLagerStatus: OppdragLagerStatus, versjon: Int) {
@@ -81,14 +83,16 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             AND versjon = ?
             """.trimIndent()
 
-        dataSource.connection.prepareStatement(updateStatement).use {
-            it.setString(1, oppdragLagerStatus.name)
-            it.setString(2, oppdragId.personIdent)
-            it.setString(3, oppdragId.fagsystem)
-            it.setString(4, oppdragId.behandlingsId)
-            it.setInt(5, versjon)
+        dataSource.connection.use {
+            it.prepareStatement(updateStatement).apply {
+                setString(1, oppdragLagerStatus.name)
+                setString(2, oppdragId.personIdent)
+                setString(3, oppdragId.fagsystem)
+                setString(4, oppdragId.behandlingsId)
+                setInt(5, versjon)
 
-            it.executeUpdate()
+                executeUpdate()
+            }
         }
     }
 
@@ -101,14 +105,16 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             AND versjon = ?
             """.trimIndent()
 
-        dataSource.connection.prepareStatement(updateStatement).use {
-            it.setString(1, defaultObjectMapper.writeValueAsString(kvittering))
-            it.setString(2, oppdragId.personIdent)
-            it.setString(3, oppdragId.fagsystem)
-            it.setString(4, oppdragId.behandlingsId)
-            it.setInt(5, versjon)
+        dataSource.connection.use {
+            it.prepareStatement(updateStatement).apply {
+                setString(1, defaultObjectMapper.writeValueAsString(kvittering))
+                setString(2, oppdragId.personIdent)
+                setString(3, oppdragId.fagsystem)
+                setString(4, oppdragId.behandlingsId)
+                setInt(5, versjon)
 
-            it.executeUpdate()
+                executeUpdate()
+            }
         }
     }
 
@@ -125,14 +131,15 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             """.trimIndent()
 
         val list = mutableListOf<OppdragLager>()
-        dataSource.connection.prepareStatement(hentStatement)
-            .use { preparedStatement ->
-                preparedStatement.setTimestamp(1, Timestamp.valueOf(fomTidspunkt))
-                preparedStatement.setTimestamp(2, Timestamp.valueOf(tomTidspunkt))
-                preparedStatement.setString(3, FAGSYSTEM)
+        dataSource.connection.use {
+            it.prepareStatement(hentStatement).apply {
+                setTimestamp(1, Timestamp.valueOf(fomTidspunkt))
+                setTimestamp(2, Timestamp.valueOf(tomTidspunkt))
+                setString(3, FAGSYSTEM)
 
-                preparedStatement.mapOppdragLagerRows(list)
+                mapOppdragLagerRows(list)
             }
+        }
 
         return list
     }
@@ -148,20 +155,20 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             """.trimMargin()
 
         val list = mutableListOf<String>()
-        dataSource.connection.prepareStatement(hentStatement)
-            .use { preparedStatement ->
-                preparedStatement.setString(1, oppdragId.behandlingsId)
-                preparedStatement.setString(2, oppdragId.personIdent)
-                preparedStatement.setString(3, oppdragId.fagsystem)
-                preparedStatement.setInt(4, versjon)
+        dataSource.connection.use {
+            it.prepareStatement(hentStatement).apply {
+                setString(1, oppdragId.behandlingsId)
+                setString(2, oppdragId.personIdent)
+                setString(3, oppdragId.fagsystem)
+                setInt(4, versjon)
 
-                preparedStatement.executeQuery()
-                    .use { resultSet ->
-                        while (resultSet.next()) {
-                            list.add(resultSet.getString("utbetalingsoppdrag"))
-                        }
+                executeQuery().run {
+                    while (this.next()) {
+                        list.add(this.getString("utbetalingsoppdrag"))
                     }
+                }
             }
+        }
 
         return when (list.size) {
             0 -> {
@@ -186,14 +193,15 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
             """.trimIndent()
 
         val list = mutableListOf<OppdragLager>()
-        dataSource.connection.prepareStatement(hentStatement)
-            .use { preparedStatement ->
-                preparedStatement.setString(1, oppdragId.behandlingsId)
-                preparedStatement.setString(2, oppdragId.personIdent)
-                preparedStatement.setString(3, oppdragId.fagsystem)
+        dataSource.connection.use {
+            it.prepareStatement(hentStatement).apply {
+                setString(1, oppdragId.behandlingsId)
+                setString(2, oppdragId.personIdent)
+                setString(3, oppdragId.fagsystem)
 
-                preparedStatement.mapOppdragLagerRows(list)
+                mapOppdragLagerRows(list)
             }
+        }
 
         return list
     }
