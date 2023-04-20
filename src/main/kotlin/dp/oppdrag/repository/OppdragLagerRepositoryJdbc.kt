@@ -26,13 +26,13 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
         val list = mutableListOf<OppdragLager>()
         dataSource.connection.use {
             it.prepareStatement(hentStatement).apply {
-                    setString(1, oppdragId.behandlingsId)
-                    setString(2, oppdragId.personIdent)
-                    setString(3, oppdragId.fagsystem)
-                    setInt(4, versjon)
+                setString(1, oppdragId.behandlingsId)
+                setString(2, oppdragId.personIdent)
+                setString(3, oppdragId.fagsystem)
+                setInt(4, versjon)
 
-                    mapOppdragLagerRows(list)
-                }
+                mapOppdragLagerRows(list)
+            }
         }
 
         return when (list.size) {
@@ -222,68 +222,66 @@ class OppdragLagerRepositoryJdbc(private val dataSource: DataSource) : OppdragLa
                                 AND status = ANY(string_to_array(?, ','))
                         ) q 
                         WHERE rn = 1"""
-        val statement = dataSource.connection.prepareStatement(query)
-
-        val status = setOf(OppdragLagerStatus.KVITTERT_OK, OppdragLagerStatus.KVITTERT_MED_MANGLER)
-            .map { it.name }
-            .toTypedArray()
 
         val list = mutableListOf<UtbetalingsoppdragForKonsistensavstemming>()
 
-        behandlingIder.chunked(3000).map { behandlingIderChunked ->
-            statement
-                .use { preparedStatement ->
-                    preparedStatement.setString(1, fagsystem)
-                    preparedStatement.setString(2, behandlingIderChunked.joinToString(","))
-                    preparedStatement.setString(3, status.joinToString(","))
+        dataSource.connection.use {
+            val statement = it.prepareStatement(query)
 
-                    preparedStatement.executeQuery()
-                        .use { resultSet ->
-                            while (resultSet.next()) {
-                                list.add(
-                                    UtbetalingsoppdragForKonsistensavstemming(
-                                        resultSet.getString("fagsak_id"),
-                                        resultSet.getString("behandling_id"),
-                                        defaultObjectMapper.readValue(resultSet.getString("utbetalingsoppdrag"))
-                                    )
+            val status = setOf(OppdragLagerStatus.KVITTERT_OK.name, OppdragLagerStatus.KVITTERT_MED_MANGLER.name)
+
+            behandlingIder.chunked(3000).map { behandlingIderChunked ->
+                statement.apply {
+                    setString(1, fagsystem)
+                    setString(2, behandlingIderChunked.joinToString(","))
+                    setString(3, status.joinToString(","))
+
+                    executeQuery().use { resultSet ->
+                        while (resultSet.next()) {
+                            list.add(
+                                UtbetalingsoppdragForKonsistensavstemming(
+                                    resultSet.getString("fagsak_id"),
+                                    resultSet.getString("behandling_id"),
+                                    defaultObjectMapper.readValue(resultSet.getString("utbetalingsoppdrag"))
                                 )
-                            }
+                            )
                         }
+                    }
                 }
+            }
         }
 
         return list
     }
 
     private fun PreparedStatement.mapOppdragLagerRows(list: MutableList<OppdragLager>) {
-        this.executeQuery()
-            .use { resultSet ->
-                while (resultSet.next()) {
-                    val kvitteringsmeldingStr = resultSet.getString(11)
-                    val kvitteringsmelding = if (kvitteringsmeldingStr != null) {
-                        defaultObjectMapper.readValue<Mmel>(kvitteringsmeldingStr)
-                    } else {
-                        null
-                    }
-
-                    list.add(
-                        OppdragLager(
-                            uuid = UUID.fromString(resultSet.getString(1) ?: UUID.randomUUID().toString()),
-                            fagsystem = resultSet.getString(8),
-                            personIdent = resultSet.getString(5),
-                            fagsakId = resultSet.getString(6),
-                            behandlingId = resultSet.getString(7),
-                            utbetalingsoppdrag = defaultObjectMapper.readValue(resultSet.getString(10)),
-                            utgaaendeOppdrag = resultSet.getString(2),
-                            status = OppdragLagerStatus.valueOf(resultSet.getString(3)),
-                            avstemmingTidspunkt = resultSet.getTimestamp(9).toLocalDateTime(),
-                            opprettetTidspunkt = resultSet.getTimestamp(4).toLocalDateTime(),
-                            kvitteringsmelding = kvitteringsmelding,
-                            versjon = resultSet.getInt(12)
-                        )
-                    )
+        this.executeQuery().use { resultSet ->
+            while (resultSet.next()) {
+                val kvitteringsmeldingStr = resultSet.getString(11)
+                val kvitteringsmelding = if (kvitteringsmeldingStr != null) {
+                    defaultObjectMapper.readValue<Mmel>(kvitteringsmeldingStr)
+                } else {
+                    null
                 }
+
+                list.add(
+                    OppdragLager(
+                        uuid = UUID.fromString(resultSet.getString(1) ?: UUID.randomUUID().toString()),
+                        fagsystem = resultSet.getString(8),
+                        personIdent = resultSet.getString(5),
+                        fagsakId = resultSet.getString(6),
+                        behandlingId = resultSet.getString(7),
+                        utbetalingsoppdrag = defaultObjectMapper.readValue(resultSet.getString(10)),
+                        utgaaendeOppdrag = resultSet.getString(2),
+                        status = OppdragLagerStatus.valueOf(resultSet.getString(3)),
+                        avstemmingTidspunkt = resultSet.getTimestamp(9).toLocalDateTime(),
+                        opprettetTidspunkt = resultSet.getTimestamp(4).toLocalDateTime(),
+                        kvitteringsmelding = kvitteringsmelding,
+                        versjon = resultSet.getInt(12)
+                    )
+                )
             }
+        }
     }
 }
 

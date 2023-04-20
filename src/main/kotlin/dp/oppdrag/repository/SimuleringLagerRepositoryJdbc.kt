@@ -15,18 +15,19 @@ class SimuleringLagerRepositoryJdbc(private val dataSource: DataSource) : Simule
             VALUES (?::uuid, ?, ?, ?, ?, ?, ?)
             """.trimIndent()
 
-        dataSource.connection.prepareStatement(sql)
-            .use {
-                it.setString(1, UUID.randomUUID().toString())
-                it.setString(2, simuleringLager.fagsakId)
-                it.setString(3, simuleringLager.behandlingId)
-                it.setString(4, simuleringLager.fagsystem)
-                it.setString(5, simuleringLager.utbetalingsoppdrag)
-                it.setString(6, simuleringLager.requestXml)
-                it.setString(7, simuleringLager.responseXml)
+        dataSource.connection.use {
+            it.prepareStatement(sql).apply {
+                setString(1, UUID.randomUUID().toString())
+                setString(2, simuleringLager.fagsakId)
+                setString(3, simuleringLager.behandlingId)
+                setString(4, simuleringLager.fagsystem)
+                setString(5, simuleringLager.utbetalingsoppdrag)
+                setString(6, simuleringLager.requestXml)
+                setString(7, simuleringLager.responseXml)
 
-                it.executeUpdate()
+                executeUpdate()
             }
+        }
     }
 
     override fun oppdater(simuleringLager: SimuleringLager) {
@@ -37,35 +38,35 @@ class SimuleringLagerRepositoryJdbc(private val dataSource: DataSource) : Simule
             WHERE id = ?::uuid
             """.trimIndent()
 
-        dataSource.connection.prepareStatement(sql)
-            .use {
-                it.setString(1, simuleringLager.fagsakId)
-                it.setString(2, simuleringLager.behandlingId)
-                it.setString(3, simuleringLager.fagsystem)
-                it.setString(4, simuleringLager.utbetalingsoppdrag)
-                it.setString(5, simuleringLager.requestXml)
-                it.setString(6, simuleringLager.responseXml)
-                it.setString(7, simuleringLager.id.toString())
+        dataSource.connection.use {
+            it.prepareStatement(sql).apply {
+                setString(1, simuleringLager.fagsakId)
+                setString(2, simuleringLager.behandlingId)
+                setString(3, simuleringLager.fagsystem)
+                setString(4, simuleringLager.utbetalingsoppdrag)
+                setString(5, simuleringLager.requestXml)
+                setString(6, simuleringLager.responseXml)
+                setString(7, simuleringLager.id.toString())
 
-                it.executeUpdate()
+                executeUpdate()
             }
+        }
     }
 
     override fun finnAlleSimuleringsLager(): List<SimuleringLager> {
         val sql = "SELECT *  FROM simulering_lager"
 
         val list = mutableListOf<SimuleringLager>()
-        dataSource.connection.prepareStatement(sql)
-            .use { preparedStatement ->
-                preparedStatement.executeQuery()
-                    .use { resultSet ->
-                        while (resultSet.next()) {
-                            list.add(mapRow(resultSet))
-                        }
+
+        dataSource.connection.use {
+            it.prepareStatement(sql).apply {
+                executeQuery().use { resultSet ->
+                    while (resultSet.next()) {
+                        list.add(mapRow(resultSet))
                     }
-
-
+                }
             }
+        }
 
         return list
     }
@@ -83,19 +84,19 @@ class SimuleringLagerRepositoryJdbc(private val dataSource: DataSource) : Simule
 
         var simuleringLager: SimuleringLager? = null
 
-        dataSource.connection.prepareStatement(sql)
-            .use { preparedStatement ->
-                preparedStatement.setString(1, FAGSYSTEM)
-                preparedStatement.setString(2, fagsakId)
-                preparedStatement.setString(3, behandlingId)
+        dataSource.connection.use {
+            it.prepareStatement(sql).apply {
+                setString(1, FAGSYSTEM)
+                setString(2, fagsakId)
+                setString(3, behandlingId)
 
-                preparedStatement.executeQuery()
-                    .use { resultSet ->
-                        while (resultSet.next()) {
-                            simuleringLager = mapRow(resultSet)
-                        }
+                executeQuery().use { resultSet ->
+                    while (resultSet.next()) {
+                        simuleringLager = mapRow(resultSet)
                     }
+                }
             }
+        }
 
         if (simuleringLager == null) {
             throw Exception("Kan ikke finne simulering med fagsakId=$fagsakId og behandlingId=$behandlingId")
