@@ -96,6 +96,7 @@ dependencies {
     implementation("org.apache.cxf:cxf-rt-transports-http:4.0.0")
     implementation("org.apache.cxf:cxf-rt-ws-security:4.0.0")
     implementation("org.apache.cxf:cxf-rt-features-logging:4.0.0")
+    implementation("com.sun.xml.ws:jaxws-ri:4.0.1")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
 
     // Test
@@ -151,6 +152,9 @@ tasks {
         environment["MQ_OPPDRAG_QUEUE"] = "DEV.QUEUE.1"
         environment["MQ_KVITTERING_QUEUE"] = "DEV.QUEUE.2"
         environment["MQ_AVSTEMMING_QUEUE"] = "DEV.QUEUE.3"
+
+        environment["OPPDRAG_SERVICE_URL"] = "https://cics-q1.adeo.no/oppdrag/simulerFpServiceWSBinding"
+        environment["STS_URL"] = "https://sts-q1.preprod.local/SecurityTokenServiceProvider/"
 
         classpath = sourceSets["main"].runtimeClasspath
         mainClass.set(project.property("mainClassName").toString())
