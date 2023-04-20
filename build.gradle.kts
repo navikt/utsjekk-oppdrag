@@ -91,6 +91,7 @@ dependencies {
     implementation("org.opensaml:opensaml-saml-impl:4.2.0")
     implementation("org.opensaml:opensaml-xacml-impl:4.2.0")
     implementation("org.opensaml:opensaml-xacml-saml-impl:4.2.0")
+    implementation("org.apache.cxf:cxf-rt-frontend-jaxrs:4.0.0")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
 
     // Test
