@@ -13,3 +13,5 @@ mqUser: srvdp-oppdrag
 mqOppdragQueue: QA.Q1_231.OB04_OPPDRAG_XML
 mqKvitteringQueue: QA.Q1_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
 mqAvstemmingQueue: QA.Q1_234.OB29_AVSTEMMING_XML
+oppdragServiceUrl: https://cics-q1.adeo.no/oppdrag/simulerFpServiceWSBinding
+stsUrl: https://sts-q1.preprod.local/SecurityTokenServiceProvider/

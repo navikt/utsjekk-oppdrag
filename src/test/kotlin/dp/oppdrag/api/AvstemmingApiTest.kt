@@ -2,7 +2,9 @@ package dp.oppdrag.api
 
 import com.nimbusds.jwt.SignedJWT
 import dp.oppdrag.defaultObjectMapper
-import dp.oppdrag.model.*
+import dp.oppdrag.model.GrensesnittavstemmingRequest
+import dp.oppdrag.model.KonsistensavstemmingRequest
+import dp.oppdrag.model.PerioderForBehandling
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*

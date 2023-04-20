@@ -18,9 +18,11 @@ import com.zaxxer.hikari.HikariDataSource
 import dp.oppdrag.api.avstemmingApi
 import dp.oppdrag.api.internalApi
 import dp.oppdrag.api.oppdragApi
+import dp.oppdrag.api.simuleringApi
 import dp.oppdrag.listener.OppdragListenerMQ
 import dp.oppdrag.repository.MellomlagringKonsistensavstemmingRepositoryJdbc
 import dp.oppdrag.repository.OppdragLagerRepositoryJdbc
+import dp.oppdrag.repository.SimuleringLagerRepositoryJdbc
 import dp.oppdrag.utils.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
@@ -71,6 +73,7 @@ fun Application.module() {
     // Create repository object
     val oppdragLagerRepository = OppdragLagerRepositoryJdbc(defaultDataSource)
     val mellomlagringKonsistensavstemmingRepository = MellomlagringKonsistensavstemmingRepositoryJdbc(defaultDataSource)
+    val simuleringLagerRepository = SimuleringLagerRepositoryJdbc(defaultDataSource)
 
     // Install Micrometer/Prometheus
     val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
@@ -144,6 +147,7 @@ fun Application.module() {
 
         oppdragApi(oppdragLagerRepository)
         avstemmingApi(oppdragLagerRepository, mellomlagringKonsistensavstemmingRepository)
+        simuleringApi(simuleringLagerRepository)
 
         // Example API
         // Will be deleted soon

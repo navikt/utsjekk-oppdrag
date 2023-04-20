@@ -68,6 +68,10 @@ spec:
       value: {{ mqKvitteringQueue }}
     - name: MQ_AVSTEMMING_QUEUE
       value: {{ mqAvstemmingQueue }}
+    - name: OPPDRAG_SERVICE_URL
+      value: {{ oppdragServiceUrl }}
+    - name: STS_URL
+      value: {{ securitytokenserviceUrl }}
   azure:
     application:
       enabled: true

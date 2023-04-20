@@ -17,6 +17,7 @@ val postgresVersion = "42.6.0"
 val hikariVersion = "5.0.1"
 val flywayVersion = "9.16.3"
 val navTjenesterVersion = "2612.db4dc68"
+val navCommonVersion = "3.2023.04.18_10.07-0576b4e09008"
 val ibmMqVersion = "9.3.2.0"
 val mockOauth2Version = "0.5.8"
 val jupiterVersion = "5.9.2"
@@ -42,6 +43,7 @@ java {
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
+    maven("https://build.shibboleth.net/nexus/content/repositories/releases/")
 }
 
 dependencies {
@@ -82,6 +84,14 @@ dependencies {
     implementation("com.github.navikt.tjenestespesifikasjoner:nav-virksomhet-oppdragsbehandling-v1-meldingsdefinisjon:$navTjenesterVersion")
     implementation("com.github.navikt.tjenestespesifikasjoner:avstemming-v1-tjenestespesifikasjon:$navTjenesterVersion")
     implementation("com.ibm.mq:com.ibm.mq.allclient:$ibmMqVersion")
+
+    // Simulering
+    implementation("com.github.navikt.tjenestespesifikasjoner:nav-system-os-simuler-fp-service-tjenestespesifikasjon:$navTjenesterVersion")
+    implementation("com.github.navikt.common-java-modules:cxf:$navCommonVersion")
+    implementation("org.opensaml:opensaml-saml-impl:4.2.0")
+    implementation("org.opensaml:opensaml-xacml-impl:4.2.0")
+    implementation("org.opensaml:opensaml-xacml-saml-impl:4.2.0")
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
 
     // Test
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
