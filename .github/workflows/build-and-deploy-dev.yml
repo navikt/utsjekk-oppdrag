@@ -30,7 +30,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Bygg Fat Jar
-        run: ./gradlew buildFatJar
+        run: ./gradlew shadowJar
 
       - name: Bygg Docker image
         run: |

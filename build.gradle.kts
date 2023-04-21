@@ -1,3 +1,6 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
+
 /*
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/7.6/userguide/building_java_projects.html
@@ -126,6 +129,14 @@ tasks.named<Test>("test") {
 tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = project.property("mainClassName").toString()
+    }
+}
+
+tasks.withType<ShadowJar> {
+    isZip64 = true
+    transform(ServiceFileTransformer::class.java) {
+        setPath("META-INF/cxf")
+        include("bus-extensions.txt")
     }
 }
 
