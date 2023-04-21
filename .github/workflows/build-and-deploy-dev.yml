@@ -29,9 +29,6 @@ jobs:
       - name: Bygg og test
         run: ./gradlew clean build
 
-      - name: Bygg Fat Jar
-        run: ./gradlew shadowJar
-
       - name: Bygg Docker image
         run: |
           docker build -t $IMAGE .
