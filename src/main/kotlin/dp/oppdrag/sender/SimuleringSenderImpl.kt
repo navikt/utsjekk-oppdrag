@@ -6,6 +6,7 @@ import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.S
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse
 import no.nav.common.cxf.CXFClient
 import no.nav.common.cxf.StsConfig
+import javax.xml.namespace.QName
 
 class SimuleringSenderImpl : SimuleringSender {
 
@@ -15,6 +16,9 @@ class SimuleringSenderImpl : SimuleringSender {
         if (!::port.isInitialized) {
             port =
                 CXFClient(SimulerFpService::class.java)
+                    .wsdl("classpath:wsdl/no/nav/system/os/eksponering/simulerfpservicewsbinding.wsdl")
+                    .serviceName(QName("http://nav.no/system/os/eksponering/simulerFpServiceWSBinding", "simulerFpService"))
+                    .endpointName(QName("http://nav.no/system/os/eksponering/simulerFpServiceWSBinding", "simulerFpServicePort"))
                     .address(getProperty("OPPDRAG_SERVICE_URL"))
                     .timeout(20000, 20000)
                     .configureStsForSystemUser(
