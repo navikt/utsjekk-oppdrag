@@ -71,7 +71,7 @@ spec:
     - name: OPPDRAG_SERVICE_URL
       value: {{ oppdragServiceUrl }}
     - name: STS_URL
-      value: {{ securitytokenserviceUrl }}
+      value: {{ stsUrl }}
   azure:
     application:
       enabled: true
