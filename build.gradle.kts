@@ -94,7 +94,7 @@ dependencies {
     implementation("no.nav.common:cxf:$navCommonVersion")
     implementation("javax.xml.ws:jaxws-api:2.3.1")
     implementation("javax.jws:javax.jws-api:1.1")
-    implementation("org.apache.cxf:cxf-core:3.5.5")
+    implementation("org.apache.cxf:cxf-core:4.0.0")
     implementation("org.apache.cxf:cxf-rt-bindings-soap:3.5.5")
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:3.5.5")
     implementation("org.apache.cxf:cxf-rt-transports-http:3.5.5")
