@@ -98,7 +98,7 @@ dependencies {
     implementation("org.apache.cxf:cxf-rt-bindings-soap:3.5.5")
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:3.5.5")
     implementation("org.apache.cxf:cxf-rt-transports-http:3.5.5")
-    implementation("org.apache.cxf:cxf-rt-ws-security:3.5.5")
+    implementation("org.apache.cxf:cxf-rt-ws-security:4.0.0")
 
     // Test
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
