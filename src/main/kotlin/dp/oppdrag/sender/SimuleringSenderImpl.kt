@@ -2,11 +2,19 @@ package dp.oppdrag.sender
 
 import dp.oppdrag.defaultLogger
 import dp.oppdrag.utils.getProperty
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import kotlinx.coroutines.runBlocking
 import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerFpService
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse
 import no.nav.common.cxf.CXFClient
 import no.nav.common.cxf.StsConfig
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.apache.cxf.ws.security.trust.STSClient
+import java.io.IOException
+import java.util.*
 
 class SimuleringSenderImpl : SimuleringSender {
 
@@ -15,6 +23,22 @@ class SimuleringSenderImpl : SimuleringSender {
     override fun hentSimulerBeregningResponse(simulerBeregningRequest: SimulerBeregningRequest?): SimulerBeregningResponse {
         if (!::port.isInitialized) {
             defaultLogger.info { "########## " + getProperty("STS_URL") }
+
+            val base = "${getProperty("MQ_USER")}:${getProperty("MQ_PASSWORD")}"
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url(getProperty("OPPDRAG_SERVICE_URL")!!)
+                .header("Accept", "application/json; charset=UTF-8")
+                .header("Authorization", "Basic ${Base64.getEncoder().encodeToString(base.toByteArray())}")
+                .method("POST", null)
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                defaultLogger.info { "¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ " + response.body!!.string()}
+            }
+
             port =
                 CXFClient(SimulerFpService::class.java)
                     .address(getProperty("OPPDRAG_SERVICE_URL"))
