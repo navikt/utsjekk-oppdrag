@@ -15,11 +15,26 @@ Secret inneholder et passord til IBM MQ. Passordet er representert gjennom milj�
 
 ## Lokalkjøring
 
+### Kjør lokalt med frittstående MQ og database
 1. Start lokal instans av PostgreSQL database og IBM MQ `docker-compose up -d`
 2. Start appen `./gradlew runServerTest`
 
-Swagger UI: http://localhost:8080/internal/swagger-ui/index.html
+### Kjør lokalt med embedded MQ og database, og automatisk OK-kvittering på MQ
+Hvis du vil kjøre opp dp-oppdrag fort og gæli med tom DB og kø, f.eks for debugging.
 
+Kjør `AutokvitteringTestApp` under `test`
+
+Følgende miljøvariable må være satt:
+* `AZURE_APP_CLIENT_ID`
+* `AZURE_APP_CLIENT_SECRET`
+
+De to siste får du tak i slik:
+1. Endre kontekst til dev `kubectl config use-context dev-gcp`
+2. Finne navn på secret ved å kjøre `kubectl -n teamdagpenger get secrets` og finne navnet på en secret som starter
+   med `azure-dp-oppdrag-`. Kopier navnet på secreten.
+3. Kjør `kubectl -n teamdagpenger get secret [NAVN PÅ SECRET FRA STEG 2] -o json | jq '.data | map_values(@base64d)'`
+
+### Lokal MQ
 For å sjekke køer gjennom IBM MQ Explorer:
 Høyreklikk på Queue Managers > Add Remote Queue Manager
 
@@ -40,6 +55,9 @@ I build.gradle.kts endre
 `environment["MQ_ENABLED"] = "true"`  
 til  
 `environment["MQ_ENABLED"] = "false"`
+
+### SwaggerUI
+Swagger UI: http://localhost:8080/internal/swagger-ui/index.html
 
 ## Kontaktinfo
 

@@ -167,9 +167,11 @@ fun Application.module() {
 
 fun prepareDataSource() {
     if (!::defaultDataSource.isInitialized) {
-        val url = "jdbc:postgresql://" + getProperty("DB_HOST") +
+        val url = getProperty("DB_JDBC_URL") ?: (
+                "jdbc:postgresql://" + getProperty("DB_HOST") +
                 ":" + getProperty("DB_PORT") +
                 "/" + getProperty("DB_DATABASE")
+                )
 
         defaultDataSource = HikariDataSource().apply {
             driverClassName = "org.postgresql.Driver"
