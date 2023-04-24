@@ -2,17 +2,14 @@ package dp.oppdrag.sender
 
 import dp.oppdrag.defaultLogger
 import dp.oppdrag.utils.getProperty
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import kotlinx.coroutines.runBlocking
+import no.nav.common.cxf.CXFClient
+import no.nav.common.cxf.StsConfig
 import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerFpService
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse
-import no.nav.common.cxf.CXFClient
-import no.nav.common.cxf.StsConfig
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.apache.cxf.ws.security.trust.STSClient
+import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 import java.util.*
 
@@ -30,7 +27,7 @@ class SimuleringSenderImpl : SimuleringSender {
                 .url(getProperty("OPPDRAG_SERVICE_URL")!!)
                 .header("Accept", "application/json; charset=UTF-8")
                 .header("Authorization", "Basic ${Base64.getEncoder().encodeToString(base.toByteArray())}")
-                .method("POST", null)
+                .post(EMPTY_REQUEST)
                 .build()
 
             client.newCall(request).execute().use { response ->
