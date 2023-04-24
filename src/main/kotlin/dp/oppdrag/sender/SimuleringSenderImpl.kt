@@ -24,7 +24,7 @@ class SimuleringSenderImpl : SimuleringSender {
             val base = "${getProperty("MQ_USER")}:${getProperty("MQ_PASSWORD")}"
             val client = OkHttpClient()
             val request = Request.Builder()
-                .url(getProperty("OPPDRAG_SERVICE_URL")!!)
+                .url(getProperty("STS_URL")!!)
                 .header("Accept", "application/json; charset=UTF-8")
                 .header("Authorization", "Basic ${Base64.getEncoder().encodeToString(base.toByteArray())}")
                 .post(EMPTY_REQUEST)
