@@ -1,6 +1,7 @@
 package dp.oppdrag.api
 
 import com.nimbusds.jwt.SignedJWT
+import dp.oppdrag.TestOppdragKø
 import dp.oppdrag.defaultObjectMapper
 import dp.oppdrag.model.*
 import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
@@ -8,11 +9,14 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
+import java.lang.Thread.sleep
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class OppdragApiTest : TestBase() {
 
@@ -185,7 +189,49 @@ class OppdragApiTest : TestBase() {
         }
 
         assertEquals(HttpStatusCode.OK, response3.status)
-        assertEquals(OppdragLagerStatus.LAGT_PAA_KOE.name, response3.bodyAsText())
+        val kvitteringDto = defaultObjectMapper.readValue(response3.bodyAsText(), KvitteringDto::class.java)
+        assertNull(kvitteringDto.feilmelding)
+        assertEquals(OppdragLagerStatus.LAGT_PAA_KOE, kvitteringDto.status)
+    }
+
+    @Test
+    fun `skal få feilmelding når vi får feilkvittering fra oppdrag`() = setUpTestApplication {
+        val behandlingsId = 3L
+        val utbetalingsoppdrag = opprettUtbetalingsoppdrag(behandlingsId)
+        val oppdragId = OppdragId(
+            fagsystem = FAGSYSTEM,
+            personIdent = "01020312345",
+            behandlingsId = behandlingsId.toString()
+        )
+
+        val token: SignedJWT = mockOAuth2Server.issueToken(ISSUER_ID, "someclientid", DefaultOAuth2TokenCallback())
+
+        TestOppdragKø(OppdragStatus.AVVIST_FUNKSJONELLE_FEIL, "Personen finnes ikke i TPS").use {
+            val response2 = client.post("/oppdrag") {
+                headers {
+                    append(HttpHeaders.ContentType, "application/json")
+                    append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+                }
+                setBody(defaultObjectMapper.writeValueAsString(utbetalingsoppdrag))
+            }
+
+            assertEquals(HttpStatusCode.OK, response2.status)
+            assertEquals("OK", response2.bodyAsText())
+
+            // Get status after sending Oppdrag
+            val response3 = client.post("/status") {
+                headers {
+                    append(HttpHeaders.ContentType, "application/json")
+                    append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+                }
+                setBody(defaultObjectMapper.writeValueAsString(oppdragId))
+            }
+
+            assertEquals(HttpStatusCode.OK, response3.status)
+            val kvitteringDto = defaultObjectMapper.readValue(response3.bodyAsText(), KvitteringDto::class.java)
+            assertNotNull(kvitteringDto.feilmelding)
+            assertEquals(OppdragLagerStatus.KVITTERT_FUNKSJONELL_FEIL, kvitteringDto.status)
+        }
     }
 
     @Test

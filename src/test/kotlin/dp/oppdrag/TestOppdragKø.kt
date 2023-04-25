@@ -1,53 +1,30 @@
 package dp.oppdrag
 
 import com.ibm.mq.jms.MQQueue
+import dp.oppdrag.model.OppdragStatus
 import dp.oppdrag.utils.createQueueConnection
 import dp.oppdrag.utils.getProperty
-import io.ktor.server.netty.EngineMain
+import io.ktor.utils.io.core.*
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
-import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.PostgreSQLContainer
 import javax.jms.Message
 import javax.jms.MessageListener
 import javax.jms.Session
 import javax.jms.TextMessage
 
-object AutokvitteringTestApp : MessageListener {
+class TestOppdragKø(private val kvitteringStatus: OppdragStatus, private val kvitteringsmelding: String? = null): MessageListener, Closeable {
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        konfigurer()
-        startDB()
+    private lateinit var mq: KGenericContainer
+
+    init {
         startMQ()
         lyttEtterOppdragPåKø()
-        EngineMain.main(args)
     }
 
-    private fun konfigurer() {
-        System.setProperty(
-            "AZURE_APP_WELL_KNOWN_URL",
-            "https://login.microsoftonline.com/77678b69-1daf-47b6-9072-771d270ac800/v2.0/.well-known/openid-configuration"
-        )
-    }
-
-    private fun startDB() {
-        val psql = KPostgreSQLContainer("postgres")
-            .withDatabaseName("dp-oppdrag")
-            .withUsername("dp-bruker")
-            .withPassword("dp-passord")
-
-        psql.start()
-
-        System.setProperty("DB_JDBC_URL", psql.jdbcUrl)
-        System.setProperty("DB_USERNAME", psql.username)
-        System.setProperty("DB_PASSWORD", psql.password)
-    }
-
-    fun startMQ(): KGenericContainer {
+    private fun startMQ() {
         val queueManager = "QM1"
         val appPassord = "passw0rd"
-        val mq = KGenericContainer("ibmcom/mq")
+        mq = KGenericContainer("ibmcom/mq")
             .withEnv("LICENSE", "accept")
             .withEnv("MQ_QMGR_NAME", queueManager)
             .withEnv("MQ_APP_PASSWORD", appPassord)
@@ -65,9 +42,8 @@ object AutokvitteringTestApp : MessageListener {
         System.setProperty("MQ_OPPDRAG_QUEUE", "DEV.QUEUE.1")
         System.setProperty("MQ_KVITTERING_QUEUE", "DEV.QUEUE.2")
         System.setProperty("MQ_AVSTEMMING_QUEUE", "DEV.QUEUE.3")
-
-        return mq
     }
+
 
     private fun lyttEtterOppdragPåKø() {
         val queue = MQQueue(getProperty("MQ_OPPDRAG_QUEUE"))
@@ -83,7 +59,10 @@ object AutokvitteringTestApp : MessageListener {
         val oppdrag = defaultXmlMapper.readValue(meldingTilOppdrag, Oppdrag::class.java)
 
         val mmel = Mmel()
-        mmel.alvorlighetsgrad = "00" // OK
+        mmel.alvorlighetsgrad = kvitteringStatus.kode
+        kvitteringsmelding?.let {
+            mmel.beskrMelding = it
+        }
         oppdrag.mmel = mmel
 
         val queue = MQQueue(getProperty("MQ_KVITTERING_QUEUE"))
@@ -99,6 +78,9 @@ object AutokvitteringTestApp : MessageListener {
         queueSession.close()
         queueConnection.close()
     }
+
+    override fun close() {
+        mq.close()
+    }
+
 }
-class KPostgreSQLContainer(imageName: String) : PostgreSQLContainer<KPostgreSQLContainer>(imageName)
-class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)

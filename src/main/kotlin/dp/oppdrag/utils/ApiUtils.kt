@@ -42,10 +42,10 @@ suspend inline fun <reified TResponse : Any> OpenAPIPipelineResponseContext<TRes
     )
 }
 
-suspend inline fun <reified TResponse : Any> OpenAPIPipelineResponseContext<TResponse>.respondOk(message: String) {
+suspend inline fun <TResponse : Any> OpenAPIPipelineResponseContext<TResponse>.respondOk(body: Any) {
     responder.respond(
         HttpStatusCode.OK,
-        message,
+        body,
         this.pipeline
     )
 }

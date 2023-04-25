@@ -1,6 +1,8 @@
 package dp.oppdrag.api
 
 import com.zaxxer.hikari.HikariDataSource
+import dp.oppdrag.AutokvitteringTestApp
+import dp.oppdrag.KGenericContainer
 import dp.oppdrag.defaultDataSource
 import dp.oppdrag.module
 import io.ktor.server.config.*
@@ -22,7 +24,7 @@ open class TestBase {
         var mockOAuth2Server = MockOAuth2Server()
 
         @Container
-        private val container: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:14-alpine")
+        private val dbContainer: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:14-alpine")
 
         @BeforeAll
         @JvmStatic
@@ -31,9 +33,9 @@ open class TestBase {
             mockOAuth2Server.start(8091)
 
             defaultDataSource = HikariDataSource().apply {
-                jdbcUrl = container.jdbcUrl
-                username = container.username
-                password = container.password
+                jdbcUrl = dbContainer.jdbcUrl
+                username = dbContainer.username
+                password = dbContainer.password
 
                 validate()
             }
