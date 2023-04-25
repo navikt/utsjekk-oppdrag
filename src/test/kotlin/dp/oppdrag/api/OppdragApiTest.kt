@@ -218,19 +218,27 @@ class OppdragApiTest : TestBase() {
             assertEquals(HttpStatusCode.OK, response2.status)
             assertEquals("OK", response2.bodyAsText())
 
-            // Get status after sending Oppdrag
-            val response3 = client.post("/status") {
-                headers {
-                    append(HttpHeaders.ContentType, "application/json")
-                    append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
-                }
-                setBody(defaultObjectMapper.writeValueAsString(oppdragId))
-            }
+            var kvitteringDto: KvitteringDto?
+            var antallKjøringer = 0
 
-            assertEquals(HttpStatusCode.OK, response3.status)
-            val kvitteringDto = defaultObjectMapper.readValue(response3.bodyAsText(), KvitteringDto::class.java)
+            do {
+                antallKjøringer++
+                // Get status after sending Oppdrag
+                val response3 = client.post("/status") {
+                    headers {
+                        append(HttpHeaders.ContentType, "application/json")
+                        append(HttpHeaders.Authorization, "Bearer ${token.serialize()}")
+                    }
+                    setBody(defaultObjectMapper.writeValueAsString(oppdragId))
+                }
+
+                assertEquals(HttpStatusCode.OK, response3.status)
+                kvitteringDto = defaultObjectMapper.readValue(response3.bodyAsText(), KvitteringDto::class.java)
+            } while (kvitteringDto!!.status == OppdragLagerStatus.LAGT_PAA_KOE && antallKjøringer<100)
+
             assertNotNull(kvitteringDto.feilmelding)
             assertEquals(OppdragLagerStatus.KVITTERT_FUNKSJONELL_FEIL, kvitteringDto.status)
+
         }
     }
 

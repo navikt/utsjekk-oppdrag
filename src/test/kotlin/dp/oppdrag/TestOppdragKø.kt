@@ -15,7 +15,6 @@ import javax.jms.TextMessage
 class TestOppdragKø(private val kvitteringStatus: OppdragStatus, private val kvitteringsmelding: String? = null): MessageListener, Closeable {
 
     private lateinit var mq: KGenericContainer
-
     init {
         startMQ()
         lyttEtterOppdragPåKø()
