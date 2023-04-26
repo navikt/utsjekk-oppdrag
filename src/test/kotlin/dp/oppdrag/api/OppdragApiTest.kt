@@ -5,6 +5,7 @@ import dp.oppdrag.TestOppdragKø
 import dp.oppdrag.defaultObjectMapper
 import dp.oppdrag.model.*
 import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
+import dp.oppdrag.utils.vent
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -206,7 +207,8 @@ class OppdragApiTest : TestBase() {
 
         val token: SignedJWT = mockOAuth2Server.issueToken(ISSUER_ID, "someclientid", DefaultOAuth2TokenCallback())
 
-        TestOppdragKø(OppdragStatus.AVVIST_FUNKSJONELLE_FEIL, "Personen finnes ikke i TPS").use {
+        val feilmelding = "Personen finnes ikke i TPS"
+        TestOppdragKø(OppdragStatus.AVVIST_FUNKSJONELLE_FEIL, feilmelding).use {
             val response2 = client.post("/oppdrag") {
                 headers {
                     append(HttpHeaders.ContentType, "application/json")
@@ -218,11 +220,7 @@ class OppdragApiTest : TestBase() {
             assertEquals(HttpStatusCode.OK, response2.status)
             assertEquals("OK", response2.bodyAsText())
 
-            var kvitteringDto: KvitteringDto?
-            var antallKjøringer = 0
-
-            do {
-                antallKjøringer++
+            val kvitteringDto = vent<KvitteringDto>(ferdig = { it.status != OppdragLagerStatus.LAGT_PAA_KOE }) {
                 // Get status after sending Oppdrag
                 val response3 = client.post("/status") {
                     headers {
@@ -233,12 +231,11 @@ class OppdragApiTest : TestBase() {
                 }
 
                 assertEquals(HttpStatusCode.OK, response3.status)
-                kvitteringDto = defaultObjectMapper.readValue(response3.bodyAsText(), KvitteringDto::class.java)
-            } while (kvitteringDto!!.status == OppdragLagerStatus.LAGT_PAA_KOE && antallKjøringer<100)
+                defaultObjectMapper.readValue(response3.bodyAsText(), KvitteringDto::class.java)
+            }
 
-            assertNotNull(kvitteringDto.feilmelding)
+            assertEquals(feilmelding, kvitteringDto.feilmelding)
             assertEquals(OppdragLagerStatus.KVITTERT_FUNKSJONELL_FEIL, kvitteringDto.status)
-
         }
     }
 
