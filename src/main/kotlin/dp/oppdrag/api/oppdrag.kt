@@ -6,11 +6,8 @@ import com.papsign.ktor.openapigen.route.path.normal.NormalOpenAPIRoute
 import com.papsign.ktor.openapigen.route.response.OpenAPIPipelineResponseContext
 import com.papsign.ktor.openapigen.route.route
 import dp.oppdrag.mapper.OppdragMapper
-import dp.oppdrag.model.OppdragId
-import dp.oppdrag.model.OppdragLagerStatus
+import dp.oppdrag.model.*
 import dp.oppdrag.model.OppdragSkjemaConstants.Companion.FAGSYSTEM
-import dp.oppdrag.model.Utbetalingsoppdrag
-import dp.oppdrag.model.Utbetalingsperiode
 import dp.oppdrag.repository.OppdragAlleredeSendtException
 import dp.oppdrag.repository.OppdragLagerRepository
 import dp.oppdrag.service.OppdragService
@@ -47,10 +44,10 @@ fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepository
         }
 
         route("/status") {
-            authPost<Unit, String, OppdragId, TokenValidationContextPrincipal?>(
+            authPost<Unit, KvitteringDto, OppdragId, TokenValidationContextPrincipal?>(
                 info("Hent oppdragsstatus"),
                 exampleRequest = oppdragIdExample,
-                exampleResponse = OppdragLagerStatus.KVITTERT_OK.name
+                exampleResponse = KvitteringDto(OppdragLagerStatus.KVITTERT_OK)
             ) { _, request ->
                 Result.runCatching {
                     oppdragService.hentStatusForOppdrag(request)
@@ -59,7 +56,7 @@ fun NormalOpenAPIRoute.oppdragApi(oppdragLagerRepository: OppdragLagerRepository
                         respondNotFound("Fant ikke oppdrag med $request")
                     },
                     onSuccess = {
-                        respondOk(it.status.name)
+                        respondOk(KvitteringDto(it.status, it.kvitteringsmelding?.beskrMelding))
                     }
                 )
             }
