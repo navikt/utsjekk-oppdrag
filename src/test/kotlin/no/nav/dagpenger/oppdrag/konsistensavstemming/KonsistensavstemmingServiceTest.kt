@@ -7,11 +7,6 @@ import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
 import io.mockk.verifyOrder
-import no.nav.familie.kontrakter.felles.oppdrag.KonsistensavstemmingRequestV2
-import no.nav.familie.kontrakter.felles.oppdrag.Opphør
-import no.nav.familie.kontrakter.felles.oppdrag.PerioderForBehandling
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsperiode
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingSender
 import no.nav.dagpenger.oppdrag.repository.MellomlagringKonsistensavstemming
 import no.nav.dagpenger.oppdrag.repository.MellomlagringKonsistensavstemmingRepository
@@ -19,6 +14,11 @@ import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.repository.UtbetalingsoppdragForKonsistensavstemming
 import no.nav.dagpenger.oppdrag.service.KonsistensavstemmingService
 import no.nav.dagpenger.oppdrag.service.MellomlagringKonsistensavstemmingService
+import no.nav.familie.kontrakter.felles.oppdrag.KonsistensavstemmingRequestV2
+import no.nav.familie.kontrakter.felles.oppdrag.Opphør
+import no.nav.familie.kontrakter.felles.oppdrag.PerioderForBehandling
+import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
+import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsperiode
 import no.nav.virksomhet.tjenester.avstemming.informasjon.konsistensavstemmingsdata.v1.Konsistensavstemmingsdata
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach

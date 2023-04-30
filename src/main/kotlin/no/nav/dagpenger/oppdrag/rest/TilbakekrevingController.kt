@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.rest
 
-import no.nav.familie.kontrakter.felles.Ressurs
 import no.nav.dagpenger.oppdrag.tilbakekreving.ØkonomiClient
+import no.nav.familie.kontrakter.felles.Ressurs
 import no.nav.okonomi.tilbakekrevingservice.KravgrunnlagAnnulerRequest
 import no.nav.okonomi.tilbakekrevingservice.KravgrunnlagAnnulerResponse
 import no.nav.okonomi.tilbakekrevingservice.KravgrunnlagHentDetaljRequest

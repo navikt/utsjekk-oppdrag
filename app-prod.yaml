@@ -1,10 +1,10 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: familie-oppdrag
-  namespace: teamfamilie
+  name: dp-oppdrag
+  namespace: teamdagpenger
   labels:
-    team: teamfamilie
+    team: teamdagpenger
 
 spec:
   image: {{ image }}
@@ -23,7 +23,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /serviceuser/data/prod/srvfamilie-oppdrag
+      - kvPath: /serviceuser/data/prod/srvdp-oppdrag
         mountPath: /secret/serviceuser
   replicas:
     min: 2
@@ -39,8 +39,8 @@ spec:
   secureLogs:
     enabled: true
   ingresses: # Optional. List of ingress URLs that will route HTTP traffic to the application.
-    - https://familie-oppdrag.nais.adeo.no
-    - https://familie-oppdrag.prod-fss-pub.nais.io
+    - https://dp-oppdrag.nais.adeo.no
+    - https://dp-oppdrag.prod-fss-pub.nais.io
   azure:
     application:
       enabled: true

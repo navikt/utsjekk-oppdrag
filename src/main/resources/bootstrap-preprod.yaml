@@ -12,15 +12,15 @@ spring:
           expiry-threshold: 2m
       database:
         enabled: true
-        role: familie-oppdrag-admin
+        role: dp-oppdrag-admin
         backend: postgresql/preprod-fss
       authentication: KUBERNETES
       kubernetes:
-        role: familie-oppdrag
+        role: dp-oppdrag
         kubernetes-path: kubernetes/preprod/fss
         service-account-token-file: /var/run/secrets/kubernetes.io/serviceaccount/token
       generic:
         enabled: true
         backend: kv/preprod/fss
-        application-name: familie-oppdrag/default
-        default-context: familie-oppdrag/default
+        application-name: dp-oppdrag/default
+        default-context: dp-oppdrag/default

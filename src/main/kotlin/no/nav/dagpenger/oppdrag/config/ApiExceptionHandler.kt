@@ -1,12 +1,12 @@
 package no.nav.dagpenger.oppdrag.config
 
-import no.nav.familie.kontrakter.felles.Ressurs
 import no.nav.dagpenger.oppdrag.common.RessursUtils.illegalState
 import no.nav.dagpenger.oppdrag.common.RessursUtils.serviceUnavailable
 import no.nav.dagpenger.oppdrag.common.RessursUtils.unauthorized
 import no.nav.dagpenger.oppdrag.tss.TssConnectionException
 import no.nav.dagpenger.oppdrag.tss.TssException
 import no.nav.dagpenger.oppdrag.tss.TssNoDataFoundException
+import no.nav.familie.kontrakter.felles.Ressurs
 import no.nav.security.token.support.spring.validation.interceptor.JwtTokenUnauthorizedException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

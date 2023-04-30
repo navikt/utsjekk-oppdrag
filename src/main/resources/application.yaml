@@ -1,5 +1,5 @@
 application:
-  name: familie-oppdrag
+  name: dp-oppdrag
 
 server:
   port: 8087

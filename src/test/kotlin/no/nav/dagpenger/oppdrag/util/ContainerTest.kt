@@ -14,7 +14,7 @@ import org.testcontainers.containers.PostgreSQLContainer
 object Containers {
 
     var postgreSQLContainer = MyPostgreSQLContainer("postgres:latest")
-        .withDatabaseName("familie-oppdrag")
+        .withDatabaseName("dp-oppdrag")
         .withUsername("postgres")
         .withPassword("test")
         .withExposedPorts(5432)

@@ -1,12 +1,12 @@
 package no.nav.dagpenger.oppdrag.service
 
-import no.nav.familie.kontrakter.felles.oppdrag.KonsistensavstemmingRequestV2
-import no.nav.familie.kontrakter.felles.oppdrag.KonsistensavstemmingUtbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingSender
 import no.nav.dagpenger.oppdrag.konsistensavstemming.KonsistensavstemmingMapper
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.repository.UtbetalingsoppdragForKonsistensavstemming
+import no.nav.familie.kontrakter.felles.oppdrag.KonsistensavstemmingRequestV2
+import no.nav.familie.kontrakter.felles.oppdrag.KonsistensavstemmingUtbetalingsoppdrag
+import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

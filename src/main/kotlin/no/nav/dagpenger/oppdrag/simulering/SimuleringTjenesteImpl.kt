@@ -1,12 +1,6 @@
 package no.nav.dagpenger.oppdrag.simulering
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import no.nav.familie.kontrakter.felles.oppdrag.RestSimulerResultat
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.simulering.DetaljertSimuleringResultat
-import no.nav.familie.kontrakter.felles.simulering.FeilutbetalingerFraSimulering
-import no.nav.familie.kontrakter.felles.simulering.FeilutbetaltPeriode
-import no.nav.familie.kontrakter.felles.simulering.HentFeilutbetalingerFraSimuleringRequest
 import no.nav.dagpenger.oppdrag.common.logSoapFaultException
 import no.nav.dagpenger.oppdrag.config.FinnesIkkeITps
 import no.nav.dagpenger.oppdrag.config.IntegrasjonException
@@ -14,6 +8,12 @@ import no.nav.dagpenger.oppdrag.config.Integrasjonssystem
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.repository.SimuleringLager
 import no.nav.dagpenger.oppdrag.repository.SimuleringLagerTjeneste
+import no.nav.familie.kontrakter.felles.oppdrag.RestSimulerResultat
+import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
+import no.nav.familie.kontrakter.felles.simulering.DetaljertSimuleringResultat
+import no.nav.familie.kontrakter.felles.simulering.FeilutbetalingerFraSimulering
+import no.nav.familie.kontrakter.felles.simulering.FeilutbetaltPeriode
+import no.nav.familie.kontrakter.felles.simulering.HentFeilutbetalingerFraSimuleringRequest
 import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerBeregningFeilUnderBehandling
 import no.nav.system.os.entiteter.beregningskjema.Beregning
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer

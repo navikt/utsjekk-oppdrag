@@ -1,10 +1,10 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: familie-oppdrag
-  namespace: teamfamilie
+  name: dp-oppdrag
+  namespace: teamdagpenger
   labels:
-    team: teamfamilie
+    team: teamdagpenger
 
 spec:
   image: {{ image }}
@@ -23,7 +23,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /serviceuser/data/dev/srvfamilie-oppdrag
+      - kvPath: /serviceuser/data/dev/srvdp-oppdrag
         mountPath: /secret/serviceuser
   replicas:
     min: 2
@@ -37,8 +37,8 @@ spec:
       memory: 512Mi
       cpu: 500m
   ingresses:
-    - https://familie-oppdrag.dev-fss-pub.nais.io
-    - https://familie-oppdrag.dev.intern.nav.no
+    - https://dp-oppdrag.dev-fss-pub.nais.io
+    - https://dp-oppdrag.dev.intern.nav.no
   secureLogs:
     enabled: true
   azure:

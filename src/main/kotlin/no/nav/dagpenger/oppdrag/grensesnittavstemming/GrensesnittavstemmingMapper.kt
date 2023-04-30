@@ -1,10 +1,10 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingMapper
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingMapper.fagområdeTilAvleverendeKomponentKode
 import no.nav.dagpenger.oppdrag.avstemming.SystemKode
 import no.nav.dagpenger.oppdrag.repository.OppdragLager
+import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AksjonType
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Aksjonsdata
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AvstemmingType

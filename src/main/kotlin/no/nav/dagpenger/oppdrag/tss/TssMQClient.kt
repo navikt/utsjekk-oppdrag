@@ -99,6 +99,6 @@ class TssMQClient(@Qualifier("jmsTemplateTss") private val jmsTemplateTss: JmsTe
     }
 
     companion object {
-        const val BRUKER_ID = "familie-oppdrag"
+        const val BRUKER_ID = "dp-oppdrag"
     }
 }

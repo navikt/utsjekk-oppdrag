@@ -1,11 +1,11 @@
 package no.nav.dagpenger.oppdrag.repository
 
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.util.Containers
 import no.nav.dagpenger.oppdrag.util.TestConfig
 import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
 import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer
+import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals

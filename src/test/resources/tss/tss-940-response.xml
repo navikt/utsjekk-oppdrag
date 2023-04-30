@@ -5,7 +5,7 @@
             <samhandlerIDataB940>
                 <kodeSamhType>INST</kodeSamhType>
                 <navnSamh>BUFETAT MIDT</navnSamh>
-                <brukerID>familie-oppdrag</brukerID>
+                <brukerID>dp-oppdrag</brukerID>
             </samhandlerIDataB940>
         </tssServiceRutine>
     </tssInputData>

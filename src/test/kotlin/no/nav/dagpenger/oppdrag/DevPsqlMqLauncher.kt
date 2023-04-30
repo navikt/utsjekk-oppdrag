@@ -11,7 +11,7 @@ object DevPsqlMqLauncher {
     fun main(args: Array<String>) {
 
         val psql = KPostgreSQLContainer("postgres")
-            .withDatabaseName("familie-oppdrag")
+            .withDatabaseName("dp-oppdrag")
             .withUsername("postgres")
             .withPassword("test")
 
