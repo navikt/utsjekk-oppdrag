@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:simulerBeregningResponse xmlns:ns5="http://nav.no/system/os/entiteter/beregningSkjema" xmlns:ns2="http://www.trygdeetaten.no/skjema/oppdrag" xmlns:ns4="http://nav.no/system/os/tjenester/simulerFpService/simulerFpServiceGrensesnitt" xmlns:ns3="http://nav.no/system/os/entiteter/oppdragSkjema">
+    <response>
+        <simulering>
+            <gjelderId>12345678910</gjelderId>
+            <gjelderNavn>BUSK KRIMINELL                </gjelderNavn>
+            <datoBeregnet>2022-04-07</datoBeregnet>
+            <kodeFaggruppe>EFVM    </kodeFaggruppe>
+            <belop>69930.00</belop>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-01-01</periodeFom>
+                <periodeTom>2021-01-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>1</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-01-01</faktiskFom>
+                        <faktiskTom>2021-01-31</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>1</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100031                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-02-01</periodeFom>
+                <periodeTom>2021-02-28</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>2</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-02-01</faktiskFom>
+                        <faktiskTom>2021-02-28</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>1</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100031                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-03-01</periodeFom>
+                <periodeTom>2021-03-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>3</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-03-01</faktiskFom>
+                        <faktiskTom>2021-03-31</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-04-01</periodeFom>
+                <periodeTom>2021-04-30</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>4</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-04-01</faktiskFom>
+                        <faktiskTom>2021-04-30</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-05-01</periodeFom>
+                <periodeTom>2021-05-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>5</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-05-01</faktiskFom>
+                        <faktiskTom>2021-05-31</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-06-01</periodeFom>
+                <periodeTom>2021-06-30</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>6</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-06-01</faktiskFom>
+                        <faktiskTom>2021-06-30</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-07-01</periodeFom>
+                <periodeTom>2021-07-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>7</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-07-01</faktiskFom>
+                        <faktiskTom>2021-07-31</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-08-01</periodeFom>
+                <periodeTom>2021-08-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>8</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-08-01</faktiskFom>
+                        <faktiskTom>2021-08-31</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-09-01</periodeFom>
+                <periodeTom>2021-09-30</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>9</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-09-01</faktiskFom>
+                        <faktiskTom>2021-09-30</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-10-01</periodeFom>
+                <periodeTom>2021-10-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>10</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-10-01</faktiskFom>
+                        <faktiskTom>2021-10-31</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-11-01</periodeFom>
+                <periodeTom>2021-11-30</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>11</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-11-01</faktiskFom>
+                        <faktiskTom>2021-11-30</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-12-01</periodeFom>
+                <periodeTom>2021-12-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>12</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-12-01</faktiskFom>
+                        <faktiskTom>2021-12-31</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4195.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>4195.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100032                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2022-01-01</periodeFom>
+                <periodeTom>2022-01-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>13</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-01-01</faktiskFom>
+                        <faktiskTom>2022-01-31</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4250.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>3</linjeId>
+                        <sats>4250.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100033                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2022-02-01</periodeFom>
+                <periodeTom>2022-02-28</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>14</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-02-01</faktiskFom>
+                        <faktiskTom>2022-02-28</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>4250.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>3</linjeId>
+                        <sats>4250.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100033                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2022-03-01</periodeFom>
+                <periodeTom>2022-03-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>15</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-07</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-03-01</faktiskFom>
+                        <faktiskTom>2022-03-31</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>5545.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>4</linjeId>
+                        <sats>5545.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100034                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2022-04-01</periodeFom>
+                <periodeTom>2022-04-30</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>EFBT    </kodeFagomraade>
+                    <stoppNivaaId>16</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58924776</oppdragsId>
+                    <fagsystemId>10003                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>BUSK KRIMINELL                </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-19</forfall>
+                    <feilkonto>false</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-04-01</faktiskFom>
+                        <faktiskTom>2022-04-30</faktiskTom>
+                        <kontoStreng>5405000            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>5545.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-07</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>4</linjeId>
+                        <sats>5545.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994288 </saksbehId>
+                        <uforeGrad>100</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>100034                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>EFBT                </klassekode>
+                        <klasseKodeBeskrivelse>Enslig forsørger Barnetilsyn                      </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+        </simulering>
+    </response>
+</ns4:simulerBeregningResponse>

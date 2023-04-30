@@ -1,0 +1,27 @@
+oppdrag.mq:
+  queuemanager: MPLS02
+  send: QA.P231.OB04_OPPDRAG_XML
+  mottak: QA.P_FAMILIE_OPPDRAG.OPPDRAG_FAMILIE_XML_KVITT
+  avstemming: QA.P234.OB29_AVSTEMMING_XML
+  tss: QA.P415.AS10_SAMHANDLER_SERVICE
+  channel: P_FAMILIE_OPPDRAG
+  hostname: mpls02.adeo.no
+  port: 1414
+  user: ${SERVICEUSER_USERNAME}
+  password: ${SERVICEUSER_PASSWORD}
+  enabled: true
+
+no.nav.security.jwt:
+  issuer.azuread:
+    discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
+    accepted_audience: ${AZURE_APP_CLIENT_ID}
+    proxyurl: http://webproxy-nais.nav.no:8088
+    cookie_name: azure_token
+
+spring:
+  datasource:
+    url: jdbc:postgresql://A01DBVL011.adeo.no:5432/familie-oppdrag
+
+OPPDRAG_SERVICE_URL: https://wasapp.adeo.no/cics/services/simulerFpServiceWSBinding
+SECURITYTOKENSERVICE_URL: https://sts.adeo.no/SecurityTokenServiceProvider/
+TILBAKEKREVING_V1_URL: https://cics.adeo.no/oppdrag/K231CW80

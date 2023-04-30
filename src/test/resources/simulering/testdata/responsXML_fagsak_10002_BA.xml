@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:simulerBeregningResponse xmlns:ns5="http://nav.no/system/os/entiteter/beregningSkjema" xmlns:ns2="http://www.trygdeetaten.no/skjema/oppdrag" xmlns:ns4="http://nav.no/system/os/tjenester/simulerFpService/simulerFpServiceGrensesnitt" xmlns:ns3="http://nav.no/system/os/entiteter/oppdragSkjema">
+    <response>
+        <simulering>
+            <gjelderId>12345678910</gjelderId>
+            <gjelderNavn>Hypotese Tillitsfull          </gjelderNavn>
+            <datoBeregnet>2022-04-08</datoBeregnet>
+            <kodeFaggruppe>BA      </kodeFaggruppe>
+            <belop>0.00</belop>
+            <ns5:beregningsPeriode>
+                <periodeFom>2021-12-01</periodeFom>
+                <periodeTom>2021-12-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>BA      </kodeFagomraade>
+                    <stoppNivaaId>1</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58919567</oppdragsId>
+                    <fagsystemId>10002                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>Hypotese Tillitsfull          </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-08</forfall>
+                    <feilkonto>true</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-12-01</faktiskFom>
+                        <faktiskTom>2021-12-31</faktiskTom>
+                        <kontoStreng>8000010            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>2022-04-08</stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>2</linjeId>
+                        <sats>1054.00</sats>
+                        <typeSats>MND </typeSats>
+                        <antallSats>1.00</antallSats>
+                        <saksbehId>Z994440 </saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>1000530011                    </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>BATR                </klassekode>
+                        <klasseKodeBeskrivelse>Barnetrygd ordinær                                </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2021-12-01</faktiskFom>
+                        <faktiskTom>2021-12-31</faktiskTom>
+                        <kontoStreng>8000010            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>-1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>true</tilbakeforing>
+                        <linjeId>1</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>BATR                </klassekode>
+                        <klasseKodeBeskrivelse>Barnetrygd ordinær                                </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2022-01-01</periodeFom>
+                <periodeTom>2022-01-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>BA      </kodeFagomraade>
+                    <stoppNivaaId>2</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58919567</oppdragsId>
+                    <fagsystemId>10002                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>Hypotese Tillitsfull          </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-08</forfall>
+                    <feilkonto>true</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-01-01</faktiskFom>
+                        <faktiskTom>2022-01-31</faktiskTom>
+                        <kontoStreng>0630989            </kontoStreng>
+                        <behandlingskode>0</behandlingskode>
+                        <belop>1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering>J</korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>0</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>KL_KODE_FEIL_BA     </klassekode>
+                        <klasseKodeBeskrivelse>Observsjonskonto Barnetrygd                       </klasseKodeBeskrivelse>
+                        <typeKlasse>FEIL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for feilkontoer                        </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-01-01</faktiskFom>
+                        <faktiskTom>2022-01-31</faktiskTom>
+                        <kontoStreng>8000010            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>0</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>BATR                </klassekode>
+                        <klasseKodeBeskrivelse>Barnetrygd ordinær                                </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-01-01</faktiskFom>
+                        <faktiskTom>2022-01-31</faktiskTom>
+                        <kontoStreng>0902900            </kontoStreng>
+                        <behandlingskode>0</behandlingskode>
+                        <belop>-1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>0</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>TBMOTOBS            </klassekode>
+                        <klasseKodeBeskrivelse>Feilutbetaling motkonto til OBS konto             </klasseKodeBeskrivelse>
+                        <typeKlasse>MOTP</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for motposteringskonto                 </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-01-01</faktiskFom>
+                        <faktiskTom>2022-01-31</faktiskTom>
+                        <kontoStreng>8000010            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>-1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>true</tilbakeforing>
+                        <linjeId>1</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>BATR                </klassekode>
+                        <klasseKodeBeskrivelse>Barnetrygd ordinær                                </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2022-02-01</periodeFom>
+                <periodeTom>2022-02-28</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>BA      </kodeFagomraade>
+                    <stoppNivaaId>3</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58919567</oppdragsId>
+                    <fagsystemId>10002                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>Hypotese Tillitsfull          </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-08</forfall>
+                    <feilkonto>true</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-02-01</faktiskFom>
+                        <faktiskTom>2022-02-28</faktiskTom>
+                        <kontoStreng>0630989            </kontoStreng>
+                        <behandlingskode>0</behandlingskode>
+                        <belop>1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering>J</korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>0</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>KL_KODE_FEIL_BA     </klassekode>
+                        <klasseKodeBeskrivelse>Observsjonskonto Barnetrygd                       </klasseKodeBeskrivelse>
+                        <typeKlasse>FEIL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for feilkontoer                        </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-02-01</faktiskFom>
+                        <faktiskTom>2022-02-28</faktiskTom>
+                        <kontoStreng>8000010            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>0</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>BATR                </klassekode>
+                        <klasseKodeBeskrivelse>Barnetrygd ordinær                                </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-02-01</faktiskFom>
+                        <faktiskTom>2022-02-28</faktiskTom>
+                        <kontoStreng>0902900            </kontoStreng>
+                        <behandlingskode>0</behandlingskode>
+                        <belop>-1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>0</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>TBMOTOBS            </klassekode>
+                        <klasseKodeBeskrivelse>Feilutbetaling motkonto til OBS konto             </klasseKodeBeskrivelse>
+                        <typeKlasse>MOTP</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for motposteringskonto                 </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-02-01</faktiskFom>
+                        <faktiskTom>2022-02-28</faktiskTom>
+                        <kontoStreng>8000010            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>-1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>true</tilbakeforing>
+                        <linjeId>1</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>BATR                </klassekode>
+                        <klasseKodeBeskrivelse>Barnetrygd ordinær                                </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+            <ns5:beregningsPeriode>
+                <periodeFom>2022-03-01</periodeFom>
+                <periodeTom>2022-03-31</periodeTom>
+                <ns5:beregningStoppnivaa>
+                    <kodeFagomraade>BA      </kodeFagomraade>
+                    <stoppNivaaId>4</stoppNivaaId>
+                    <behandlendeEnhet>8020         </behandlendeEnhet>
+                    <oppdragsId>58919567</oppdragsId>
+                    <fagsystemId>10002                     </fagsystemId>
+                    <kid></kid>
+                    <utbetalesTilId>12345678910</utbetalesTilId>
+                    <utbetalesTilNavn>Hypotese Tillitsfull          </utbetalesTilNavn>
+                    <bilagsType>U </bilagsType>
+                    <forfall>2022-04-08</forfall>
+                    <feilkonto>true</feilkonto>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-03-01</faktiskFom>
+                        <faktiskTom>2022-03-31</faktiskTom>
+                        <kontoStreng>0630989            </kontoStreng>
+                        <behandlingskode>0</behandlingskode>
+                        <belop>1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering>J</korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>0</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>KL_KODE_FEIL_BA     </klassekode>
+                        <klasseKodeBeskrivelse>Observsjonskonto Barnetrygd                       </klasseKodeBeskrivelse>
+                        <typeKlasse>FEIL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for feilkontoer                        </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-03-01</faktiskFom>
+                        <faktiskTom>2022-03-31</faktiskTom>
+                        <kontoStreng>8000010            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>0</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>BATR                </klassekode>
+                        <klasseKodeBeskrivelse>Barnetrygd ordinær                                </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-03-01</faktiskFom>
+                        <faktiskTom>2022-03-31</faktiskTom>
+                        <kontoStreng>0902900            </kontoStreng>
+                        <behandlingskode>0</behandlingskode>
+                        <belop>-1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>false</tilbakeforing>
+                        <linjeId>0</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>TBMOTOBS            </klassekode>
+                        <klasseKodeBeskrivelse>Feilutbetaling motkonto til OBS konto             </klasseKodeBeskrivelse>
+                        <typeKlasse>MOTP</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for motposteringskonto                 </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                    <ns5:beregningStoppnivaaDetaljer>
+                        <faktiskFom>2022-03-01</faktiskFom>
+                        <faktiskTom>2022-03-31</faktiskTom>
+                        <kontoStreng>8000010            </kontoStreng>
+                        <behandlingskode>1</behandlingskode>
+                        <belop>-1054.00</belop>
+                        <trekkVedtakId>0</trekkVedtakId>
+                        <stonadId>          </stonadId>
+                        <korrigering> </korrigering>
+                        <tilbakeforing>true</tilbakeforing>
+                        <linjeId>1</linjeId>
+                        <sats>0.00</sats>
+                        <typeSats>    </typeSats>
+                        <antallSats>0.00</antallSats>
+                        <saksbehId>K231B215</saksbehId>
+                        <uforeGrad>0</uforeGrad>
+                        <kravhaverId>           </kravhaverId>
+                        <delytelseId>                              </delytelseId>
+                        <bostedsenhet>8020         </bostedsenhet>
+                        <skykldnerId>           </skykldnerId>
+                        <klassekode>BATR                </klassekode>
+                        <klasseKodeBeskrivelse>Barnetrygd ordinær                                </klasseKodeBeskrivelse>
+                        <typeKlasse>YTEL</typeKlasse>
+                        <typeKlasseBeskrivelse>Klassetype for ytelseskonti                       </typeKlasseBeskrivelse>
+                        <refunderesOrgNr>           </refunderesOrgNr>
+                    </ns5:beregningStoppnivaaDetaljer>
+                </ns5:beregningStoppnivaa>
+            </ns5:beregningsPeriode>
+        </simulering>
+    </response>
+</ns4:simulerBeregningResponse>
