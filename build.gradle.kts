@@ -23,7 +23,7 @@ val navTjenesterVersion = "2612.db4dc68"
 val navCommonVersion = "2.2023.01.10_13.49-81ddc732df3a"
 val ibmMqVersion = "9.3.2.0"
 val mockOauth2Version = "0.5.8"
-val jupiterVersion = "5.9.2"
+val jupiterVersion = "5.9.3"
 val testcontainersVersion = "1.18.0"
 val mockkVersion = "1.13.5"
 
