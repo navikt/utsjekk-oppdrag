@@ -1,13 +1,13 @@
 package no.nav.dagpenger.oppdrag.rest
 
+import no.nav.dagpenger.oppdrag.common.Ressurs
 import no.nav.dagpenger.oppdrag.common.RessursUtils.ok
+import no.nav.dagpenger.oppdrag.domene.DetaljertSimuleringResultat
+import no.nav.dagpenger.oppdrag.domene.FeilutbetalingerFraSimulering
+import no.nav.dagpenger.oppdrag.domene.HentFeilutbetalingerFraSimuleringRequest
+import no.nav.dagpenger.oppdrag.domene.RestSimulerResultat
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.simulering.SimuleringTjeneste
-import no.nav.familie.kontrakter.felles.Ressurs
-import no.nav.familie.kontrakter.felles.oppdrag.RestSimulerResultat
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.simulering.DetaljertSimuleringResultat
-import no.nav.familie.kontrakter.felles.simulering.FeilutbetalingerFraSimulering
-import no.nav.familie.kontrakter.felles.simulering.HentFeilutbetalingerFraSimuleringRequest
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse
 import org.slf4j.Logger

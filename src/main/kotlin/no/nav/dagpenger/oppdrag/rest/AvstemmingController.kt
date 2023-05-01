@@ -1,13 +1,13 @@
 package no.nav.dagpenger.oppdrag.rest
 
+import no.nav.dagpenger.oppdrag.common.Ressurs
 import no.nav.dagpenger.oppdrag.common.RessursUtils.illegalState
 import no.nav.dagpenger.oppdrag.common.RessursUtils.ok
+import no.nav.dagpenger.oppdrag.domene.GrensesnittavstemmingRequest
+import no.nav.dagpenger.oppdrag.domene.KonsistensavstemmingRequestV2
+import no.nav.dagpenger.oppdrag.domene.KonsistensavstemmingUtbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.service.GrensesnittavstemmingService
 import no.nav.dagpenger.oppdrag.service.KonsistensavstemmingService
-import no.nav.familie.kontrakter.felles.Ressurs
-import no.nav.familie.kontrakter.felles.oppdrag.GrensesnittavstemmingRequest
-import no.nav.familie.kontrakter.felles.oppdrag.KonsistensavstemmingRequestV2
-import no.nav.familie.kontrakter.felles.oppdrag.KonsistensavstemmingUtbetalingsoppdrag
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

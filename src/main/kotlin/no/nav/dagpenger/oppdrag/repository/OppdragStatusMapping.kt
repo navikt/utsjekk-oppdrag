@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.repository
 
+import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.Status
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 
 val Oppdrag.oppdragStatus: OppdragStatus

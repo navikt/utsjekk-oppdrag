@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingMapper.fagområdeTilAvleverendeKomponentKode
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsperiode
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsperiode
 import no.trygdeetaten.skjema.oppdrag.ObjectFactory
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
@@ -80,8 +80,7 @@ class OppdragMapper {
             sats = utbetalingsperiode.sats
             fradragTillegg = OppdragSkjemaConstants.FRADRAG_TILLEGG
             typeSats = SatsTypeKode.fromKode(utbetalingsperiode.satsType.name).kode
-            brukKjoreplan = if (utbetalingsoppdrag.gOmregning)
-                OppdragSkjemaConstants.BRUK_KJØREPLAN_G_OMBEREGNING else OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
+            brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
             henvisning = utbetalingsperiode.behandlingId.toString()

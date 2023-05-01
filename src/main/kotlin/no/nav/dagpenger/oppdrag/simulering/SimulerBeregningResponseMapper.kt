@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.simulering
 
-import no.nav.familie.kontrakter.felles.oppdrag.RestSimulerResultat
+import no.nav.dagpenger.oppdrag.domene.RestSimulerResultat
 import no.nav.system.os.entiteter.beregningskjema.BeregningsPeriode
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse
 import java.time.LocalDate

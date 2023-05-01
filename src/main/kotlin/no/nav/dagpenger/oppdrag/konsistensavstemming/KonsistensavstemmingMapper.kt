@@ -2,12 +2,12 @@ package no.nav.dagpenger.oppdrag.konsistensavstemming
 
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingMapper
 import no.nav.dagpenger.oppdrag.avstemming.SystemKode
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsperiode
 import no.nav.dagpenger.oppdrag.iverksetting.GradTypeKode
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragSkjemaConstants
 import no.nav.dagpenger.oppdrag.iverksetting.SatsTypeKode
 import no.nav.dagpenger.oppdrag.iverksetting.UtbetalingsfrekvensKode
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsperiode
 import no.nav.virksomhet.tjenester.avstemming.informasjon.konsistensavstemmingsdata.v1.Aksjonsdata
 import no.nav.virksomhet.tjenester.avstemming.informasjon.konsistensavstemmingsdata.v1.Attestant
 import no.nav.virksomhet.tjenester.avstemming.informasjon.konsistensavstemmingsdata.v1.Enhet

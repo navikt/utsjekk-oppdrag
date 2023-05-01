@@ -1,9 +1,9 @@
 package no.nav.dagpenger.oppdrag.repository
 
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.domene.behandlingsIdForFørsteUtbetalingsperiode
+import no.nav.dagpenger.oppdrag.domene.objectMapper
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
-import no.nav.familie.kontrakter.felles.objectMapper
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.oppdrag.behandlingsIdForFørsteUtbetalingsperiode
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column

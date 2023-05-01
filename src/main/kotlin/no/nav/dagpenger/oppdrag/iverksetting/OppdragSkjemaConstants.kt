@@ -20,7 +20,6 @@ class OppdragSkjemaConstants {
 
         val FRADRAG_TILLEGG = TfradragTillegg.T
         const val BRUK_KJØREPLAN_DEFAULT = "N"
-        const val BRUK_KJØREPLAN_G_OMBEREGNING = "J"
     }
 }
 

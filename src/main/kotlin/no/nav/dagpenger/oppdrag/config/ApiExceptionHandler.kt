@@ -1,12 +1,8 @@
 package no.nav.dagpenger.oppdrag.config
 
+import no.nav.dagpenger.oppdrag.common.Ressurs
 import no.nav.dagpenger.oppdrag.common.RessursUtils.illegalState
-import no.nav.dagpenger.oppdrag.common.RessursUtils.serviceUnavailable
 import no.nav.dagpenger.oppdrag.common.RessursUtils.unauthorized
-import no.nav.dagpenger.oppdrag.tss.TssConnectionException
-import no.nav.dagpenger.oppdrag.tss.TssException
-import no.nav.dagpenger.oppdrag.tss.TssNoDataFoundException
-import no.nav.familie.kontrakter.felles.Ressurs
 import no.nav.security.token.support.spring.validation.interceptor.JwtTokenUnauthorizedException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -39,19 +35,6 @@ class ApiExceptionHandler {
         logger.error("Feil mot ${feil.system} har oppstått exception=${getMostSpecificCause(feil)::class}")
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(Ressurs.failure(errorMessage = feil.message))
-    }
-
-    @ExceptionHandler(TssException::class)
-    fun handleTssException(tssException: TssException): ResponseEntity<Ressurs<Nothing>> {
-        logger.warn("Feil mot TSS: ${tssException.message}", tssException)
-        return when (tssException) {
-            is TssConnectionException -> serviceUnavailable(tssException.message!!, tssException)
-            is TssNoDataFoundException -> {
-                ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Ressurs.failure(errorMessage = tssException.message))
-            }
-            else -> illegalState(tssException.message!!, tssException)
-        }
     }
 
     @ExceptionHandler(FinnesIkkeITps::class)

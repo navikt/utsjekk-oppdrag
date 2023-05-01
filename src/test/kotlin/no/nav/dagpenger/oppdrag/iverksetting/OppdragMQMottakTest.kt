@@ -5,12 +5,12 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
+import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.repository.OppdragLager
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.repository.somOppdragLager
 import no.nav.dagpenger.oppdrag.repository.somOppdragLagerMedVersjon
 import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

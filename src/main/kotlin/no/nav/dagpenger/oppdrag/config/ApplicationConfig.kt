@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.config
 
-import no.nav.familie.log.filter.LogFilter
+import no.nav.dagpenger.oppdrag.common.log.filter.LogFilter
 import no.nav.security.token.support.spring.api.EnableJwtTokenValidation
 import org.springframework.boot.SpringBootConfiguration
 import org.springframework.boot.autoconfigure.domain.EntityScan

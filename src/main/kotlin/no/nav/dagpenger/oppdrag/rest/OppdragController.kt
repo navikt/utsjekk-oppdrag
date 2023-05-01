@@ -1,16 +1,16 @@
 package no.nav.dagpenger.oppdrag.rest
 
+import no.nav.dagpenger.oppdrag.common.Ressurs
 import no.nav.dagpenger.oppdrag.common.RessursUtils.conflict
 import no.nav.dagpenger.oppdrag.common.RessursUtils.illegalState
 import no.nav.dagpenger.oppdrag.common.RessursUtils.notFound
 import no.nav.dagpenger.oppdrag.common.RessursUtils.ok
+import no.nav.dagpenger.oppdrag.domene.OppdragId
+import no.nav.dagpenger.oppdrag.domene.OppdragStatus
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragMapper
 import no.nav.dagpenger.oppdrag.service.OppdragAlleredeSendtException
 import no.nav.dagpenger.oppdrag.service.OppdragService
-import no.nav.familie.kontrakter.felles.Ressurs
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragId
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType

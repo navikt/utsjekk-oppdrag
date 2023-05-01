@@ -1,14 +1,14 @@
 package no.nav.dagpenger.oppdrag.rest
 
+import no.nav.dagpenger.oppdrag.common.Ressurs
+import no.nav.dagpenger.oppdrag.domene.OppdragStatus
+import no.nav.dagpenger.oppdrag.domene.oppdragId
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragMapper
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.service.OppdragService
 import no.nav.dagpenger.oppdrag.util.Containers
 import no.nav.dagpenger.oppdrag.util.TestConfig
 import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer
-import no.nav.familie.kontrakter.felles.Ressurs
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
-import no.nav.familie.kontrakter.felles.oppdrag.oppdragId
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.springframework.beans.factory.annotation.Autowired

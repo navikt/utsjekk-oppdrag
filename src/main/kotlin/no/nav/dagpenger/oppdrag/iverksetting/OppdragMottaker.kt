@@ -1,10 +1,10 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
 import no.nav.dagpenger.oppdrag.config.ApplicationConfig.Companion.LOKALE_PROFILER
+import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.domene.id
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.repository.oppdragStatus
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile

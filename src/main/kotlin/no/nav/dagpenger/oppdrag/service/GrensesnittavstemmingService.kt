@@ -3,9 +3,9 @@ package no.nav.dagpenger.oppdrag.service
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Metrics
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingSender
+import no.nav.dagpenger.oppdrag.domene.GrensesnittavstemmingRequest
 import no.nav.dagpenger.oppdrag.grensesnittavstemming.GrensesnittavstemmingMapper
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
-import no.nav.familie.kontrakter.felles.oppdrag.GrensesnittavstemmingRequest
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Grunnlagsdata
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

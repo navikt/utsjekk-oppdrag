@@ -1,9 +1,9 @@
 package no.nav.dagpenger.oppdrag.simulering.util
 
 import io.mockk.InternalPlatformDsl.toStr
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsperiode
 import no.nav.dagpenger.oppdrag.simulering.TypeKlasse
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsperiode
 import no.nav.system.os.entiteter.beregningskjema.Beregning
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaa
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer

@@ -1,6 +1,5 @@
 package no.nav.dagpenger.oppdrag.domene
 
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragId
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 
 val Oppdrag.id: OppdragId

@@ -1,9 +1,9 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
 import no.nav.dagpenger.oppdrag.avstemming.SystemKode
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.repository.somOppdragLager
 import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AksjonType
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Aksjonsdata
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AvstemmingType

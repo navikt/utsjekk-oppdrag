@@ -1,14 +1,14 @@
 package no.nav.dagpenger.oppdrag.simulering
 
 import no.nav.common.utils.StringUtils
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.simulering.BetalingType
-import no.nav.familie.kontrakter.felles.simulering.DetaljertSimuleringResultat
-import no.nav.familie.kontrakter.felles.simulering.FagOmrådeKode
-import no.nav.familie.kontrakter.felles.simulering.MottakerType
-import no.nav.familie.kontrakter.felles.simulering.PosteringType
-import no.nav.familie.kontrakter.felles.simulering.SimuleringMottaker
-import no.nav.familie.kontrakter.felles.simulering.SimulertPostering
+import no.nav.dagpenger.oppdrag.domene.BetalingType
+import no.nav.dagpenger.oppdrag.domene.DetaljertSimuleringResultat
+import no.nav.dagpenger.oppdrag.domene.FagOmrådeKode
+import no.nav.dagpenger.oppdrag.domene.MottakerType
+import no.nav.dagpenger.oppdrag.domene.PosteringType
+import no.nav.dagpenger.oppdrag.domene.SimuleringMottaker
+import no.nav.dagpenger.oppdrag.domene.SimulertPostering
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
 import no.nav.system.os.entiteter.beregningskjema.Beregning
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaa
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer

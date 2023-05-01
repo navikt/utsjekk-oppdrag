@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.service
 
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.repository.MellomlagringKonsistensavstemming
 import no.nav.dagpenger.oppdrag.repository.MellomlagringKonsistensavstemmingRepository
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service

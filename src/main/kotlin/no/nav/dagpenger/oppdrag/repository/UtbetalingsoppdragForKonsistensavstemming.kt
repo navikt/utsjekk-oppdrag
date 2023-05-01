@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.repository
 
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
 
 data class UtbetalingsoppdragForKonsistensavstemming(
     val fagsakId: String,

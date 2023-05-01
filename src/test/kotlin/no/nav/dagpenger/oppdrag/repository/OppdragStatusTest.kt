@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.repository
 
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
+import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import org.junit.jupiter.api.Test

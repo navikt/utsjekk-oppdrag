@@ -1,11 +1,11 @@
 package no.nav.dagpenger.oppdrag.service
 
+import no.nav.dagpenger.oppdrag.domene.OppdragId
+import no.nav.dagpenger.oppdrag.domene.OppdragStatus
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.domene.id
 import no.nav.dagpenger.oppdrag.repository.OppdragLager
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragId
-import no.nav.familie.kontrakter.felles.oppdrag.OppdragStatus
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

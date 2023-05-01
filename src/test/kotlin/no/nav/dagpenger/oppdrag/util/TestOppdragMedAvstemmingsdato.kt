@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.util
 
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsperiode
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsperiode
 import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.random.Random

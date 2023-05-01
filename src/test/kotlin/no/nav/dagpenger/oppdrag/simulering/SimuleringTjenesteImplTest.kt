@@ -1,11 +1,11 @@
 package no.nav.dagpenger.oppdrag.simulering
 
+import no.nav.dagpenger.oppdrag.domene.HentFeilutbetalingerFraSimuleringRequest
+import no.nav.dagpenger.oppdrag.domene.Ytelsestype
 import no.nav.dagpenger.oppdrag.repository.SimuleringLager
 import no.nav.dagpenger.oppdrag.repository.SimuleringLagerTjeneste
 import no.nav.dagpenger.oppdrag.simulering.util.lagTestUtbetalingsoppdragForFGBMedEttBarn
 import no.nav.dagpenger.oppdrag.util.Containers
-import no.nav.familie.kontrakter.felles.simulering.HentFeilutbetalingerFraSimuleringRequest
-import no.nav.familie.kontrakter.felles.tilbakekreving.Ytelsestype
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

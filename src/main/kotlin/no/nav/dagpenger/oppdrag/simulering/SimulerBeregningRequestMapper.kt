@@ -1,12 +1,12 @@
 package no.nav.dagpenger.oppdrag.simulering
 
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.domene.Utbetalingsperiode
 import no.nav.dagpenger.oppdrag.iverksetting.EndringsKode
 import no.nav.dagpenger.oppdrag.iverksetting.GradTypeKode
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragSkjemaConstants
 import no.nav.dagpenger.oppdrag.iverksetting.SatsTypeKode
 import no.nav.dagpenger.oppdrag.iverksetting.UtbetalingsfrekvensKode
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsoppdrag
-import no.nav.familie.kontrakter.felles.oppdrag.Utbetalingsperiode
 import no.nav.system.os.entiteter.typer.simpletypes.FradragTillegg
 import no.nav.system.os.entiteter.typer.simpletypes.KodeStatusLinje
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest

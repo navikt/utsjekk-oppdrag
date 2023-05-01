@@ -1,6 +1,5 @@
 package no.nav.dagpenger.oppdrag.common
 
-import no.nav.familie.kontrakter.felles.Ressurs
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
