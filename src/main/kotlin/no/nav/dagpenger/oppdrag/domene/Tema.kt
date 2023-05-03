@@ -1,4 +1,4 @@
-package no.nav.familie.kontrakter.felles
+package no.nav.dagpenger.oppdrag.domene
 
 enum class Tema(val fagsaksystem: String) {
     BAR("BA"),

@@ -18,13 +18,13 @@ oppdrag.mq:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres-oppdrag:5432/familieoppdrag
-    username: familie
-    password: familie-pwd
+    url: jdbc:postgresql://postgres-oppdrag:5432/dpoppdrag
+    username: dp
+    password: dp-pwd
   cloud:
     vault:
       database:
-        role: familie
+        role: dp
 
 logging:
   config: "classpath:logback-e2e.xml"

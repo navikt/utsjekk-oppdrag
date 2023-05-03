@@ -20,7 +20,7 @@
 
     <logger name="secureLogger" level="INFO"/>
     <logger name="no.nav" level="WARN"/>
-    <logger name="no.nav.familie" level="INFO"/>
+    <logger name="no.nav.dagepnger" level="INFO"/>
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.apache" level="WARN"/> <!-- NB ikke sett denne til info. Det vil logge soap kall -->
     <logger name="org.apache.http.client.protocol.ResponseProcessCookies" level="ERROR"/>

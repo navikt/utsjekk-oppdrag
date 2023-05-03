@@ -1,8 +1,5 @@
 package no.nav.dagpenger.oppdrag.domene
 
-import no.nav.familie.kontrakter.felles.Språkkode
-import no.nav.familie.kontrakter.felles.Tema
-
 enum class Ytelsestype(val kode: String, val navn: Map<Språkkode, String>) {
     BARNETRYGD(
         "BA",

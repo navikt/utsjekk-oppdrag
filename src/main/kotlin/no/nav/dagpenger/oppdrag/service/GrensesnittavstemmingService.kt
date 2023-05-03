@@ -58,7 +58,7 @@ class GrensesnittavstemmingService(
     }
 
     private fun opprettMetrikkerForFagsystem(fagsystem: Fagsystem): Map<String, Counter> {
-        val PACKAGE_NAME = "familie.oppdrag.grensesnittavstemming"
+        val PACKAGE_NAME = "dagpenger.oppdrag.grensesnittavstemming"
         val godkjentCounter = Metrics.counter(
             PACKAGE_NAME,
             "fagsystem", fagsystem.name,

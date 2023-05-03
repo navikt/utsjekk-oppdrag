@@ -5,14 +5,14 @@ import java.io.PrintWriter
 import java.io.StringWriter
 
 /**
- * Objekt som brukes for utveksling av data mellom familietjenester.
+ * Objekt som brukes for utveksling av data mellom dagpengetjenester.
  * Brukes både mellom systemer og til frontend.
  *
  * @param T typen til data i objektet.
  * @param status status på request. Kan være 200 OK med feilet ressurs
  * @param melding teknisk melding som ikke skal inneholde sensitive data
  * @param frontendFeilmelding feilmelding forbehold frontend og kan inneholde sensitive data
- * @param stacktrace stacktrace fra feil som kan være nyttig til debugging i familie-prosessering
+ * @param stacktrace stacktrace fra feil som kan være nyttig til debugging i dagpenger-prosessering
  */
 data class Ressurs<T>(
     val data: T?,
