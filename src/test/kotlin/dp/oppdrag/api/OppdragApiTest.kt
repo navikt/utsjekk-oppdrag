@@ -48,7 +48,10 @@ class OppdragApiTest : TestBase() {
         }
 
         assertEquals(HttpStatusCode.Conflict, response2.status)
-        assertEquals("Oppdrag er allerede sendt for saksnr 12345", response2.bodyAsText())
+        assertEquals(
+            "Oppdrag er allerede sendt for person_ident = 010203*****, behandling_id = 1, fagsystem = DP, versjon = 0",
+            response2.bodyAsText()
+        )
     }
 
     @Test
