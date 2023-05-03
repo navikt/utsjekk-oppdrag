@@ -108,7 +108,7 @@ private val utbetalingsoppdragExample = Utbetalingsoppdrag(
             sats = BigDecimal.TEN,
             satsType = Utbetalingsperiode.SatsType.DAG,
             utbetalesTil = "01020312345",
-            behandlingId = 3L,
+            behandlingId = "3",
             utbetalingsgrad = 100
         )
     ),

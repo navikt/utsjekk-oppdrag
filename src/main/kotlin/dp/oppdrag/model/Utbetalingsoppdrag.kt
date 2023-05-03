@@ -37,7 +37,7 @@ data class Utbetalingsperiode(
     val sats: BigDecimal,
     val satsType: SatsType,
     val utbetalesTil: String,
-    val behandlingId: Long,
+    val behandlingId: String,
     val utbetalingsgrad: Int? = null
 ) {
     enum class SatsType {
@@ -53,5 +53,5 @@ data class Opphoer(
 
 fun Utbetalingsoppdrag.behandlingsIdForFoersteUtbetalingsperiode(): String {
 
-    return utbetalingsperiode[0].behandlingId.toString()
+    return utbetalingsperiode[0].behandlingId
 }

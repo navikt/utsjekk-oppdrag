@@ -136,7 +136,7 @@ class OppdragListenerMQTest {
                         sats = BigDecimal.TEN,
                         satsType = Utbetalingsperiode.SatsType.DAG,
                         utbetalesTil = "",
-                        behandlingId = 3L,
+                        behandlingId = "3",
                         utbetalingsgrad = 100
                     )
                 ),

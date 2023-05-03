@@ -283,7 +283,7 @@ class OppdragApiTest : TestBase() {
                     sats = BigDecimal.valueOf(10000),
                     satsType = Utbetalingsperiode.SatsType.MND,
                     utbetalesTil = "987654321",
-                    behandlingId = behandlingId,
+                    behandlingId = behandlingId.toString(),
                     utbetalingsgrad = 100
                 )
             ),

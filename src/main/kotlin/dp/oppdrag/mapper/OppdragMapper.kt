@@ -94,7 +94,7 @@ class OppdragMapper {
                 if (utbetalingsoppdrag.gOmregning) BRUK_KJOEREPLAN_G_OMBEREGNING else BRUK_KJOEREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
-            henvisning = utbetalingsperiode.behandlingId.toString()
+            henvisning = utbetalingsperiode.behandlingId
             attestant180.add(
                 Attestant180().withAttestantId(utbetalingsoppdrag.saksbehandlerId)
             )
