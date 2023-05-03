@@ -10,13 +10,11 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
-import java.lang.Thread.sleep
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class OppdragApiTest : TestBase() {
@@ -114,7 +112,10 @@ class OppdragApiTest : TestBase() {
         }
 
         assertEquals(HttpStatusCode.Conflict, response2.status)
-        assertEquals("Oppdrag er allerede sendt for saksnr 12345", response2.bodyAsText())
+        assertEquals(
+            "Oppdrag er allerede sendt for person_ident = 010203*****, behandling_id = 2, fagsystem = DP, versjon = 0",
+            response2.bodyAsText()
+        )
 
         // Send Oppdrag again with another version
         val response3 = client.post("/oppdragPaaNytt/1") {
@@ -196,7 +197,7 @@ class OppdragApiTest : TestBase() {
     }
 
     @Test
-    fun `skal få feilmelding når vi får feilkvittering fra oppdrag`() = setUpTestApplication {
+    fun shouldReturnFeimeldingWhenFeilkvitteringFromOs() = setUpTestApplication {
         val behandlingsId = 3L
         val utbetalingsoppdrag = opprettUtbetalingsoppdrag(behandlingsId)
         val oppdragId = OppdragId(

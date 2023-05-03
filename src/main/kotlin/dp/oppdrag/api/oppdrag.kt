@@ -76,7 +76,11 @@ private suspend inline fun <reified TResponse : Any> OpenAPIPipelineResponseCont
     }.fold(
         onFailure = {
             if (it is OppdragAlleredeSendtException) {
-                respondConflict("Oppdrag er allerede sendt for saksnr ${request.saksnummer}")
+                respondConflict("Oppdrag er allerede sendt for " +
+                        "person_ident = ${request.aktoer.subSequence(0,6).padEnd(11, '*')}, " +
+                        "behandling_id = ${request.behandlingsIdForFoersteUtbetalingsperiode()}, " +
+                        "fagsystem = ${request.fagSystem}, " +
+                        "versjon = $versjon")
             } else {
                 respondError("Klarte ikke sende oppdrag for saksnr ${request.saksnummer}", it)
             }
