@@ -27,7 +27,7 @@ import kotlin.test.assertTrue
 
 @ActiveProfiles("dev")
 @ContextConfiguration(initializers = [Containers.PostgresSQLInitializer::class])
-@SpringBootTest(classes = [SimuleringTjenesteImplTest.TestConfig::class], properties = ["spring.cloud.vault.enabled=false"])
+@SpringBootTest(classes = [SimuleringTjenesteImplTest.TestConfig::class])
 @DisabledIfEnvironmentVariable(named = "CIRCLECI", matches = "true")
 @Testcontainers
 internal class SimuleringTjenesteImplTest {
