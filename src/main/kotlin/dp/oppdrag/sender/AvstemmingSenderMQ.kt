@@ -55,7 +55,7 @@ class AvstemmingSenderMQ : AvstemmingSender {
             queueSender.send(message)
 
         } catch (e: Exception) {
-            defaultLogger.error { "Klarte ikke sende Avstemming til OS. Feil: $e" }
+            defaultLogger.error { "Klarte ikke sende Avstemming til OS. Feil: ${e.stackTrace}" }
             throw e
         } finally {
             if (::queueSender.isInitialized) {
