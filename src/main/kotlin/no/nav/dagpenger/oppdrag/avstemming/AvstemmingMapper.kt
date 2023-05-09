@@ -20,6 +20,7 @@ object AvstemmingMapper {
             "EFSP" -> "EF"
             "BA" -> "BA"
             "KS" -> "KS"
+            "DP" -> "DP"
             else -> throw Error("$fagområde støttes ikke ennå")
         }
     }

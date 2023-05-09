@@ -47,7 +47,7 @@ internal class OppdragControllerTest {
                 BigDecimal.ONE,
                 Utbetalingsperiode.SatsType.MND,
                 "UTEBETALES_TIL",
-                1
+                "1"
             )
         )
     )

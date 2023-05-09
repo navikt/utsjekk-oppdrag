@@ -46,7 +46,7 @@ object TestOppdragMedAvstemmingsdato {
             sats = beløp.toBigDecimal(),
             satsType = Utbetalingsperiode.SatsType.MND,
             utbetalesTil = AKTOER,
-            behandlingId = Random.nextLong(),
+            behandlingId = Random.nextLong().toString(),
             utbetalingsgrad = 50
         )
 }

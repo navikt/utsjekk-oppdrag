@@ -20,7 +20,7 @@ import java.util.UUID
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/api/tilbakekreving")
+@RequestMapping("/tilbakekreving")
 @ProtectedWithClaims(issuer = "azuread")
 class TilbakekrevingController(private val økonomiClient: ØkonomiClient) {
 

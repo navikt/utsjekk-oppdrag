@@ -46,7 +46,7 @@ fun lagTestUtbetalingsoppdragForFGBMedEttBarn(): Utbetalingsoppdrag {
                 BigDecimal(1054),
                 Utbetalingsperiode.SatsType.MND,
                 personIdent,
-                behandlingId
+                behandlingId.toString()
             )
         )
     )

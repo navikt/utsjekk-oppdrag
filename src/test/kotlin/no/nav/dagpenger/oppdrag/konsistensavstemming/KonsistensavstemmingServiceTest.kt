@@ -284,7 +284,7 @@ class KonsistensavstemmingServiceTest {
             sats = BigDecimal(beløp),
             satsType = Utbetalingsperiode.SatsType.MND,
             utbetalesTil = "meg",
-            behandlingId = behandlingsId
+            behandlingId = behandlingsId.toString()
         )
 
     private fun lagUtbetalingsoppdrag(saksnummer: String, behandlingId: String, vararg utbetalingsperiode: Utbetalingsperiode) =

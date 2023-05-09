@@ -48,13 +48,13 @@ management:
 
 springdoc:
   packagesToScan: no.nav.dagpenger.oppdrag
-  pathsToMatch: /v3/api-docs,/api/**
+  pathsToMatch: /v3/api-docs,/**
   swagger-ui:
     disable-swagger-default-url: true
 
 BA_SAK_CLIENT_ID: ""
 EF_SAK_CLIENT_ID: ""
-EF_IVERKSETT_CLIENT_ID: ""
+DP_IVERKSETT_CLIENT_ID: ""
 TILBAKEKREVING_V1_URL: ""
 FAMILIE_TILBAKE_CLIENT_ID: ""
 AZURE_APP_WELL_KNOWN_URL: ""

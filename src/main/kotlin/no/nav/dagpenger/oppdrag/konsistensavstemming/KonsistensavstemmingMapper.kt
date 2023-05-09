@@ -120,7 +120,7 @@ class KonsistensavstemmingMapper(
             fradragTillegg = OppdragSkjemaConstants.FRADRAG_TILLEGG.value()
             saksbehandlerId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
-            henvisning = utbetalingsperiode.behandlingId.toString()
+            henvisning = utbetalingsperiode.behandlingId
             attestantListe.add(lagAttestant(utbetalingsoppdrag))
 
             utbetalingsperiode.utbetalingsgrad?.let { utbetalingsgrad ->

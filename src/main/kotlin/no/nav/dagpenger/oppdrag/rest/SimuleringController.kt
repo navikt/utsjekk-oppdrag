@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/api/simulering", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping("/simulering", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
 @ProtectedWithClaims(issuer = "azuread")
 class SimuleringController(@Autowired val simuleringTjeneste: SimuleringTjeneste) {
 

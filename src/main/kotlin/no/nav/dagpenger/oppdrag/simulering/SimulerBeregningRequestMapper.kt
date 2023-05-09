@@ -91,7 +91,7 @@ class SimulerBeregningRequestMapper {
             brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
-            henvisning = utbetalingsperiode.behandlingId.toString()
+            henvisning = utbetalingsperiode.behandlingId
             attestant.add(attest)
 
             utbetalingsperiode.utbetalingsgrad?.let { utbetalingsgrad ->
