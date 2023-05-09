@@ -6,6 +6,8 @@ import com.ibm.msg.client.wmq.WMQConstants
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.iverksetting.Status
 import no.trygdeetaten.skjema.oppdrag.Mmel
+import org.springframework.context.ApplicationContextInitializer
+import org.springframework.context.ConfigurableApplicationContext
 import java.io.Closeable
 import javax.jms.Message
 import javax.jms.MessageListener
@@ -13,14 +15,16 @@ import javax.jms.QueueConnection
 import javax.jms.Session
 import javax.jms.TextMessage
 
-class TestOppdragKø(private val kvitteringStatus: Status, private val kvitteringsmelding: String? = null): MessageListener,
-    Closeable {
+class TestOppdragKø(private val kvitteringStatus: Status, private val kvitteringsmelding: String? = null) :
+    MessageListener,
+    Closeable,
+    ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     private lateinit var mq: KGenericContainer
-    init {
+/*    init {
         startMQ()
         lyttEtterOppdragPåKø()
-    }
+    }*/
 
     private fun startMQ() {
         mq = KGenericContainer("ibmcom/mq")
@@ -30,7 +34,6 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
         mq.start()
         System.setProperty("OPPDRAG_MQ_PORT_OVERRIDE", mq.getMappedPort(1414).toString())
     }
-
 
     private fun lyttEtterOppdragPåKø() {
         val queue = MQQueue(System.getenv("oppdrag.mq.send"))
@@ -79,5 +82,10 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
         qcf.queueManager = System.getenv("oppdrag.mq.queuemanager")
 
         return qcf.createQueueConnection(System.getenv("oppdrag.mq.user"), System.getenv("oppdrag.mq.password"))
+    }
+
+    override fun initialize(applicationContext: ConfigurableApplicationContext) {
+        startMQ()
+        lyttEtterOppdragPåKø()
     }
 }

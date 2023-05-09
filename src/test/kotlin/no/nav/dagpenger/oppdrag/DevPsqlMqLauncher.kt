@@ -31,11 +31,10 @@ object DevPsqlMqLauncher {
         properties["SPRING_DATASOURCE_PASSWORD_OVERRIDE"] = psql.password
         properties["SPRING_DATASOURCE_DRIVER_OVERRIDE"] = "org.postgresql.Driver"
 
-        TestOppdragKø(Status.OK)
-
         SpringApplicationBuilder(ApplicationConfig::class.java)
             .profiles("dev_psql_mq")
             .properties(properties)
+            .initializers(TestOppdragKø(Status.OK))
             .run(*args)
     }
 }
