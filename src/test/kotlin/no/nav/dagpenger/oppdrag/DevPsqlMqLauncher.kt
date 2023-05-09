@@ -1,6 +1,7 @@
 package no.nav.dagpenger.oppdrag
 
 import no.nav.dagpenger.oppdrag.config.ApplicationConfig
+import no.nav.dagpenger.oppdrag.iverksetting.Status
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.PostgreSQLContainer
@@ -16,20 +17,21 @@ object DevPsqlMqLauncher {
             .withPassword("test")
 
         psql.start()
+        /*
+                val mq = KGenericContainer("ibmcom/mq")
+                    .withEnv("LICENSE", "accept")
+                    .withEnv("MQ_QMGR_NAME", "QM1")
+                    .withExposedPorts(1414, 9443)
 
-        val mq = KGenericContainer("ibmcom/mq")
-            .withEnv("LICENSE", "accept")
-            .withEnv("MQ_QMGR_NAME", "QM1")
-            .withExposedPorts(1414, 9443)
-
-        mq.start()
-
+                mq.start()
+        */
         val properties = Properties()
         properties["SPRING_DATASOURCE_URL_OVERRIDE"] = psql.jdbcUrl
         properties["SPRING_DATASOURCE_USERNAME_OVERRIDE"] = psql.username
         properties["SPRING_DATASOURCE_PASSWORD_OVERRIDE"] = psql.password
         properties["SPRING_DATASOURCE_DRIVER_OVERRIDE"] = "org.postgresql.Driver"
-        properties.put("OPPDRAG_MQ_PORT_OVERRIDE", mq.getMappedPort(1414))
+
+        TestOppdragKø(Status.OK)
 
         SpringApplicationBuilder(ApplicationConfig::class.java)
             .profiles("dev_psql_mq")

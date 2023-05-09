@@ -1,9 +1,9 @@
 oppdrag.mq:
   queuemanager: QM1
   send: DEV.QUEUE.1
-  mottak: DEV.QUEUE.1
-  avstemming: DEV.QUEUE.2
-  tss: DEV.QUEUE.3
+  mottak: DEV.QUEUE.2
+  avstemming: DEV.QUEUE.3
+  tss: DEV.QUEUE.4
   channel: DEV.ADMIN.SVRCONN
   hostname: localhost
   port: ${OPPDRAG_MQ_PORT_OVERRIDE}
