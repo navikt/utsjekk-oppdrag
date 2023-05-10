@@ -8,7 +8,6 @@ metadata:
 
 spec:
   image: {{ image }}
-  port: 8080
   liveness:
     path: /internal/liveness
     initialDelay: 30
@@ -72,6 +71,8 @@ spec:
       value: {{ oppdragServiceUrl }}
     - name: STS_URL
       value: {{ stsUrl }}
+    - name: SPRING_PROFILES_ACTIVE
+      value: {{ springProfil }}
   azure:
     application:
       enabled: true
