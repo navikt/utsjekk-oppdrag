@@ -51,7 +51,7 @@ class OppdragMottaker(
         LOG.debug("Henter oppdrag $oppdragId fra databasen")
 
         val førsteOppdragUtenKvittering = oppdragLagerRepository.hentAlleVersjonerAvOppdrag(oppdragId)
-            .find { oppdrag -> oppdrag.status == OppdragStatus.LAGT_PÅ_KØ }
+            .find { oppdrag -> oppdrag.status == OppdragStatus.LAGT_PAA_KOE }
         if (førsteOppdragUtenKvittering == null) {
             LOG.warn("Oppdraget tilknyttet mottatt kvittering har uventet status i databasen. Oppdraget er: $oppdragId")
             return

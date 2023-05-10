@@ -5,10 +5,10 @@ import com.ibm.mq.jms.MQQueueConnectionFactory
 import com.ibm.msg.client.wmq.WMQConstants
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.iverksetting.Status
+import no.nav.dagpenger.oppdrag.util.Containers
 import no.trygdeetaten.skjema.oppdrag.Mmel
-import org.springframework.context.ApplicationContextInitializer
-import org.springframework.context.ConfigurableApplicationContext
 import java.io.Closeable
+import java.util.Properties
 import javax.jms.Message
 import javax.jms.MessageListener
 import javax.jms.QueueConnection
@@ -17,26 +17,42 @@ import javax.jms.TextMessage
 
 class TestOppdragKø(private val kvitteringStatus: Status, private val kvitteringsmelding: String? = null) :
     MessageListener,
-    Closeable,
-    ApplicationContextInitializer<ConfigurableApplicationContext> {
+    Closeable {
 
-    private lateinit var mq: KGenericContainer
-/*    init {
+    val properties = Properties()
+    private val queueManager = "QM1"
+    private val appPassord = "passw0rd"
+
+    var mq = Containers.MyGeneralContainer("ibmcom/mq")
+        .withEnv("LICENSE", "accept")
+        .withEnv("MQ_QMGR_NAME", queueManager)
+        .withEnv("MQ_APP_PASSWORD", appPassord)
+        .withEnv("persistance.enabled", "true")
+        .withExposedPorts(1414)
+
+    init {
         startMQ()
         lyttEtterOppdragPåKø()
-    }*/
+    }
 
     private fun startMQ() {
-        mq = KGenericContainer("ibmcom/mq")
-            .withEnv("LICENSE", "accept")
-            .withExposedPorts(1414, 9443)
-
         mq.start()
-        System.setProperty("OPPDRAG_MQ_PORT_OVERRIDE", mq.getMappedPort(1414).toString())
+        properties["OPPDRAG_MQ_PORT_OVERRIDE"] = mq.getMappedPort(1414).toString()
+        properties["oppdrag.mq.port"] = mq.getMappedPort(1414).toString()
+        properties["oppdrag.mq.queuemanager"] = queueManager
+        properties["oppdrag.mq.send"] = "DEV.QUEUE.1"
+        properties["oppdrag.mq.mottak"] = "DEV.QUEUE.2"
+        properties["oppdrag.mq.avstemming"] = "DEV.QUEUE.3"
+        properties["oppdrag.mq.tss"] = "DEV.QUEUE.4"
+        properties["oppdrag.mq.channel"] = "DEV.ADMIN.SVRCONN"
+        properties["oppdrag.mq.hostname"] = "localhost"
+        properties["oppdrag.mq.user"] = "admin"
+        properties["oppdrag.mq.password"] = appPassord
+        properties["oppdrag.mq.enabled"] = true
     }
 
     private fun lyttEtterOppdragPåKø() {
-        val queue = MQQueue(System.getenv("oppdrag.mq.send"))
+        val queue = MQQueue(properties.getProperty("oppdrag.mq.send"))
         val queueConnection = createQueueConnection()
         val queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
         val queueReceiver = queueSession.createReceiver(queue)
@@ -55,7 +71,7 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
         }
         oppdrag.mmel = mmel
 
-        val queue = MQQueue(System.getenv("oppdrag.mq.mottak"))
+        val queue = MQQueue(properties.getProperty("oppdrag.mq.mottak"))
         val queueConnection = createQueueConnection()
         val queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
         val queueSender = queueSession.createSender(queue)
@@ -75,17 +91,12 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
 
     fun createQueueConnection(): QueueConnection {
         val qcf = MQQueueConnectionFactory()
-        qcf.hostName = System.getenv("oppdrag.mq.hostname")
-        qcf.port = System.getenv("oppdrag.mq.port")?.toInt() ?: 0
-        qcf.channel = System.getenv("oppdrag.mq.channel")
+        qcf.hostName = properties.getProperty("oppdrag.mq.hostname")
+        qcf.port = properties.getProperty("oppdrag.mq.port")?.toInt() ?: 0
+        qcf.channel = properties.getProperty("oppdrag.mq.channel")
         qcf.transportType = WMQConstants.WMQ_CM_CLIENT
-        qcf.queueManager = System.getenv("oppdrag.mq.queuemanager")
+        qcf.queueManager = properties.getProperty("oppdrag.mq.queuemanager")
 
-        return qcf.createQueueConnection(System.getenv("oppdrag.mq.user"), System.getenv("oppdrag.mq.password"))
-    }
-
-    override fun initialize(applicationContext: ConfigurableApplicationContext) {
-        startMQ()
-        lyttEtterOppdragPåKø()
+        return qcf.createQueueConnection(properties.getProperty("oppdrag.mq.user"), properties.getProperty("oppdrag.mq.password"))
     }
 }

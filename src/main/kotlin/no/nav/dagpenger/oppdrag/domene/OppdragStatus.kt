@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.domene
 
 enum class OppdragStatus {
-    LAGT_PÅ_KØ,
+    LAGT_PAA_KOE,
     KVITTERT_OK,
     KVITTERT_MED_MANGLER,
     KVITTERT_FUNKSJONELL_FEIL,

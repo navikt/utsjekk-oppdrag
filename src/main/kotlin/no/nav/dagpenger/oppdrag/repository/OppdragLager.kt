@@ -22,7 +22,7 @@ data class OppdragLager(
     @Column("behandling_id") val behandlingId: String,
     val utbetalingsoppdrag: Utbetalingsoppdrag,
     @Column("utgaaende_oppdrag") val utgåendeOppdrag: String,
-    var status: OppdragStatus = OppdragStatus.LAGT_PÅ_KØ,
+    var status: OppdragStatus = OppdragStatus.LAGT_PAA_KOE,
     @Column("avstemming_tidspunkt") val avstemmingTidspunkt: LocalDateTime,
     @Column("opprettet_tidspunkt") val opprettetTidspunkt: LocalDateTime = LocalDateTime.now(),
     val kvitteringsmelding: Mmel?,

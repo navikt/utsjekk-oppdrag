@@ -63,7 +63,7 @@ internal class OppdragControllerTest {
             oppdragLagerRepository.opprettOppdrag(
                 match<OppdragLager> {
                     it.utgåendeOppdrag.contains("BA") &&
-                        it.status == OppdragStatus.LAGT_PÅ_KØ &&
+                        it.status == OppdragStatus.LAGT_PAA_KOE &&
                         it.opprettetTidspunkt > localDateTimeNow
                 }
             )

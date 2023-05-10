@@ -108,7 +108,7 @@ class GrensesnittavstemmingMapper(
 
     private fun opprettDetaljType(oppdrag: OppdragLager): DetaljType? =
         when (oppdrag.status) {
-            OppdragStatus.LAGT_PÅ_KØ -> DetaljType.MANG
+            OppdragStatus.LAGT_PAA_KOE -> DetaljType.MANG
             OppdragStatus.KVITTERT_MED_MANGLER -> DetaljType.VARS
             OppdragStatus.KVITTERT_FUNKSJONELL_FEIL -> DetaljType.AVVI
             OppdragStatus.KVITTERT_TEKNISK_FEIL -> DetaljType.AVVI
@@ -145,7 +145,7 @@ class GrensesnittavstemmingMapper(
         for (oppdrag in oppdragsliste) {
             val satsbeløp = getSatsBeløp(oppdrag)
             when (oppdrag.status) {
-                OppdragStatus.LAGT_PÅ_KØ -> {
+                OppdragStatus.LAGT_PAA_KOE -> {
                     manglerBelop += satsbeløp
                     manglerAntall++
                 }

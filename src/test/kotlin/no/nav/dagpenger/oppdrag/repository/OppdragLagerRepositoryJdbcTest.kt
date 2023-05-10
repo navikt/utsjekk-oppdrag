@@ -52,12 +52,12 @@ internal class OppdragLagerRepositoryJdbcTest {
     fun skal_lagre_status() {
 
         val oppdragLager = utbetalingsoppdragMedTilfeldigAktoer().somOppdragLager
-            .copy(status = OppdragStatus.LAGT_PÅ_KØ)
+            .copy(status = OppdragStatus.LAGT_PAA_KOE)
 
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
 
         val hentetOppdrag = oppdragLagerRepository.hentOppdrag(oppdragLager.id)
-        assertEquals(OppdragStatus.LAGT_PÅ_KØ, hentetOppdrag.status)
+        assertEquals(OppdragStatus.LAGT_PAA_KOE, hentetOppdrag.status)
 
         oppdragLagerRepository.oppdaterStatus(hentetOppdrag.id, OppdragStatus.KVITTERT_OK)
 
@@ -68,7 +68,7 @@ internal class OppdragLagerRepositoryJdbcTest {
     @Test
     fun skal_lagre_kvitteringsmelding() {
         val oppdragLager = utbetalingsoppdragMedTilfeldigAktoer().somOppdragLager
-            .copy(status = OppdragStatus.LAGT_PÅ_KØ)
+            .copy(status = OppdragStatus.LAGT_PAA_KOE)
 
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
         val hentetOppdrag = oppdragLagerRepository.hentOppdrag(oppdragLager.id)

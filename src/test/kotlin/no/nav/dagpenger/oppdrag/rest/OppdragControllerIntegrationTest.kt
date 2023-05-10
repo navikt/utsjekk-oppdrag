@@ -52,7 +52,7 @@ internal class OppdragControllerIntegrationTest {
             val oppdrag = oppdragLagerRepository.hentOppdrag(utbetalingsoppdrag.oppdragId)
 
             oppdragStatus = oppdrag.status
-        } while (oppdragStatus == OppdragStatus.LAGT_PÅ_KØ)
+        } while (oppdragStatus == OppdragStatus.LAGT_PAA_KOE)
 
         assertEquals(OppdragStatus.KVITTERT_OK, oppdragStatus)
     }
@@ -80,7 +80,7 @@ internal class OppdragControllerIntegrationTest {
             val oppdrag = oppdragLagerRepository.hentOppdrag(utbetalingsoppdrag.oppdragId)
 
             oppdragStatus = oppdrag.status
-        } while (oppdragStatus == OppdragStatus.LAGT_PÅ_KØ)
+        } while (oppdragStatus == OppdragStatus.LAGT_PAA_KOE)
 
         assertEquals(OppdragStatus.KVITTERT_OK, oppdragStatus)
     }
