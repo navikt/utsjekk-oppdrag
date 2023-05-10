@@ -1,1 +1,0 @@
-CREATE INDEX oppdragid_idx ON oppdrag_lager (behandling_id, person_ident);

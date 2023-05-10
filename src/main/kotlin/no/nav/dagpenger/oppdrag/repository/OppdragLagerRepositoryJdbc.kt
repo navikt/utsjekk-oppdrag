@@ -162,21 +162,37 @@ class OppdragLagerRepositoryJdbc(
 
 class OppdragLagerRowMapper : RowMapper<OppdragLager> {
 
+    /*
+    1    id                   UUID PRIMARY KEY,
+    2 utgaaende_oppdrag    TEXT                                NOT NULL,
+    3 status               VARCHAR(150) DEFAULT 'LAGT_PAA_KOE':: character varying NOT NULL,
+    4 opprettet_tidspunkt  TIMESTAMP(6) DEFAULT LOCALTIMESTAMP NOT NULL,
+    5 person_ident         VARCHAR(50)                         NOT NULL,
+    6 fagsak_id            VARCHAR(50)                         NOT NULL,
+    7 behandling_id        VARCHAR(50)                         NOT NULL,
+    8 fagsystem            VARCHAR(10)                         NOT NULL,
+    9 avstemming_tidspunkt TIMESTAMP(6)                        NOT NULL,
+    10 utbetalingsoppdrag   JSON                                NOT NULL,
+    11 kvitteringsmelding   JSON,
+    12 versjon              BIGINT       DEFAULT 0              NOT NULL
+
+     */
+
     override fun mapRow(resultSet: ResultSet, rowNumbers: Int): OppdragLager? {
-        val kvittering = resultSet.getString(10)
+        val kvittering = resultSet.getString(11)
         return OppdragLager(
-            UUID.fromString(resultSet.getString(12) ?: UUID.randomUUID().toString()),
-            resultSet.getString(7),
-            resultSet.getString(4),
-            resultSet.getString(5),
-            resultSet.getString(6),
-            objectMapper.readValue(resultSet.getString(9)),
-            resultSet.getString(1),
-            OppdragStatus.valueOf(resultSet.getString(2)),
-            resultSet.getTimestamp(8).toLocalDateTime(),
-            resultSet.getTimestamp(3).toLocalDateTime(),
-            if (kvittering == null) null else objectMapper.readValue(kvittering),
-            resultSet.getInt(11)
+            uuid = UUID.fromString(resultSet.getString(1) ?: UUID.randomUUID().toString()),
+            fagsystem = resultSet.getString(8),
+            personIdent = resultSet.getString(5),
+            fagsakId = resultSet.getString(6),
+            behandlingId = resultSet.getString(7),
+            utbetalingsoppdrag = objectMapper.readValue(resultSet.getString(10)),
+            utgåendeOppdrag = resultSet.getString(2),
+            status = OppdragStatus.valueOf(resultSet.getString(3)),
+            avstemmingTidspunkt = resultSet.getTimestamp(9).toLocalDateTime(),
+            opprettetTidspunkt = resultSet.getTimestamp(4).toLocalDateTime(),
+            kvitteringsmelding = if (kvittering == null) null else objectMapper.readValue(kvittering),
+            versjon = resultSet.getInt(12)
         )
     }
 }
