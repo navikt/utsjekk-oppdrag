@@ -1,19 +1,19 @@
 package no.nav.dagpenger.oppdrag
 
-import com.ibm.mq.jms.MQQueue
-import com.ibm.mq.jms.MQQueueConnectionFactory
-import com.ibm.msg.client.wmq.WMQConstants
+import com.ibm.mq.jakarta.jms.MQQueue
+import com.ibm.mq.jakarta.jms.MQQueueConnectionFactory
+import com.ibm.msg.client.jakarta.wmq.WMQConstants
+import jakarta.jms.Message
+import jakarta.jms.MessageListener
+import jakarta.jms.QueueConnection
+import jakarta.jms.Session
+import jakarta.jms.TextMessage
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.iverksetting.Status
 import no.nav.dagpenger.oppdrag.util.Containers
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import java.io.Closeable
 import java.util.Properties
-import javax.jms.Message
-import javax.jms.MessageListener
-import javax.jms.QueueConnection
-import javax.jms.Session
-import javax.jms.TextMessage
 
 class TestOppdragKø(private val kvitteringStatus: Status, private val kvitteringsmelding: String? = null) :
     MessageListener,

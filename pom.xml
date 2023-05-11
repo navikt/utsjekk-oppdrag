@@ -433,7 +433,7 @@
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-xjc-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>4.0.0</version>
                 <executions>
                     <execution>
                         <id>xjc</id>
@@ -456,7 +456,47 @@
                 </executions>
             </plugin>
             <plugin>
-                <!-- Plugin required to build java classes from XSD using XJC -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>kravgrunnlag</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                        <configuration>
+                            <!--xjbSources>
+                                <xjbSource>src/main/resources/xsd/binding.xjb</xjbSource>
+                            </xjbSources-->
+                            <sources>
+                                <source>src/main/resources/xsd/krav_og_vedtakstatus.xsd</source>
+                                <source>src/main/resources/xsd/kravgrunnlag_annuller.xsd</source>
+                                <source>src/main/resources/xsd/kravgrunnlag_detalj.xsd</source>
+                                <source>src/main/resources/xsd/kravgrunnlag_liste.xsd</source>
+                                <source>src/main/resources/xsd/tilbakekrevingsvedtak.xsd</source>
+                            </sources>
+                            <outputDirectory>${project.build.directory}/generated-sources/kravgrunnlag</outputDirectory>
+                            <clearOutputDir>false</clearOutputDir>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tss</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                        <configuration>
+                             <sources>
+                                 <source>src/main/resources/tss/tss.xsd</source>
+                            </sources>
+                            <outputDirectory>${project.build.directory}/generated-sources/tss</outputDirectory>
+                            <clearOutputDir>false</clearOutputDir>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Plugin required to build java classes from XSD using XJC -->
+            <!--plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
                 <version>0.15.2</version>
@@ -491,7 +531,7 @@
                     <markGenerated>true</markGenerated>
                     <enableIntrospection>true</enableIntrospection>
                     <plugins>
-                        <!--plugin>
+                        <plugin>
                             <groupId>org.jvnet.jaxb2_commons</groupId>
                             <artifactId>jaxb2-basics</artifactId>
                             <version>1.11.1</version>
@@ -500,7 +540,7 @@
                             <groupId>org.jvnet.jaxb2_commons</groupId>
                             <artifactId>jaxb2-basics-annotate</artifactId>
                             <version>1.1.0</version>
-                        </plugin-->
+                        </plugin>
                     </plugins>
                 </configuration>
                 <executions>
@@ -536,7 +576,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
