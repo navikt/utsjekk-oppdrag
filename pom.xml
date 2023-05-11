@@ -39,12 +39,11 @@
         </sonar.coverage.exclusions>
         <!--suppress UnresolvedMavenProperty Ligger som secret i github-->
         <sonar.login>${SONAR_LOGIN}</sonar.login>
-        <spring-cloud.version>2021.0.4</spring-cloud.version>
+        <spring-cloud.version>2022.0.2</spring-cloud.version>
         <testcontainers.version>1.17.5</testcontainers.version>
         <tjenestespesifikasjoner.version>2594.7c3ac50</tjenestespesifikasjoner.version>
         <springdoc.version>2.1.0</springdoc.version>
-
-    </properties>
+     </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -63,6 +62,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jetty</artifactId>
+        </dependency>
+        <!-- Må nedgradere for å bruke jetty -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -2,7 +2,7 @@ package no.nav.dagpenger.oppdrag.common.log.auditlogger
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 object AuditLogger {
 
