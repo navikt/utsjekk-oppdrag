@@ -2,17 +2,13 @@ package no.nav.dagpenger.oppdrag.avstemming
 
 import com.ibm.mq.jakarta.jms.MQConnectionFactory
 import com.ibm.msg.client.jakarta.wmq.WMQConstants
-import io.mockk.called
 import io.mockk.spyk
 import io.mockk.verify
 import no.nav.dagpenger.oppdrag.grensesnittavstemming.GrensesnittavstemmingMapper
-import no.nav.dagpenger.oppdrag.konsistensavstemming.KonsistensavstemmingMapper
 import no.nav.dagpenger.oppdrag.repository.somOppdragLager
 import no.nav.dagpenger.oppdrag.util.Containers
 import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
-import no.nav.virksomhet.tjenester.avstemming.informasjon.konsistensavstemmingsdata.v1.Konsistensavstemmingsdata
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Avstemmingsdata
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter
@@ -52,25 +48,6 @@ class AvstemmingMQSenderTest {
 
     private val jmsTemplate = spyk(JmsTemplate(cf).apply { defaultDestinationName = TESTKØ })
 
-    @Test
-    fun skal_ikke_sende_avstemming_når_avskrudd() {
-        val avstemmingSender = AvstemmingSenderMQ(jmsTemplate, "false")
-
-        Assertions.assertThrows(UnsupportedOperationException::class.java) {
-            avstemmingSender.sendKonsistensAvstemming(lagTestKonsistensavstemming()[0])
-        }
-
-        verify { jmsTemplate wasNot called }
-    }
-
-    @Test
-    fun skal_sende_konsistensavstemming_når_påskrudd() {
-        val avstemmingSender = AvstemmingSenderMQ(jmsTemplate, "true")
-
-        avstemmingSender.sendKonsistensAvstemming(lagTestKonsistensavstemming()[0])
-
-        verify(exactly = 1) { jmsTemplate.convertAndSend(any<String>(), any<String>()) }
-    }
 
     @Test
     fun skal_sende_grensesnittavstemming_når_påskrudd() {
@@ -79,12 +56,6 @@ class AvstemmingMQSenderTest {
         avstemmingSender.sendGrensesnittAvstemming(lagTestGrensesnittavstemming()[0])
 
         verify(exactly = 1) { jmsTemplate.convertAndSend(any<String>(), any<String>()) }
-    }
-
-    private fun lagTestKonsistensavstemming(): List<Konsistensavstemmingsdata> {
-        val utbetalingsoppdrag = TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(IDAG, FAGOMRÅDE)
-        val mapper = KonsistensavstemmingMapper(FAGOMRÅDE, listOf(utbetalingsoppdrag), IDAG, 0, 0, true, true)
-        return mapper.lagAvstemmingsmeldinger()
     }
 
     private fun lagTestGrensesnittavstemming(): List<Avstemmingsdata> {

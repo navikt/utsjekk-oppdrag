@@ -21,10 +21,10 @@
         <jvmTarget>17</jvmTarget>
         <kotlin.version>1.7.20</kotlin.version>
         <main-class>no.nav.dagpenger.oppdrag.LauncherKt</main-class>
-        <common-java-modules.version>2.2022.06.30_06.19-0603b0416483</common-java-modules.version>
+        <common-java-modules.version>3.2023.05.08_11.05-d13adbef1e85</common-java-modules.version>
         <felles.version>1.20221006150009_46021ed</felles.version>
         <kontrakter.version>2.0_20230126101531_7e94a8f</kontrakter.version>
-        <token-validation-spring.version>2.0.5</token-validation-spring.version>
+        <token-validation-spring.version>3.0.8</token-validation-spring.version>
         <jaxb-api.version>4.0.0</jaxb-api.version>
         <jaxb-core.version>3.0.2</jaxb-core.version>
         <jaxb-impl.version>4.0.1</jaxb-impl.version>
@@ -136,8 +136,13 @@
         </dependency>
         <dependency>
             <groupId>com.ibm.mq</groupId>
-            <artifactId>com.ibm.mq.jakarta.client</artifactId>
+            <artifactId>com.ibm.mq.allclient</artifactId>
             <version>9.3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.mq</groupId>
+            <artifactId>mq-jms-spring-boot-starter</artifactId>
+            <version>3.0.6</version>
         </dependency>
         <dependency>
             <groupId>jakarta.jms</groupId>
@@ -194,13 +199,7 @@
             <artifactId>token-validation-spring</artifactId>
             <version>${token-validation-spring.version}</version>
         </dependency>
-        <dependency>
-            <groupId>no.nav.security</groupId>
-            <artifactId>token-validation-test-support</artifactId>
-            <version>${token-validation-spring.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
+         <!--dependency>
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>avstemming-v1-tjenestespesifikasjon</artifactId>
             <version>${tjenestespesifikasjoner.version}</version>
@@ -209,11 +208,11 @@
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>tilbakekreving-v1-tjenestespesifikasjon</artifactId>
             <version>${tjenestespesifikasjoner.version}</version>
-        </dependency>
+        </dependency-->
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>cxf</artifactId>
-            <version>${common-java-modules.version}</version>
+            <version>2023.03.21_13.06-9a5b1febdbde</version>
             <exclusions>
                 <exclusion>
                     <groupId>no.nav.common</groupId>
@@ -270,6 +269,13 @@
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>no.nav.security</groupId>
+            <artifactId>token-validation-test-support</artifactId>
+            <version>2.0.5</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>nav-system-os-simuler-fp-service-tjenestespesifikasjon</artifactId>
@@ -335,8 +341,15 @@
             <id>github</id>
             <url>https://maven.pkg.github.com/navikt/dp-oppdrag</url>
         </repository>
-
-    </repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <repository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
+     </repositories>
 
     <profiles>
         <profile>
