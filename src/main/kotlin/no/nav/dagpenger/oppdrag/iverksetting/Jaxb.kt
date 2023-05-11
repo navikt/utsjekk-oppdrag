@@ -2,8 +2,6 @@ package no.nav.dagpenger.oppdrag.iverksetting
 
 import jakarta.xml.bind.JAXBContext
 import jakarta.xml.bind.Marshaller
-import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest
-import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse
 import no.rtv.namespacetss.TssSamhandlerData
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import java.io.StringReader
@@ -15,8 +13,6 @@ object Jaxb {
 
     val jaxbContext = JAXBContext.newInstance(
         Oppdrag::class.java,
-        SimulerBeregningRequest::class.java,
-        SimulerBeregningResponse::class.java,
         TssSamhandlerData::class.java
     )
     val xmlInputFactory = XMLInputFactory.newInstance()
@@ -37,33 +33,6 @@ object Jaxb {
         }
         marshaller.marshal(oppdrag, stringWriter)
         return stringWriter.toString()
-    }
-
-    fun tilXml(request: SimulerBeregningRequest): String {
-        val stringWriter = StringWriter()
-        val marshaller = jaxbContext.createMarshaller().apply {
-            setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
-        }
-        marshaller.marshal(request, stringWriter)
-        return stringWriter.toString()
-    }
-
-    fun tilXml(response: SimulerBeregningResponse): String {
-        val stringWriter = StringWriter()
-        val marshaller = jaxbContext.createMarshaller().apply {
-            setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
-        }
-        marshaller.marshal(response, stringWriter)
-        return stringWriter.toString()
-    }
-
-    fun tilSimuleringsrespons(responsXml: String): SimulerBeregningResponse {
-        val simuleringBeregningResponse = jaxbContext.createUnmarshaller().unmarshal(
-            xmlInputFactory.createXMLStreamReader(StreamSource(StringReader(responsXml))),
-            SimulerBeregningResponse::class.java
-        )
-
-        return simuleringBeregningResponse.value
     }
 
     fun tilXml(request: TssSamhandlerData): String {

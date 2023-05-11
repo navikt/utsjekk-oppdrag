@@ -1,9 +1,6 @@
 package no.nav.dagpenger.oppdrag.config
 
-import no.nav.common.cxf.CXFClient
 import no.nav.common.cxf.StsConfig
-import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerFpService
-import org.apache.cxf.interceptor.LoggingOutInterceptor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -30,13 +27,4 @@ class ServiceConfig(
             .password(systemuserPwd)
             .build()
     }
-
-    @Bean
-    fun SimulerFpServicePort(): SimulerFpService =
-        CXFClient(SimulerFpService::class.java)
-            .address(simulerFpServiceUrl)
-            .timeout(20000, 20000)
-            .configureStsForSystemUser(stsConfig())
-            .withOutInterceptor(LoggingOutInterceptor())
-            .build()
 }

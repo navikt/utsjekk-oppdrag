@@ -48,7 +48,6 @@ class AvstemmingMQSenderTest {
 
     private val jmsTemplate = spyk(JmsTemplate(cf).apply { defaultDestinationName = TESTKØ })
 
-
     @Test
     fun skal_sende_grensesnittavstemming_når_påskrudd() {
         val avstemmingSender = AvstemmingSenderMQ(jmsTemplate, "true")
