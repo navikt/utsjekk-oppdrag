@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
-import com.ibm.mq.jms.MQQueue
+import com.ibm.mq.jakarta.jms.MQQueue
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
