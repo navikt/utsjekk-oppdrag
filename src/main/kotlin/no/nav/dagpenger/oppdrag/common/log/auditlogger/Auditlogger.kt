@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.common.log.auditlogger
 
+import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
-import jakarta.servlet.http.HttpServletRequest
 
 object AuditLogger {
 
