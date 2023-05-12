@@ -22,14 +22,28 @@
         <kotlin.version>1.7.20</kotlin.version>
         <main-class>no.nav.dagpenger.oppdrag.LauncherKt</main-class>
 
-        <common-java-modules.version>3.2023.05.08_11.05-d13adbef1e85</common-java-modules.version>
+        <jetty.version>11.0.15</jetty.version>
+
+        <common-java-modules.version>2023.03.21_13.06-9a5b1febdbde</common-java-modules.version>
         <token-validation-spring.version>3.0.8</token-validation-spring.version>
         <jaxb-api.version>4.0.0</jaxb-api.version>
         <jaxb-core.version>3.0.2</jaxb-core.version>
         <jaxb-impl.version>4.0.1</jaxb-impl.version>
-        <jaxb-java-time-adapters.version>1.1.3</jaxb-java-time-adapters.version>
         <cxf.version>4.0.1</cxf.version>
+
+        <ibm-mq.version>9.3.2.1</ibm-mq.version>
+        <ibm-mq-jms.version>3.0.6</ibm-mq-jms.version>
+        <pooled-jms.version>3.1.0</pooled-jms.version>
+
+        <logback-encoder.version>7.3</logback-encoder.version>
+
+        <spring-cloud.version>2022.0.2</spring-cloud.version>
+        <springdoc.version>2.1.0</springdoc.version>
+
         <mockk.version>1.13.2</mockk.version>
+        <testcontainers.version>1.17.5</testcontainers.version>
+        <nav-token-validation-test.version>2.0.5</nav-token-validation-test.version>
+
         <!--suppress UnresolvedMavenProperty  Ligger som secret i github-->
         <sonar.projectKey>${SONAR_PROJECTKEY}</sonar.projectKey>
         <sonar.organization>navit</sonar.organization>
@@ -38,9 +52,6 @@
         </sonar.coverage.exclusions>
         <!--suppress UnresolvedMavenProperty Ligger som secret i github-->
         <sonar.login>${SONAR_LOGIN}</sonar.login>
-        <spring-cloud.version>2022.0.2</spring-cloud.version>
-        <testcontainers.version>1.17.5</testcontainers.version>
-        <springdoc.version>2.1.0</springdoc.version>
     </properties>
 
     <dependencyManagement>
@@ -65,7 +76,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>11.0.15</version>
+            <version>${jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -143,18 +154,6 @@
             <version>${cxf.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-ri</artifactId>
-            <version>3.0.2</version>
-            <scope>runtime</scope>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.retry</groupId>
             <artifactId>spring-retry</artifactId>
         </dependency>
@@ -167,12 +166,12 @@
         <dependency>
             <groupId>com.ibm.mq</groupId>
             <artifactId>com.ibm.mq.allclient</artifactId>
-            <version>9.3.2.1</version>
+            <version>${ibm-mq.version}</version>
         </dependency>
         <dependency>
             <groupId>com.ibm.mq</groupId>
             <artifactId>mq-jms-spring-boot-starter</artifactId>
-            <version>3.0.6</version>
+            <version>${ibm-mq-jms.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.jms</groupId>
@@ -185,7 +184,7 @@
         <dependency>
             <groupId>org.messaginghub</groupId>
             <artifactId>pooled-jms</artifactId>
-            <version>3.1.0</version>
+            <version>${pooled-jms.version}</version>
         </dependency>
 
         <!-- DB -->
@@ -205,17 +204,12 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
 
         <!-- Log -->
         <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
-            <version>7.3</version>
+            <version>${logback-encoder.version}</version>
         </dependency>
 
         <!-- NAV interne avhengigheter-->
@@ -227,7 +221,7 @@
         <dependency>
             <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>cxf</artifactId>
-            <version>2023.03.21_13.06-9a5b1febdbde</version>
+            <version>${common-java-modules.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>no.nav.common</groupId>
@@ -289,6 +283,11 @@
             <version>${mockk.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.testcontainers/testcontainers -->
         <dependency>
@@ -312,7 +311,7 @@
         <dependency>
             <groupId>no.nav.security</groupId>
             <artifactId>token-validation-test-support</artifactId>
-            <version>2.0.5</version>
+            <version>${nav-token-validation-test.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
