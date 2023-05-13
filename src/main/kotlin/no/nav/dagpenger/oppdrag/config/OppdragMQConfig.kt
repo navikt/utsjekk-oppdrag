@@ -47,7 +47,7 @@ class OppdragMQConfig(
 
     @Bean
     @Throws(JMSException::class)
-    fun mqQueueConnectionFactory(): JmsPoolConnectionFactory {
+    fun mqQueueConnectionFactory(): ConnectionFactory {
         val targetFactory = MQQueueConnectionFactory()
         targetFactory.hostName = hostname
         targetFactory.queueManager = queuemanager
@@ -64,18 +64,15 @@ class OppdragMQConfig(
         cf.setPassword(password)
         cf.setTargetConnectionFactory(targetFactory)
 
-        val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
-        pooledFactoryConfig.maxConnections = 10
-        pooledFactoryConfig.maxSessionsPerConnection = 10
-        val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
+        return cf
 
-        logger.info("""Lager mqConnectionFactory med
-            |hostName: $hostname
-            |queueManager: $queuemanager
-            |channel: $channel
-            |spring-profile: ${System.getenv("SPRING_PROFILES_ACTIVE")}""".trimMargin())
+        //val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
+        //pooledFactoryConfig.maxConnections = 10
+        //pooledFactoryConfig.maxSessionsPerConnection = 10
+        //val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
 
-        return pooledFactoryFactory.createPooledConnectionFactory(cf)
+        //val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(cf)
+        //return pooledFactory
     }
 
     @Bean
