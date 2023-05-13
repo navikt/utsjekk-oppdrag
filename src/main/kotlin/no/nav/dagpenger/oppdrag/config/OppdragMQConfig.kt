@@ -41,7 +41,7 @@ class OppdragMQConfig(
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val secureLogger = LoggerFactory.getLogger("secureLogger")
+    //private val secureLogger = LoggerFactory.getLogger("secureLogger")
 
     @Bean
     @Throws(JMSException::class)
@@ -123,11 +123,11 @@ class OppdragMQConfig(
         factory.setSessionTransacted(true)
         factory.setErrorHandler {
             logger.error("Feilet håndtering av melding, se secureLogs")
-            secureLogger.error("Feilet håndtering av melding", it)
+            //secureLogger.error("Feilet håndtering av melding", it)
         }
         factory.setExceptionListener {
             logger.error("Feilet lytting av kø, se secureLogs")
-            secureLogger.error("Feilet lytting av kø", it)
+            //secureLogger.error("Feilet lytting av kø", it)
         }
         return factory
     }
