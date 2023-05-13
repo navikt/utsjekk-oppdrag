@@ -8,7 +8,7 @@ oppdrag.mq:
   hostname: ${MQ_HOSTNAME}
   port: ${MQ_PORT}
   user: ${MQ_USER}
-  password: ${SERVICEUSER_PASSWORD}
+  password: ${MQ_PASSWORD}
   enabled: ${MQ_ENABLED}
 
 no.nav.security.jwt:
