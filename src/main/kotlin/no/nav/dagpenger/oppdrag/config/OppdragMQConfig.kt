@@ -69,6 +69,12 @@ class OppdragMQConfig(
         pooledFactoryConfig.maxSessionsPerConnection = 10
         val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
 
+        logger.info("""Lager mqConnectionFactory med
+            |hostName: $hostname
+            |queueManager: $queuemanager
+            |channel: $channel
+            |spring-profile: ${System.getenv("SPRING_PROFILES_ACTIVE")}""".trimMargin())
+
         return pooledFactoryFactory.createPooledConnectionFactory(cf)
     }
 
@@ -113,7 +119,7 @@ class OppdragMQConfig(
     }
 
     @Bean fun jmsListenerContainerFactory(
-        mqQueueConnectionFactory: JmsPoolConnectionFactory,
+        mqQueueConnectionFactory: ConnectionFactory,
         configurer: DefaultJmsListenerContainerFactoryConfigurer
     ): JmsListenerContainerFactory<*> {
         val factory = DefaultJmsListenerContainerFactory()
@@ -131,6 +137,7 @@ class OppdragMQConfig(
             logger.error("Feilet lytting av kø, se secureLogs")
             // secureLogger.error("Feilet lytting av kø", it)
         }
+
         return factory
     }
 
