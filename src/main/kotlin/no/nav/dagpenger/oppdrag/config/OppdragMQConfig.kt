@@ -113,7 +113,7 @@ class OppdragMQConfig(
     }
 
     @Bean fun jmsListenerContainerFactory(
-        mqQueueConnectionFactory: ConnectionFactory,
+        mqQueueConnectionFactory: JmsPoolConnectionFactory,
         configurer: DefaultJmsListenerContainerFactoryConfigurer
     ): JmsListenerContainerFactory<*> {
         val factory = DefaultJmsListenerContainerFactory()
