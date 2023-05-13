@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer
+import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryFactory
+import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory
@@ -41,7 +43,7 @@ class OppdragMQConfig(
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
-    //private val secureLogger = LoggerFactory.getLogger("secureLogger")
+    // private val secureLogger = LoggerFactory.getLogger("secureLogger")
 
     @Bean
     @Throws(JMSException::class)
@@ -62,12 +64,12 @@ class OppdragMQConfig(
         cf.setPassword(password)
         cf.setTargetConnectionFactory(targetFactory)
 
-        val pooledFactory = JmsPoolConnectionFactory()
-        pooledFactory.connectionFactory = cf
-        pooledFactory.maxConnections = 10
-        pooledFactory.maxSessionsPerConnection = 10
+        val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
+        pooledFactoryConfig.maxConnections = 10
+        pooledFactoryConfig.maxSessionsPerConnection = 10
+        val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
 
-        return pooledFactory
+        return pooledFactoryFactory.createPooledConnectionFactory(cf)
     }
 
     @Bean
@@ -123,11 +125,11 @@ class OppdragMQConfig(
         factory.setSessionTransacted(true)
         factory.setErrorHandler {
             logger.error("Feilet håndtering av melding, se secureLogs")
-            //secureLogger.error("Feilet håndtering av melding", it)
+            // secureLogger.error("Feilet håndtering av melding", it)
         }
         factory.setExceptionListener {
             logger.error("Feilet lytting av kø, se secureLogs")
-            //secureLogger.error("Feilet lytting av kø", it)
+            // secureLogger.error("Feilet lytting av kø", it)
         }
         return factory
     }

@@ -33,7 +33,6 @@
 
         <ibm-mq.version>9.3.2.1</ibm-mq.version>
         <ibm-mq-jms.version>3.0.6</ibm-mq-jms.version>
-        <pooled-jms.version>3.1.0</pooled-jms.version>
 
         <logback-encoder.version>7.3</logback-encoder.version>
 
@@ -180,11 +179,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jms</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.messaginghub</groupId>
-            <artifactId>pooled-jms</artifactId>
-            <version>${pooled-jms.version}</version>
         </dependency>
 
         <!-- DB -->
