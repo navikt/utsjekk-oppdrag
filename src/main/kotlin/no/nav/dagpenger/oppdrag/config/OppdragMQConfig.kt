@@ -127,11 +127,13 @@ class OppdragMQConfig(
         factory.setTransactionManager(transactionManager)
         factory.setSessionTransacted(true)
         factory.setErrorHandler {
-            logger.error("Feilet håndtering av melding, se secureLogs")
+            logger.error("Feilet håndtering av melding, se secureLogs", it) // Utrygg
+            //logger.error("Feilet håndtering av melding, se secureLogs")
             // secureLogger.error("Feilet håndtering av melding", it)
         }
         factory.setExceptionListener {
-            logger.error("Feilet lytting av kø, se secureLogs")
+            logger.error("Feilet lytting av kø, se secureLogs",it) // Utrygg
+            //logger.error("Feilet lytting av kø, se secureLogs")
             // secureLogger.error("Feilet lytting av kø", it)
         }
 
