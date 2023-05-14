@@ -8,11 +8,9 @@ import com.ibm.msg.client.jakarta.jms.JmsConstants.JMS_IBM_CHARACTER_SET
 import com.ibm.msg.client.jakarta.jms.JmsConstants.JMS_IBM_ENCODING
 import com.ibm.msg.client.jakarta.jms.JmsFactoryFactory
 import com.ibm.msg.client.jakarta.wmq.WMQConstants
-import com.ibm.msg.client.jakarta.wmq.common.CommonConstants.WMQ_CM_BINDINGS_THEN_CLIENT
 import com.ibm.msg.client.jakarta.wmq.common.CommonConstants.WMQ_CM_CLIENT
 import jakarta.jms.ConnectionFactory
 import jakarta.jms.JMSException
-import org.messaginghub.pooled.jms.JmsPoolConnectionFactory
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -60,18 +58,23 @@ class OppdragMQConfig(
         targetFactory.setBooleanProperty(JmsConstants.USER_AUTHENTICATION_MQCSP, true)
         targetFactory.setIntProperty(JMS_IBM_CHARACTER_SET, UTF_8_WITH_PUA)
 
-        val cf = UserCredentialsConnectionFactoryAdapter()
-        cf.setUsername(user)
-        cf.setPassword(password)
-        cf.setTargetConnectionFactory(targetFactory)
+        targetFactory.setStringProperty( WMQConstants.USERID, user )
+        targetFactory.setStringProperty( WMQConstants.PASSWORD, password )
 
-        val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
-        pooledFactoryConfig.maxConnections = 10
-        pooledFactoryConfig.maxSessionsPerConnection = 10
-        val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
+//        val cf = UserCredentialsConnectionFactoryAdapter()
+//        cf.setUsername(user)
+//        cf.setPassword(password)
+//        cf.setTargetConnectionFactory(targetFactory)
 
-        val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(cf)
-        return pooledFactory
+//        val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
+//        pooledFactoryConfig.maxConnections = 10
+//        pooledFactoryConfig.maxSessionsPerConnection = 10
+//        val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
+
+        //val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(cf)
+//        val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(targetFactory)
+//        return pooledFactory
+        return targetFactory
     }
 
     @Bean
@@ -132,8 +135,6 @@ class OppdragMQConfig(
         }
         factory.setExceptionListener {
             logger.error("Feilet lytting av kø, se secureLogs",it) // Utrygg
-            logger.info("User $user") // Utrygg
-            logger.info("Pwd-lengde ${password.length}") // Utrygg
             //logger.error("Feilet lytting av kø, se secureLogs")
             // secureLogger.error("Feilet lytting av kø", it)
         }
