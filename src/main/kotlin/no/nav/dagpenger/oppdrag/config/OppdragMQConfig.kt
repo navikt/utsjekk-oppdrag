@@ -121,10 +121,10 @@ class OppdragMQConfig(
         val factory = DefaultJmsListenerContainerFactory()
         configurer.configure(factory, mqQueueConnectionFactory)
 
-        //val transactionManager = JmsTransactionManager()
-        //transactionManager.connectionFactory = mqQueueConnectionFactory
-        //factory.setTransactionManager(transactionManager)
-        //factory.setSessionTransacted(true)
+        val transactionManager = JmsTransactionManager()
+        transactionManager.connectionFactory = mqQueueConnectionFactory
+        factory.setTransactionManager(transactionManager)
+        factory.setSessionTransacted(true)
         factory.setErrorHandler {
             logger.error("Feilet håndtering av melding, se secureLogs", it) // Utrygg
             //logger.error("Feilet håndtering av melding, se secureLogs")
