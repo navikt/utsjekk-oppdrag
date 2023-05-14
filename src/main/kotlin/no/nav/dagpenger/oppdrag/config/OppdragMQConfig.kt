@@ -8,6 +8,7 @@ import com.ibm.msg.client.jakarta.jms.JmsConstants.JMS_IBM_CHARACTER_SET
 import com.ibm.msg.client.jakarta.jms.JmsConstants.JMS_IBM_ENCODING
 import com.ibm.msg.client.jakarta.jms.JmsFactoryFactory
 import com.ibm.msg.client.jakarta.wmq.WMQConstants
+import com.ibm.msg.client.jakarta.wmq.common.CommonConstants.WMQ_CM_BINDINGS_THEN_CLIENT
 import com.ibm.msg.client.jakarta.wmq.common.CommonConstants.WMQ_CM_CLIENT
 import jakarta.jms.ConnectionFactory
 import jakarta.jms.JMSException
@@ -53,7 +54,7 @@ class OppdragMQConfig(
         targetFactory.queueManager = queuemanager
         targetFactory.channel = channel
         targetFactory.port = port
-        targetFactory.transportType = WMQ_CM_CLIENT
+        targetFactory.transportType = WMQ_CM_BINDINGS_THEN_CLIENT
         targetFactory.ccsid = UTF_8_WITH_PUA
         targetFactory.setIntProperty(JMS_IBM_ENCODING, MQENC_NATIVE)
         targetFactory.setBooleanProperty(JmsConstants.USER_AUTHENTICATION_MQCSP, true)
