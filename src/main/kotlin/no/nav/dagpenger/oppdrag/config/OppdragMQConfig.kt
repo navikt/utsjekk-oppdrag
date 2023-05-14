@@ -53,10 +53,10 @@ class OppdragMQConfig(
         targetFactory.channel = channel
         targetFactory.port = port
         targetFactory.transportType = WMQ_CM_CLIENT
-        //targetFactory.ccsid = UTF_8_WITH_PUA
-        //targetFactory.setIntProperty(JMS_IBM_ENCODING, MQENC_NATIVE)
-        //targetFactory.setBooleanProperty(JmsConstants.USER_AUTHENTICATION_MQCSP, true)
-        //targetFactory.setIntProperty(JMS_IBM_CHARACTER_SET, UTF_8_WITH_PUA)
+        targetFactory.ccsid = UTF_8_WITH_PUA
+        targetFactory.setIntProperty(JMS_IBM_ENCODING, MQENC_NATIVE)
+        targetFactory.setBooleanProperty(JmsConstants.USER_AUTHENTICATION_MQCSP, true)
+        targetFactory.setIntProperty(JMS_IBM_CHARACTER_SET, UTF_8_WITH_PUA)
 
         val cf = UserCredentialsConnectionFactoryAdapter()
         cf.setUsername(user)
