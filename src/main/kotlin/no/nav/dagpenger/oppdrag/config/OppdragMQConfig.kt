@@ -48,13 +48,13 @@ class OppdragMQConfig(
 
     @Bean
     @Throws(JMSException::class)
-    fun mqQueueConnectionFactory(): ConnectionFactory {
+    fun mqQueueConnectionFactory(): ConnectionFactory { /*
         val targetFactory = MQQueueConnectionFactory()
         targetFactory.hostName = hostname
         targetFactory.queueManager = queuemanager
         targetFactory.channel = channel
         targetFactory.port = port
-        targetFactory.transportType = WMQ_CM_BINDINGS_THEN_CLIENT
+        targetFactory.transportType = WMQ_CM_CLIENT
         targetFactory.ccsid = UTF_8_WITH_PUA
         targetFactory.setIntProperty(JMS_IBM_ENCODING, MQENC_NATIVE)
         targetFactory.setBooleanProperty(JmsConstants.USER_AUTHENTICATION_MQCSP, true)
@@ -64,16 +64,27 @@ class OppdragMQConfig(
         cf.setUsername(user)
         cf.setPassword(password)
         cf.setTargetConnectionFactory(targetFactory)
+*/
+        val ff = JmsFactoryFactory.getInstance(WMQConstants.JAKARTA_WMQ_PROVIDER)
+        val cf = ff.createConnectionFactory()
+        // Set the properties
+        cf.setStringProperty(WMQConstants.WMQ_HOST_NAME, hostname)
+        cf.setIntProperty(WMQConstants.WMQ_PORT, port)
+        cf.setStringProperty(WMQConstants.WMQ_CHANNEL, channel)
+        cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQ_CM_CLIENT)
+        cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, queuemanager)
+        cf.setStringProperty(WMQConstants.WMQ_APPLICATIONNAME, "dp-oppdrag")
+        cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true)
+        cf.setStringProperty(WMQConstants.USERID, user)
+        cf.setStringProperty(WMQConstants.PASSWORD, password)
+  
+        val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
+        pooledFactoryConfig.maxConnections = 10
+        pooledFactoryConfig.maxSessionsPerConnection = 10
+        val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
 
-        return cf
-
-        //val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
-        //pooledFactoryConfig.maxConnections = 10
-        //pooledFactoryConfig.maxSessionsPerConnection = 10
-        //val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
-
-        //val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(cf)
-        //return pooledFactory
+        val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(cf)
+        return pooledFactory
     }
 
     @Bean
