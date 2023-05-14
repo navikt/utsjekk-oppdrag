@@ -9,7 +9,7 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransf
 project.setProperty("mainClassName", "dp.oppdrag.AppKt")
 
 val ktorVersion = "2.3.0"
-val micrometerVersion = "1.10.6"
+val micrometerVersion = "1.11.0"
 val jacksonVersion = "2.15.0"
 val openApiGeneratorVersion = "0.6.1"
 val tokenValidationVersion = "3.0.11"
