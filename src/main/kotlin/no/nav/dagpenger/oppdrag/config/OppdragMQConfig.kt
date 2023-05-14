@@ -48,7 +48,7 @@ class OppdragMQConfig(
 
     @Bean
     @Throws(JMSException::class)
-    fun mqQueueConnectionFactory(): ConnectionFactory { /*
+    fun mqQueueConnectionFactory(): ConnectionFactory {
         val targetFactory = MQQueueConnectionFactory()
         targetFactory.hostName = hostname
         targetFactory.queueManager = queuemanager
@@ -64,20 +64,7 @@ class OppdragMQConfig(
         cf.setUsername(user)
         cf.setPassword(password)
         cf.setTargetConnectionFactory(targetFactory)
-*/
-        val ff = JmsFactoryFactory.getInstance(WMQConstants.JAKARTA_WMQ_PROVIDER)
-        val cf = ff.createConnectionFactory()
-        // Set the properties
-        cf.setStringProperty(WMQConstants.WMQ_HOST_NAME, hostname)
-        cf.setIntProperty(WMQConstants.WMQ_PORT, port)
-        cf.setStringProperty(WMQConstants.WMQ_CHANNEL, channel)
-        cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQ_CM_CLIENT)
-        cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, queuemanager)
-        cf.setStringProperty(WMQConstants.WMQ_APPLICATIONNAME, "dp-oppdrag")
-        cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true)
-        cf.setStringProperty(WMQConstants.USERID, user)
-        cf.setStringProperty(WMQConstants.PASSWORD, password)
-  
+
         val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
         pooledFactoryConfig.maxConnections = 10
         pooledFactoryConfig.maxSessionsPerConnection = 10
@@ -134,10 +121,10 @@ class OppdragMQConfig(
         val factory = DefaultJmsListenerContainerFactory()
         configurer.configure(factory, mqQueueConnectionFactory)
 
-        val transactionManager = JmsTransactionManager()
-        transactionManager.connectionFactory = mqQueueConnectionFactory
-        factory.setTransactionManager(transactionManager)
-        factory.setSessionTransacted(true)
+        //val transactionManager = JmsTransactionManager()
+        //transactionManager.connectionFactory = mqQueueConnectionFactory
+        //factory.setTransactionManager(transactionManager)
+        //factory.setSessionTransacted(true)
         factory.setErrorHandler {
             logger.error("Feilet håndtering av melding, se secureLogs", it) // Utrygg
             //logger.error("Feilet håndtering av melding, se secureLogs")
