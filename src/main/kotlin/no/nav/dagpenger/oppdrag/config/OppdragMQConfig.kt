@@ -132,6 +132,8 @@ class OppdragMQConfig(
         }
         factory.setExceptionListener {
             logger.error("Feilet lytting av kø, se secureLogs",it) // Utrygg
+            logger.info("User $user") // Utrygg
+            logger.info("Pwd-lengde ${password.length}") // Utrygg
             //logger.error("Feilet lytting av kø, se secureLogs")
             // secureLogger.error("Feilet lytting av kø", it)
         }

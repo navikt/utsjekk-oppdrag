@@ -7,8 +7,7 @@ oppdrag.mq:
   channel: ${MQ_CHANNEL}}
   hostname: ${MQ_HOSTNAME}
   port: ${MQ_PORT}
-  #user: ${MQ_USER}
-  user: gsdfsdfsdfsdf
+  user: ${MQ_USER}
   password: ${MQ_PASSWORD}
   enabled: ${MQ_ENABLED}
 
