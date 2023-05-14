@@ -53,28 +53,23 @@ class OppdragMQConfig(
         targetFactory.channel = channel
         targetFactory.port = port
         targetFactory.transportType = WMQ_CM_CLIENT
-        targetFactory.ccsid = UTF_8_WITH_PUA
-        targetFactory.setIntProperty(JMS_IBM_ENCODING, MQENC_NATIVE)
-        targetFactory.setBooleanProperty(JmsConstants.USER_AUTHENTICATION_MQCSP, true)
-        targetFactory.setIntProperty(JMS_IBM_CHARACTER_SET, UTF_8_WITH_PUA)
+        //targetFactory.ccsid = UTF_8_WITH_PUA
+        //targetFactory.setIntProperty(JMS_IBM_ENCODING, MQENC_NATIVE)
+        //targetFactory.setBooleanProperty(JmsConstants.USER_AUTHENTICATION_MQCSP, true)
+        //targetFactory.setIntProperty(JMS_IBM_CHARACTER_SET, UTF_8_WITH_PUA)
 
-        targetFactory.setStringProperty( WMQConstants.USERID, user )
-        targetFactory.setStringProperty( WMQConstants.PASSWORD, password )
+        val cf = UserCredentialsConnectionFactoryAdapter()
+        cf.setUsername(user)
+        cf.setPassword(password)
+        cf.setTargetConnectionFactory(targetFactory)
 
-//        val cf = UserCredentialsConnectionFactoryAdapter()
-//        cf.setUsername(user)
-//        cf.setPassword(password)
-//        cf.setTargetConnectionFactory(targetFactory)
+        val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
+        pooledFactoryConfig.maxConnections = 10
+        pooledFactoryConfig.maxSessionsPerConnection = 10
+        val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
 
-//        val pooledFactoryConfig = JmsPoolConnectionFactoryProperties()
-//        pooledFactoryConfig.maxConnections = 10
-//        pooledFactoryConfig.maxSessionsPerConnection = 10
-//        val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
-
-        //val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(cf)
-//        val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(targetFactory)
-//        return pooledFactory
-        return targetFactory
+        val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(cf)
+        return pooledFactory
     }
 
     @Bean
