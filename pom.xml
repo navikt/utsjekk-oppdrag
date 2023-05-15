@@ -28,7 +28,7 @@
         <token-validation-spring.version>3.0.11</token-validation-spring.version>
         <jaxb-api.version>4.0.0</jaxb-api.version>
         <jaxb-core.version>3.0.2</jaxb-core.version>
-        <jaxb-impl.version>4.0.1</jaxb-impl.version>
+        <jaxb-impl.version>4.0.2</jaxb-impl.version>
         <cxf.version>4.0.1</cxf.version>
 
         <ibm-mq.version>9.3.2.1</ibm-mq.version>
