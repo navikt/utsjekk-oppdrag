@@ -1,0 +1,40 @@
+{
+	"kodeEndring": "NY",
+	"fagSystem": "EFBT",
+	"saksnummer": "10003",
+	"aktoer": "12345678910",
+	"saksbehandlerId": "Z994481",
+	"avstemmingTidspunkt": "2022-04-08T10:46:40.205955533",
+	"utbetalingsperiode": [
+		{
+			"erEndringPåEksisterendePeriode": false,
+			"opphør": null,
+			"periodeId": 1,
+			"forrigePeriodeId": null,
+			"datoForVedtak": "2022-04-08",
+			"klassifisering": "EFBT",
+			"vedtakdatoFom": "2022-01-01",
+			"vedtakdatoTom": "2022-01-31",
+			"sats": 1920,
+			"satsType": "MND",
+			"utbetalesTil": "12345678910",
+			"behandlingId": 3814,
+			"utbetalingsgrad": 100
+		},
+		{
+			"erEndringPåEksisterendePeriode": false,
+			"opphør": null,
+			"periodeId": 2,
+			"forrigePeriodeId": 1,
+			"datoForVedtak": "2022-04-08",
+			"klassifisering": "EFBT",
+			"vedtakdatoFom": "2022-02-01",
+			"vedtakdatoTom": "2022-06-30",
+			"sats": 1280,
+			"satsType": "MND",
+			"utbetalesTil": "12345678910",
+			"behandlingId": 3814,
+			"utbetalingsgrad": 100
+		}
+	]
+}

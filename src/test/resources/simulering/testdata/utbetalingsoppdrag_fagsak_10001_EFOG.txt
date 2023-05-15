@@ -1,0 +1,57 @@
+{
+	"kodeEndring": "ENDR",
+	"fagSystem": "EFOG",
+	"saksnummer": "10001",
+	"aktoer": "12345678910",
+	"saksbehandlerId": "Z994315",
+	"avstemmingTidspunkt": "2022-04-05T17:22:56.445190359",
+	"utbetalingsperiode": [
+		{
+			"erEndringPåEksisterendePeriode": true,
+			"opphør": {
+				"opphørDatoFom": "2022-04-01"
+			},
+			"periodeId": 6,
+			"forrigePeriodeId": 5,
+			"datoForVedtak": "2022-04-05",
+			"klassifisering": "EFOG",
+			"vedtakdatoFom": "2022-04-01",
+			"vedtakdatoTom": "2022-10-31",
+			"sats": 2450,
+			"satsType": "MND",
+			"utbetalesTil": "21078804863",
+			"behandlingId": 2054,
+			"utbetalingsgrad": 12
+		},
+		{
+			"erEndringPåEksisterendePeriode": false,
+			"opphør": null,
+			"periodeId": 7,
+			"forrigePeriodeId": 6,
+			"datoForVedtak": "2022-04-05",
+			"klassifisering": "EFOG",
+			"vedtakdatoFom": "2022-04-01",
+			"vedtakdatoTom": "2022-05-31",
+			"sats": 2450,
+			"satsType": "MND",
+			"utbetalesTil": "21078804863",
+			"behandlingId": 2054,
+			"utbetalingsgrad": 12
+		},
+		{
+			"erEndringPåEksisterendePeriode": false,
+			"opphør": null,
+			"periodeId": 8,
+			"forrigePeriodeId": 7,
+			"datoForVedtak": "2022-04-05",
+			"klassifisering": "EFOG",
+			"vedtakdatoFom": "2022-06-01",
+			"vedtakdatoTom": "2022-12-31",
+			"sats": 19950,
+			"satsType": "MND",
+			"utbetalesTil": "21078804863",
+			"behandlingId": 2054,
+			"utbetalingsgrad": 100
+		}
+	]
+}

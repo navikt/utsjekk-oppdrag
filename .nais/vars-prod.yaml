@@ -15,3 +15,4 @@ mqKvitteringQueue: QA.P_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
 mqAvstemmingQueue: QA.P234.OB29_AVSTEMMING_XML
 oppdragServiceUrl: https://wasapp.adeo.no/cics/services/simulerFpServiceWSBinding
 stsUrl: https://sts.adeo.no/SecurityTokenServiceProvider/
+springProfil: prod

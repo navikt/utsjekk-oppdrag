@@ -1,0 +1,42 @@
+{
+	"kodeEndring": "ENDR",
+	"fagSystem": "BA",
+	"saksnummer": "10002",
+	"aktoer": "12345678910",
+	"saksbehandlerId": "Z994440",
+	"avstemmingTidspunkt": "2022-04-08T09:34:26.073672291",
+	"utbetalingsperiode": [
+		{
+			"erEndringPåEksisterendePeriode": true,
+			"opphør": {
+				"opphørDatoFom": "2021-12-01"
+			},
+			"periodeId": 0,
+			"forrigePeriodeId": null,
+			"datoForVedtak": "2022-04-08",
+			"klassifisering": "BATR",
+			"vedtakdatoFom": "2021-12-01",
+			"vedtakdatoTom": "2030-09-30",
+			"sats": 1054,
+			"satsType": "MND",
+			"utbetalesTil": "12345678910",
+			"behandlingId": 100067052,
+			"utbetalingsgrad": null
+		},
+		{
+			"erEndringPåEksisterendePeriode": false,
+			"opphør": null,
+			"periodeId": 1,
+			"forrigePeriodeId": 0,
+			"datoForVedtak": "2022-04-08",
+			"klassifisering": "BATR",
+			"vedtakdatoFom": "2021-12-01",
+			"vedtakdatoTom": "2021-12-31",
+			"sats": 1054,
+			"satsType": "MND",
+			"utbetalesTil": "12345678910",
+			"behandlingId": 100067052,
+			"utbetalingsgrad": null
+		}
+	]
+}
