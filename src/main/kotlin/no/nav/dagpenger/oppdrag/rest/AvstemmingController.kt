@@ -33,17 +33,6 @@ class AvstemmingController(
             )
     }
 
-    /**
-     * Konsistensavstemmingen virker i to moduser; en hvor avstemmingen sendes i en batch og en hvor batchen er splittet opp i flere batcher.
-     * Første modusen gjør et kall til denne funksjonen og blir trigger hvis både sendStartmelding og sendAvsluttmelding er satt til true.
-     * Andre modusen gjør flere kalle (en per delbranch) til denne funksjonen hvor sendStartmelding og sendAvsluttmelding skal settes som følger:
-     * Første kallet: sendStartmelding=true og sendAvsluttmelding = false
-     * Siste kallet: sendStartmelding=true og sendAvsluttmelding = false
-     * Resterende kall: sendStartmelding=false og sendAvsluttmelding = false
-     *
-     * transaksjonsId må være satt hvis det er en splittet batch.
-     */
-
     companion object {
 
         val LOG: Logger = LoggerFactory.getLogger(AvstemmingController::class.java)

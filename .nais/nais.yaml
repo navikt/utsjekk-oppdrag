@@ -29,6 +29,8 @@ spec:
     requests:
       memory: {{ requestsMemory }}
       cpu: {{ requestsCpu }}
+  secureLogs:
+    enabled: true
   ingresses:
   {{#each ingresses as |url|}}
       - {{ url }}
