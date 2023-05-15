@@ -4,7 +4,7 @@ oppdrag.mq:
   mottak: ${MQ_KVITTERING_QUEUE}
   avstemming: ${MQ_AVSTEMMING_QUEUE}
   tss: QA.Q1_415.AS10_SAMHANDLER_SERVICE
-  channel: ${MQ_CHANNEL}}
+  channel: ${MQ_CHANNEL}
   hostname: ${MQ_HOSTNAME}
   port: ${MQ_PORT}
   user: ${MQ_USER}
