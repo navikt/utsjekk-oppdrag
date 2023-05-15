@@ -1,18 +1,18 @@
 package no.nav.dagpenger.oppdrag.repository
 
+import no.nav.dagpenger.oppdrag.config.DatabaseConfiguration
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.util.Containers
-import no.nav.dagpenger.oppdrag.util.TestConfig
 import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
 import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -20,13 +20,13 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.UUID
+import java.util.*
 import kotlin.test.assertFailsWith
 
-@ActiveProfiles("dev")
-@ContextConfiguration(initializers = arrayOf(Containers.PostgresSQLInitializer::class))
-@SpringBootTest(classes = [TestConfig::class])
-@DisabledIfEnvironmentVariable(named = "CIRCLECI", matches = "true")
+@JdbcTest
+@ActiveProfiles("jdbc-test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ContextConfiguration(initializers = [Containers.PostgresSQLInitializer::class], classes = [DatabaseConfiguration::class, OppdragLagerTestConfig::class])
 @Testcontainers
 internal class OppdragLagerRepositoryJdbcTest {
 

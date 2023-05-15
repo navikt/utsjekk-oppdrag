@@ -10,7 +10,6 @@ import no.nav.dagpenger.oppdrag.util.Containers
 import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Avstemmingsdata
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.test.context.ContextConfiguration
@@ -22,7 +21,6 @@ private const val TESTKØ = "DEV.QUEUE.2"
 private const val FAGOMRÅDE = "BA"
 private val IDAG = LocalDateTime.now()
 
-@DisabledIfEnvironmentVariable(named = "CIRCLECI", matches = "true")
 @Testcontainers
 @ContextConfiguration(initializers = [Containers.MQInitializer::class])
 class AvstemmingMQSenderTest {
