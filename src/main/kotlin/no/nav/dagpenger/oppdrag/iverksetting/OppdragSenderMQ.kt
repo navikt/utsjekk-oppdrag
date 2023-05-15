@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.lang.UnsupportedOperationException
 
 @Service
-@Profile("!e2e & !preprod")
+@Profile("!e2e")
 class OppdragSenderMQ(
     val jmsTemplateUtgående: JmsTemplate,
     @Value("\${oppdrag.mq.enabled}") val erEnabled: String,
