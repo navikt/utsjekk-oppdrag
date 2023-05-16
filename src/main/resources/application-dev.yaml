@@ -4,11 +4,6 @@ oppdrag.mq:
   mottak: QA.Q1_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
   avstemming: QA.Q1_234.OB29_AVSTEMMING_XML
   channel: Q1_DP_OPPDRAG
-  hostname: mqls02.preprod.local
-  port: 1413
-  user: srvdp-oppdrag
-  password: ${MQ_PASSWORD}
-  enabled: true
 
 no.nav.security.jwt:
   issuer.azuread:

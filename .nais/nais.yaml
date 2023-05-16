@@ -51,6 +51,10 @@ spec:
   env:
     - name: JAVA_OPTS
       value: "-XX:MinRAMPercentage=25.0 -XX:MaxRAMPercentage=75.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
+    - name: MQ_HOSTNAME
+      value: {{ mqHostname }}
+    - name: MQ_PORT
+      value: {{ mqPort }}
     - name: SPRING_PROFILES_ACTIVE
       value: {{ springProfil }}
   azure:
