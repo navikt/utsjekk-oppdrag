@@ -19,9 +19,9 @@ no.nav.security.jwt:
     accepted_audience: ${AZURE_APP_CLIENT_ID}
     cookie_name: azure_token
 
-spring.datasource.url: ${SPRING_DATASOURCE_URL_OVERRIDE}
-spring.datasource.username: ${SPRING_DATASOURCE_USERNAME_OVERRIDE}
-spring.datasource.password: ${SPRING_DATASOURCE_PASSWORD_OVERRIDE}
+spring.datasource.url: jdbc:postgresql://0.0.0.0:5432/dp-oppdrag
+spring.datasource.username: postgres
+spring.datasource.password: test
 
 
 OPPDRAG_SERVICE_URL: #Mockes ut lokalt

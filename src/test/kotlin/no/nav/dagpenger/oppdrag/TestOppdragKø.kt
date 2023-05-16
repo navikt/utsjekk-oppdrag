@@ -12,45 +12,41 @@ import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.iverksetting.Status
 import no.nav.dagpenger.oppdrag.util.Containers
 import no.trygdeetaten.skjema.oppdrag.Mmel
+import org.springframework.boot.test.util.TestPropertyValues
+import org.springframework.context.ApplicationContextInitializer
+import org.springframework.context.ConfigurableApplicationContext
 import java.io.Closeable
-import java.util.Properties
+import java.lang.IllegalStateException
 
 class TestOppdragKø(private val kvitteringStatus: Status, private val kvitteringsmelding: String? = null) :
     MessageListener,
+    ApplicationContextInitializer<ConfigurableApplicationContext>,
     Closeable {
 
-    private val queueManager = "QM1"
-    private val appPassord = "passw0rd"
+    private val mq = Containers.MyGeneralContainer("ibmcom/mq")
+    private lateinit var queueConnection: QueueConnection
 
-    var mq = Containers.MyGeneralContainer("ibmcom/mq")
-        .withEnv("LICENSE", "accept")
-        .withEnv("MQ_QMGR_NAME", queueManager)
-        .withEnv("MQ_APP_PASSWORD", appPassord)
-        .withEnv("persistance.enabled", "true")
-        .withExposedPorts(1414)
+    private fun startMQ(context: ConfigurableApplicationContext) {
+        val port = context.environment.getProperty("oppdrag.mq.port")?.toInt()
+            ?: throw IllegalStateException("Fant ikke port for MQ i config")
 
-    init {
-        startMQ()
-        lyttEtterOppdragPåKø()
-    }
+        mq
+            .withEnv("LICENSE", "accept")
+            .withEnv("MQ_QMGR_NAME", context.environment.getProperty("oppdrag.mq.queuemanager"))
+            .withEnv("MQ_APP_PASSWORD", context.environment.getProperty("oppdrag.mq.password"))
+            .withEnv("persistance.enabled", "true")
+            .withExposedPorts(port)
+            .start()
 
-    private fun startMQ() {
-        mq.start()
-        System.setProperty("oppdrag.mq.port", mq.getMappedPort(1414).toString())
-        System.setProperty("oppdrag.mq.queuemanager", queueManager)
-        System.setProperty("oppdrag.mq.send", "DEV.QUEUE.1")
         System.setProperty("oppdrag.mq.mottak", "DEV.QUEUE.2")
-        System.setProperty("oppdrag.mq.avstemming", "DEV.QUEUE.3")
-        System.setProperty("oppdrag.mq.channel","DEV.ADMIN.SVRCONN")
-        System.setProperty("oppdrag.mq.hostname","localhost")
-        System.setProperty("oppdrag.mq.user", "admin")
-        System.setProperty("oppdrag.mq.password", appPassord)
-        System.setProperty("oppdrag.mq.enabled", true.toString())
+        TestPropertyValues.of(
+            "oppdrag.mq.port=${mq.getMappedPort(port)}",
+        ).applyTo(context.environment)
     }
 
-    private fun lyttEtterOppdragPåKø() {
-        val queue = MQQueue(System.getProperty("oppdrag.mq.send"))
-        val queueConnection = createQueueConnection()
+    private fun lyttEtterOppdragPåKø(context: ConfigurableApplicationContext) {
+        val queue = MQQueue(context.environment.getProperty("oppdrag.mq.send"))
+        queueConnection = createQueueConnection(context)
         val queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
         val queueReceiver = queueSession.createReceiver(queue)
         queueReceiver.messageListener = this
@@ -69,7 +65,6 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
         oppdrag.mmel = mmel
 
         val queue = MQQueue(System.getProperty("oppdrag.mq.mottak"))
-        val queueConnection = createQueueConnection()
         val queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
         val queueSender = queueSession.createSender(queue)
 
@@ -79,21 +74,30 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
 
         queueSender.close()
         queueSession.close()
-        queueConnection.close()
     }
 
     override fun close() {
+        queueConnection.close()
         mq.close()
     }
 
-    fun createQueueConnection(): QueueConnection {
+    private fun createQueueConnection(context: ConfigurableApplicationContext): QueueConnection {
         val qcf = MQQueueConnectionFactory()
-        qcf.hostName = System.getProperty("oppdrag.mq.hostname")
-        qcf.port = System.getProperty("oppdrag.mq.port")?.toInt() ?: 0
-        qcf.channel = System.getProperty("oppdrag.mq.channel")
+        qcf.hostName = context.environment.getProperty("oppdrag.mq.hostname")
+        qcf.port = context.environment.getProperty("oppdrag.mq.port")?.toInt()
+            ?: throw IllegalStateException("Fant ikke MQ-port i config")
+        qcf.channel = context.environment.getProperty("oppdrag.mq.channel")
         qcf.transportType = WMQConstants.WMQ_CM_CLIENT
-        qcf.queueManager = System.getProperty("oppdrag.mq.queuemanager")
+        qcf.queueManager = context.environment.getProperty("oppdrag.mq.queuemanager")
 
-        return qcf.createQueueConnection(System.getProperty("oppdrag.mq.user"), System.getProperty("oppdrag.mq.password"))
+        return qcf.createQueueConnection(
+            context.environment.getProperty("oppdrag.mq.user"),
+            context.environment.getProperty("oppdrag.mq.password")
+        )
+    }
+
+    override fun initialize(applicationContext: ConfigurableApplicationContext) {
+        startMQ(applicationContext)
+        lyttEtterOppdragPåKø(applicationContext)
     }
 }

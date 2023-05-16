@@ -1,21 +1,24 @@
 package no.nav.dagpenger.oppdrag
 
 import no.nav.dagpenger.oppdrag.util.Containers.postgreSQLContainer
+import org.springframework.boot.test.util.TestPropertyValues
+import org.springframework.context.ApplicationContextInitializer
+import org.springframework.context.ConfigurableApplicationContext
 import java.io.Closeable
-import java.util.Properties
 
-class TestOppdragDb : Closeable {
-
-    val properties = Properties()
-
-    init {
-        postgreSQLContainer.start()
-        properties["SPRING_DATASOURCE_URL_OVERRIDE"] = postgreSQLContainer.jdbcUrl
-        properties["SPRING_DATASOURCE_USERNAME_OVERRIDE"] = postgreSQLContainer.username
-        properties["SPRING_DATASOURCE_PASSWORD_OVERRIDE"] = postgreSQLContainer.password
-    }
+class TestOppdragDb : ApplicationContextInitializer<ConfigurableApplicationContext>, Closeable {
 
     override fun close() {
         postgreSQLContainer.close()
+    }
+
+    override fun initialize(applicationContext: ConfigurableApplicationContext) {
+        postgreSQLContainer.start()
+
+        TestPropertyValues.of(
+            "spring.datasource.url=${postgreSQLContainer.jdbcUrl}",
+            "spring.datasource.username=${postgreSQLContainer.username}",
+            "spring.datasource.password=${postgreSQLContainer.password}"
+        ).applyTo(applicationContext.environment)
     }
 }
