@@ -36,25 +36,12 @@
 
         <logback-encoder.version>7.3</logback-encoder.version>
 
-        <spring-cloud.version>2022.0.2</spring-cloud.version>
         <springdoc.version>2.1.0</springdoc.version>
 
         <mockk.version>1.13.2</mockk.version>
         <testcontainers.version>1.17.5</testcontainers.version>
         <nav-token-validation-test.version>2.0.5</nav-token-validation-test.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <!-- Spring Boot -->
@@ -180,10 +167,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
