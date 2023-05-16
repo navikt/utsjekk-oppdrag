@@ -1,18 +1,14 @@
 package no.nav.dagpenger.oppdrag.config
 
 import com.ibm.mq.constants.CMQC.MQENC_NATIVE
-import com.ibm.mq.jakarta.jms.MQQueue
 import com.ibm.mq.jakarta.jms.MQQueueConnectionFactory
 import com.ibm.msg.client.jakarta.jms.JmsConstants
 import com.ibm.msg.client.jakarta.jms.JmsConstants.JMS_IBM_CHARACTER_SET
 import com.ibm.msg.client.jakarta.jms.JmsConstants.JMS_IBM_ENCODING
-import com.ibm.msg.client.jakarta.jms.JmsFactoryFactory
-import com.ibm.msg.client.jakarta.wmq.WMQConstants
 import com.ibm.msg.client.jakarta.wmq.common.CommonConstants.WMQ_CM_CLIENT
 import jakarta.jms.ConnectionFactory
 import jakarta.jms.JMSException
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer
 import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryFactory
@@ -24,7 +20,6 @@ import org.springframework.jms.config.JmsListenerContainerFactory
 import org.springframework.jms.connection.JmsTransactionManager
 import org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter
 import org.springframework.jms.core.JmsTemplate
-import java.time.Duration
 
 private const val UTF_8_WITH_PUA = 1208
 
@@ -35,7 +30,6 @@ class OppdragMQConfig(
     @Value("\${oppdrag.mq.channel}") val channel: String,
     @Value("\${oppdrag.mq.send}") val sendQueue: String,
     @Value("\${oppdrag.mq.avstemming}") val avstemmingQueue: String,
-    @Value("\${oppdrag.mq.tss}") val tssQueue: String,
     @Value("\${oppdrag.mq.port}") val port: Int,
     @Value("\${oppdrag.mq.user}") val user: String,
     @Value("\${oppdrag.mq.password}") val password: String
@@ -77,38 +71,6 @@ class OppdragMQConfig(
         return JmsTemplate(mqQueueConnectionFactory).apply {
             defaultDestinationName = sendQueue
             isSessionTransacted = true
-        }
-    }
-
-    @Bean
-    fun tssConnectionFactory(): ConnectionFactory {
-        val ff = JmsFactoryFactory.getInstance(WMQConstants.JAKARTA_WMQ_PROVIDER)
-        val cf = ff.createConnectionFactory()
-        // Set the properties
-        cf.setStringProperty(WMQConstants.WMQ_HOST_NAME, hostname)
-        cf.setIntProperty(WMQConstants.WMQ_PORT, port)
-        cf.setStringProperty(WMQConstants.WMQ_CHANNEL, channel)
-        cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQ_CM_CLIENT)
-        cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, queuemanager)
-        cf.setStringProperty(WMQConstants.WMQ_APPLICATIONNAME, "dp-oppdrag")
-        cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true)
-        cf.setStringProperty(WMQConstants.USERID, user)
-        cf.setStringProperty(WMQConstants.PASSWORD, password)
-        return cf
-    }
-
-    @Bean
-    fun jmsTemplateTss(
-        @Qualifier("tssConnectionFactory") tssConnectionFactory: ConnectionFactory
-    ): JmsTemplate {
-
-        val mq = MQQueue(tssQueue)
-        mq.targetClient = WMQConstants.WMQ_CLIENT_NONJMS_MQ
-
-        return JmsTemplate(tssConnectionFactory).apply {
-            defaultDestination = mq
-            isSessionTransacted = true
-            receiveTimeout = Duration.ofSeconds(10).toMillis()
         }
     }
 

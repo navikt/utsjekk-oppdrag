@@ -43,7 +43,6 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
         properties["oppdrag.mq.send"] = "DEV.QUEUE.1"
         properties["oppdrag.mq.mottak"] = "DEV.QUEUE.2"
         properties["oppdrag.mq.avstemming"] = "DEV.QUEUE.3"
-        properties["oppdrag.mq.tss"] = "DEV.QUEUE.4"
         properties["oppdrag.mq.channel"] = "DEV.ADMIN.SVRCONN"
         properties["oppdrag.mq.hostname"] = "localhost"
         properties["oppdrag.mq.user"] = "admin"

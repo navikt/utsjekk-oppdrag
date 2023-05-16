@@ -392,19 +392,6 @@
                             <clearOutputDir>false</clearOutputDir>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>tss</id>
-                        <goals>
-                            <goal>xjc</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/main/resources/tss/tss.xsd</source>
-                            </sources>
-                            <outputDirectory>${project.build.directory}/generated-sources/tss</outputDirectory>
-                            <clearOutputDir>false</clearOutputDir>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
             <plugin>
