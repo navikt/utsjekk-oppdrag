@@ -45,7 +45,7 @@ class GrensesnittavstemmingService(
 
         LOG.info("Fullført grensesnittavstemming for id: ${avstemmingMapper.avstemmingId}")
 
-        oppdaterMetrikker(fagsystem, meldinger[1].grunnlag)
+        //oppdaterMetrikker(fagsystem, meldinger[1].grunnlag)
     }
 
     private fun oppdaterMetrikker(fagsystem: String, grunnlag: Grunnlagsdata) {
