@@ -63,7 +63,7 @@ class OIDCUtil(private val ctxHolder: TokenValidationContextHolder) {
 
     private fun erDevProfil(): Boolean {
         return environment.activeProfiles.any {
-            listOf("dev", "mock-auth").contains(it.trim(' '))
+            listOf("local", "mock-auth").contains(it.trim(' '))
         }
     }
 }

@@ -5,7 +5,7 @@ import no.nav.dagpenger.oppdrag.iverksetting.Status
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.testcontainers.containers.PostgreSQLContainer
 
-object DevPsqlMqLauncher {
+object LocalPsqlMqLauncher {
     @JvmStatic
     fun main(args: Array<String>) {
 
@@ -13,7 +13,7 @@ object DevPsqlMqLauncher {
         val db = TestOppdragDb()
 
         SpringApplicationBuilder(ApplicationConfig::class.java)
-            .profiles("dev_psql_mq")
+            .profiles("local_psql_mq")
             .properties(db.properties)
             .properties(kø.properties)
             .run(*args)

@@ -20,7 +20,7 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import kotlin.test.assertEquals
 
-@ActiveProfiles("dev")
+@ActiveProfiles("local")
 @ContextConfiguration(initializers = [Containers.PostgresSQLInitializer::class, Containers.MQInitializer::class])
 @SpringBootTest(classes = [TestConfig::class])
 @EnableJms

@@ -60,7 +60,7 @@ class OppdragMottaker(
             oppdragLagerRepository.oppdaterKvitteringsmelding(oppdragId, kvittering.mmel, førsteOppdragUtenKvittering.versjon)
         }
 
-        if (!env.activeProfiles.contains("dev") && !env.activeProfiles.contains("e2e")) {
+        if (!env.activeProfiles.contains("local") && !env.activeProfiles.contains("e2e")) {
             LOG.debug("Lagrer oppdatert oppdrag $oppdragId i databasen med ny status ${kvittering.oppdragStatus}")
             oppdragLagerRepository.oppdaterStatus(oppdragId, kvittering.oppdragStatus, førsteOppdragUtenKvittering.versjon)
         } else {

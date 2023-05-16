@@ -22,10 +22,10 @@ class OppdragMQMottakTest {
 
     lateinit var oppdragMottaker: OppdragMottaker
 
-    val devEnv: Environment
+    val localEnv: Environment
         get() {
             val env = mockk<Environment>()
-            every { env.activeProfiles } returns arrayOf("dev")
+            every { env.activeProfiles } returns arrayOf("local")
             return env
         }
 
@@ -33,7 +33,7 @@ class OppdragMQMottakTest {
     fun setUp() {
         val env = mockk<Environment>()
         val oppdragLagerRepository = mockk<OppdragLagerRepository>()
-        every { env.activeProfiles } returns arrayOf("dev")
+        every { env.activeProfiles } returns arrayOf("local")
 
         oppdragMottaker = OppdragMottaker(oppdragLagerRepository, env)
     }
@@ -64,7 +64,7 @@ class OppdragMQMottakTest {
         every { oppdragLagerRepository.oppdaterStatus(any(), any()) } just Runs
         every { oppdragLagerRepository.oppdaterKvitteringsmelding(any(), any()) } just Runs
 
-        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, devEnv)
+        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, localEnv)
 
         oppdragMottaker.mottaKvitteringFraOppdrag("kvittering-akseptert.xml".fraRessursSomTextMessage)
 
@@ -86,7 +86,7 @@ class OppdragMQMottakTest {
         every { oppdragLagerRepository.oppdaterStatus(any(), any(), any()) } just Runs
         every { oppdragLagerRepository.oppdaterKvitteringsmelding(any(), any(), any()) } just Runs
 
-        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, devEnv)
+        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, localEnv)
 
         oppdragMottaker.mottaKvitteringFraOppdrag("kvittering-akseptert.xml".fraRessursSomTextMessage)
 
@@ -105,7 +105,7 @@ class OppdragMQMottakTest {
 
         every { oppdragLagerRepository.opprettOppdrag(any()) } just Runs
 
-        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, devEnv)
+        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, localEnv)
         oppdragMottaker.LOG = mockk()
 
         every { oppdragMottaker.LOG.info(any()) } just Runs
@@ -122,7 +122,7 @@ class OppdragMQMottakTest {
         every { oppdragLagerRepository.hentAlleVersjonerAvOppdrag(any()) } throws Exception()
         every { oppdragLagerRepository.opprettOppdrag(any()) } just Runs
 
-        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, devEnv)
+        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, localEnv)
         oppdragMottaker.LOG = mockk()
 
         every { oppdragMottaker.LOG.info(any()) } just Runs
@@ -144,7 +144,7 @@ class OppdragMQMottakTest {
         every { oppdragLagerRepository.oppdaterStatus(any(), OppdragStatus.KVITTERT_OK) } just Runs
         every { oppdragLagerRepository.oppdaterKvitteringsmelding(any(), any()) } just Runs
 
-        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, devEnv)
+        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, localEnv)
         oppdragMottaker.LOG = mockk()
 
         every { oppdragMottaker.LOG.info(any()) } just Runs
