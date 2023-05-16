@@ -19,7 +19,6 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
     MessageListener,
     Closeable {
 
-    val properties = Properties()
     private val queueManager = "QM1"
     private val appPassord = "passw0rd"
 
@@ -37,21 +36,20 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
 
     private fun startMQ() {
         mq.start()
-        properties["OPPDRAG_MQ_PORT_OVERRIDE"] = mq.getMappedPort(1414).toString()
-        properties["oppdrag.mq.port"] = mq.getMappedPort(1414).toString()
-        properties["oppdrag.mq.queuemanager"] = queueManager
-        properties["oppdrag.mq.send"] = "DEV.QUEUE.1"
-        properties["oppdrag.mq.mottak"] = "DEV.QUEUE.2"
-        properties["oppdrag.mq.avstemming"] = "DEV.QUEUE.3"
-        properties["oppdrag.mq.channel"] = "DEV.ADMIN.SVRCONN"
-        properties["oppdrag.mq.hostname"] = "localhost"
-        properties["oppdrag.mq.user"] = "admin"
-        properties["oppdrag.mq.password"] = appPassord
-        properties["oppdrag.mq.enabled"] = true
+        System.setProperty("oppdrag.mq.port", mq.getMappedPort(1414).toString())
+        System.setProperty("oppdrag.mq.queuemanager", queueManager)
+        System.setProperty("oppdrag.mq.send", "DEV.QUEUE.1")
+        System.setProperty("oppdrag.mq.mottak", "DEV.QUEUE.2")
+        System.setProperty("oppdrag.mq.avstemming", "DEV.QUEUE.3")
+        System.setProperty("oppdrag.mq.channel","DEV.ADMIN.SVRCONN")
+        System.setProperty("oppdrag.mq.hostname","localhost")
+        System.setProperty("oppdrag.mq.user", "admin")
+        System.setProperty("oppdrag.mq.password", appPassord)
+        System.setProperty("oppdrag.mq.enabled", true.toString())
     }
 
     private fun lyttEtterOppdragPåKø() {
-        val queue = MQQueue(properties.getProperty("oppdrag.mq.send"))
+        val queue = MQQueue(System.getProperty("oppdrag.mq.send"))
         val queueConnection = createQueueConnection()
         val queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
         val queueReceiver = queueSession.createReceiver(queue)
@@ -70,7 +68,7 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
         }
         oppdrag.mmel = mmel
 
-        val queue = MQQueue(properties.getProperty("oppdrag.mq.mottak"))
+        val queue = MQQueue(System.getProperty("oppdrag.mq.mottak"))
         val queueConnection = createQueueConnection()
         val queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
         val queueSender = queueSession.createSender(queue)
@@ -90,12 +88,12 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
 
     fun createQueueConnection(): QueueConnection {
         val qcf = MQQueueConnectionFactory()
-        qcf.hostName = properties.getProperty("oppdrag.mq.hostname")
-        qcf.port = properties.getProperty("oppdrag.mq.port")?.toInt() ?: 0
-        qcf.channel = properties.getProperty("oppdrag.mq.channel")
+        qcf.hostName = System.getProperty("oppdrag.mq.hostname")
+        qcf.port = System.getProperty("oppdrag.mq.port")?.toInt() ?: 0
+        qcf.channel = System.getProperty("oppdrag.mq.channel")
         qcf.transportType = WMQConstants.WMQ_CM_CLIENT
-        qcf.queueManager = properties.getProperty("oppdrag.mq.queuemanager")
+        qcf.queueManager = System.getProperty("oppdrag.mq.queuemanager")
 
-        return qcf.createQueueConnection(properties.getProperty("oppdrag.mq.user"), properties.getProperty("oppdrag.mq.password"))
+        return qcf.createQueueConnection(System.getProperty("oppdrag.mq.user"), System.getProperty("oppdrag.mq.password"))
     }
 }

@@ -13,7 +13,6 @@ class TestOppdragDb : Closeable {
         properties["SPRING_DATASOURCE_URL_OVERRIDE"] = postgreSQLContainer.jdbcUrl
         properties["SPRING_DATASOURCE_USERNAME_OVERRIDE"] = postgreSQLContainer.username
         properties["SPRING_DATASOURCE_PASSWORD_OVERRIDE"] = postgreSQLContainer.password
-        properties["SPRING_DATASOURCE_DRIVER_OVERRIDE"] = "org.postgresql.Driver"
     }
 
     override fun close() {

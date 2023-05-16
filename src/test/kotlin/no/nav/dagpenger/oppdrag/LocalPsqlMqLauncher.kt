@@ -9,13 +9,12 @@ object LocalPsqlMqLauncher {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val kø = TestOppdragKø(Status.OK)
+        TestOppdragKø(Status.OK)
         val db = TestOppdragDb()
 
         SpringApplicationBuilder(ApplicationConfig::class.java)
-            .profiles("local_psql_mq")
+            .profiles("local")
             .properties(db.properties)
-            .properties(kø.properties)
             .run(*args)
     }
 }
