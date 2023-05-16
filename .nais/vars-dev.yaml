@@ -4,15 +4,4 @@ requestsCpu: 500m
 db_tier: "db-f1-micro"
 ingresses:
   - https://dp-oppdrag.intern.dev.nav.no
-mqEnabled: true
-mqHostname: mqls02.preprod.local
-mqPort: 1413
-mqChannel: Q1_DP_OPPDRAG
-mqQueuemanager: MQLS02
-mqUser: srvdp-oppdrag
-mqOppdragQueue: QA.Q1_231.OB04_OPPDRAG_XML
-mqKvitteringQueue: QA.Q1_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
-mqAvstemmingQueue: QA.Q1_234.OB29_AVSTEMMING_XML
-oppdragServiceUrl: https://cics-q1.adeo.no/oppdrag/simulerFpServiceWSBinding
-stsUrl: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
 springProfil: dev

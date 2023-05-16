@@ -1,15 +1,15 @@
 oppdrag.mq:
-  queuemanager: ${MQ_QUEUEMANAGER}
-  send: ${MQ_OPPDRAG_QUEUE}
-  mottak: ${MQ_KVITTERING_QUEUE}
-  avstemming: ${MQ_AVSTEMMING_QUEUE}
+  queuemanager: MQLS02
+  send: QA.Q1_231.OB04_OPPDRAG_XML
+  mottak: QA.Q1_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
+  avstemming: QA.Q1_234.OB29_AVSTEMMING_XML
   tss: QA.Q1_415.AS10_SAMHANDLER_SERVICE
-  channel: ${MQ_CHANNEL}
-  hostname: ${MQ_HOSTNAME}
-  port: ${MQ_PORT}
-  user: ${MQ_USER}
+  channel: Q1_DP_OPPDRAG
+  hostname: mqls02.preprod.local
+  port: 1413
+  user: srvdp-oppdrag
   password: ${MQ_PASSWORD}
-  enabled: ${MQ_ENABLED}
+  enabled: true
 
 no.nav.security.jwt:
   issuer.azuread:
@@ -17,6 +17,6 @@ no.nav.security.jwt:
     accepted_audience: ${AZURE_APP_CLIENT_ID}
     cookie_name: azure_token
 
-OPPDRAG_SERVICE_URL: ${OPPDRAG_SERVICE_URL}
-SECURITYTOKENSERVICE_URL: ${STS_URL}
+OPPDRAG_SERVICE_URL: https://cics-q1.adeo.no/oppdrag/simulerFpServiceWSBinding
+SECURITYTOKENSERVICE_URL: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
 TILBAKEKREVING_V1_URL: https://cics-q1.adeo.no/oppdrag/K231CW80
