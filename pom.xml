@@ -25,7 +25,7 @@
         <jetty.version>11.0.15</jetty.version>
 
         <common-java-modules.version>2023.03.21_13.06-9a5b1febdbde</common-java-modules.version>
-        <token-validation-spring.version>3.0.11</token-validation-spring.version>
+        <token-validation-spring.version>3.1.0</token-validation-spring.version>
         <jaxb-api.version>4.0.0</jaxb-api.version>
         <jaxb-core.version>3.0.2</jaxb-core.version>
         <jaxb-impl.version>4.0.1</jaxb-impl.version>
