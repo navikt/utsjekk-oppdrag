@@ -24,6 +24,7 @@
 
         <jetty.version>11.0.15</jetty.version>
 
+        <dp-kontrakter.version>1.0_20230522135944_690c813</dp-kontrakter.version>
         <common-java-modules.version>2023.03.21_13.06-9a5b1febdbde</common-java-modules.version>
         <token-validation-spring.version>3.0.11</token-validation-spring.version>
         <jaxb-api.version>4.0.0</jaxb-api.version>
@@ -181,6 +182,11 @@
         </dependency>
 
         <!-- NAV interne avhengigheter-->
+        <dependency>
+            <groupId>no.nav.dagpenger</groupId>
+            <artifactId>dp-kontrakter</artifactId>
+            <version>${dp-kontrakter.version}</version>
+        </dependency>
         <dependency>
             <groupId>no.nav.security</groupId>
             <artifactId>token-validation-spring</artifactId>

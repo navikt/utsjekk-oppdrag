@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.util
 
-import no.nav.dagpenger.oppdrag.domene.Opphør
-import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
-import no.nav.dagpenger.oppdrag.domene.Utbetalingsperiode
+import no.nav.dagpenger.kontrakter.utbetaling.Opphør
+import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsperiode
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime

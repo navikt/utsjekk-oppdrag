@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.service
 
+import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.domene.OppdragId
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
-import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.domene.id
 import no.nav.dagpenger.oppdrag.repository.OppdragLager
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository

@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.service
 
-import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.repository.MellomlagringKonsistensavstemming
 import no.nav.dagpenger.oppdrag.repository.MellomlagringKonsistensavstemmingRepository
 import org.slf4j.Logger

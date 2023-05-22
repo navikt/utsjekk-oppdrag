@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.repository
 
+import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.domene.OppdragId
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
-import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import java.time.LocalDateTime
 

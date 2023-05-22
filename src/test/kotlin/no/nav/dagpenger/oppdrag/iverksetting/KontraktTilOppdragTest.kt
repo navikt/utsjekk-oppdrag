@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
-import no.nav.dagpenger.oppdrag.domene.Opphør
-import no.nav.dagpenger.oppdrag.domene.Utbetalingsoppdrag
-import no.nav.dagpenger.oppdrag.domene.Utbetalingsperiode
+import no.nav.dagpenger.kontrakter.utbetaling.Opphør
+import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsperiode
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
 import no.trygdeetaten.skjema.oppdrag.OppdragsLinje150
 import org.junit.jupiter.api.Assertions
