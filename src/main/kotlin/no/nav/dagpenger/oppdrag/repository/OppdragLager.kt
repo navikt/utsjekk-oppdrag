@@ -1,10 +1,10 @@
 package no.nav.dagpenger.oppdrag.repository
 
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.utbetaling.tilFagsystem
 import no.nav.dagpenger.oppdrag.domene.OppdragId
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.domene.behandlingsIdForFørsteUtbetalingsperiode
-import no.nav.dagpenger.oppdrag.domene.tilFagsystem
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel

@@ -3,9 +3,8 @@ package no.nav.dagpenger.oppdrag.service
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Metrics
 import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
+import no.nav.dagpenger.kontrakter.utbetaling.GrensesnittavstemmingRequest
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingSender
-import no.nav.dagpenger.oppdrag.domene.GrensesnittavstemmingRequest
-import no.nav.dagpenger.oppdrag.domene.tilFagsystem
 import no.nav.dagpenger.oppdrag.grensesnittavstemming.GrensesnittavstemmingMapper
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Grunnlagsdata
@@ -13,6 +12,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 class GrensesnittavstemmingService(
@@ -20,18 +20,18 @@ class GrensesnittavstemmingService(
     private val oppdragLagerRepository: OppdragLagerRepository
 ) {
 
-    private var countere: MutableMap<String, Map<String, Counter>> = HashMap()
+    private var countere: MutableMap<Fagsystem, Map<String, Counter>> = EnumMap(Fagsystem::class.java)
 
     init {
         enumValues<Fagsystem>().forEach {
-            countere[it.name] = opprettMetrikkerForFagsystem(it)
+            countere[it] = opprettMetrikkerForFagsystem(it)
         }
     }
 
     fun utførGrensesnittavstemming(request: GrensesnittavstemmingRequest) {
-        val (fagsystem: String, fra: LocalDateTime, til: LocalDateTime) = request
-        val oppdragSomSkalAvstemmes = oppdragLagerRepository.hentIverksettingerForGrensesnittavstemming(fra, til, fagsystem.tilFagsystem())
-        val avstemmingMapper = GrensesnittavstemmingMapper(oppdragSomSkalAvstemmes, fagsystem.tilFagsystem(), fra, til)
+        val (fagsystem: Fagsystem, fra: LocalDateTime, til: LocalDateTime) = request
+        val oppdragSomSkalAvstemmes = oppdragLagerRepository.hentIverksettingerForGrensesnittavstemming(fra, til, fagsystem)
+        val avstemmingMapper = GrensesnittavstemmingMapper(oppdragSomSkalAvstemmes, fagsystem, fra, til)
         val meldinger = avstemmingMapper.lagAvstemmingsmeldinger()
 
         if (meldinger.isEmpty()) {
@@ -50,7 +50,7 @@ class GrensesnittavstemmingService(
         oppdaterMetrikker(fagsystem, meldinger[1].grunnlag)
     }
 
-    private fun oppdaterMetrikker(fagsystem: String, grunnlag: Grunnlagsdata) {
+    private fun oppdaterMetrikker(fagsystem: Fagsystem, grunnlag: Grunnlagsdata) {
         val metrikkerForFagsystem = countere.getValue(fagsystem)
 
         metrikkerForFagsystem.getValue(Status.GODKJENT.status).increment(grunnlag.godkjentAntall.toDouble())
