@@ -1,5 +1,6 @@
 package no.nav.dagpenger.oppdrag.domene
 
+import no.nav.dagpenger.kontrakter.utbetaling.OppdragId
 import no.nav.dagpenger.kontrakter.utbetaling.tilFagsystem
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import java.util.*

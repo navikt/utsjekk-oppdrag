@@ -2,8 +2,8 @@ package no.nav.dagpenger.oppdrag.repository
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
+import no.nav.dagpenger.kontrakter.utbetaling.OppdragId
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
-import no.nav.dagpenger.oppdrag.domene.OppdragId
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.domene.objectMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel

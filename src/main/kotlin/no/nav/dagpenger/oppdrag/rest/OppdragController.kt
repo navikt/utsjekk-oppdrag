@@ -1,13 +1,13 @@
 package no.nav.dagpenger.oppdrag.rest
 
 import jakarta.validation.Valid
+import no.nav.dagpenger.kontrakter.utbetaling.OppdragId
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.common.Ressurs
 import no.nav.dagpenger.oppdrag.common.RessursUtils.conflict
 import no.nav.dagpenger.oppdrag.common.RessursUtils.illegalState
 import no.nav.dagpenger.oppdrag.common.RessursUtils.notFound
 import no.nav.dagpenger.oppdrag.common.RessursUtils.ok
-import no.nav.dagpenger.oppdrag.domene.OppdragId
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragMapper
 import no.nav.dagpenger.oppdrag.service.OppdragAlleredeSendtException
