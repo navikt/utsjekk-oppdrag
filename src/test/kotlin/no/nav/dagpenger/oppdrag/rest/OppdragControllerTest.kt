@@ -5,6 +5,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import no.nav.dagpenger.kontrakter.utbetaling.Opphør
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsperiode
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.UUID
 import kotlin.test.assertEquals
 
 internal class OppdragControllerTest {
@@ -29,8 +31,8 @@ internal class OppdragControllerTest {
 
     val utbetalingsoppdrag = Utbetalingsoppdrag(
         Utbetalingsoppdrag.KodeEndring.NY,
-        "BA",
-        "SAKSNR",
+        Fagsystem.Dagpenger,
+        UUID.randomUUID(),
         "PERSONID",
         "SAKSBEHANDLERID",
         localDateTimeNow,
@@ -47,7 +49,7 @@ internal class OppdragControllerTest {
                 BigDecimal.ONE,
                 Utbetalingsperiode.SatsType.MND,
                 "UTEBETALES_TIL",
-                "1"
+                UUID.randomUUID()
             )
         )
     )

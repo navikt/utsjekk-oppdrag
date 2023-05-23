@@ -1,5 +1,6 @@
 package no.nav.dagpenger.oppdrag.repository
 
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.domene.OppdragId
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
@@ -14,7 +15,7 @@ interface OppdragLagerRepository {
     fun opprettOppdrag(oppdragLager: OppdragLager, versjon: Int = 0)
     fun oppdaterStatus(oppdragId: OppdragId, oppdragStatus: OppdragStatus, versjon: Int = 0)
     fun oppdaterKvitteringsmelding(oppdragId: OppdragId, kvittering: Mmel, versjon: Int = 0)
-    fun hentIverksettingerForGrensesnittavstemming(fomTidspunkt: LocalDateTime, tomTidspunkt: LocalDateTime, fagOmråde: String): List<OppdragLager>
+    fun hentIverksettingerForGrensesnittavstemming(fomTidspunkt: LocalDateTime, tomTidspunkt: LocalDateTime, fagsystem: Fagsystem): List<OppdragLager>
 
     fun hentUtbetalingsoppdragForKonsistensavstemming(
         fagsystem: String,

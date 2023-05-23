@@ -1,25 +1,27 @@
 package no.nav.dagpenger.oppdrag.util
 
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsperiode
 import java.time.LocalDate
 import java.time.LocalDateTime
-import kotlin.random.Random
+import java.util.UUID
 
 object TestOppdragMedAvstemmingsdato {
 
-    private val FAGSAKID = "123456789"
+    private val FAGSAKID = UUID.randomUUID()
     private val AKTOER = "12345678911"
 
     fun lagTestUtbetalingsoppdrag(
         avstemmingstidspunkt: LocalDateTime,
-        fagområde: String,
-        fagsak: String = FAGSAKID,
-        vararg utbetalingsperiode: Utbetalingsperiode = arrayOf(lagUtbetalingsperiode(fagområde)),
+        fagsystem: Fagsystem = Fagsystem.Dagpenger,
+        stønadstype: String = "DPORAS",
+        fagsak: UUID = FAGSAKID,
+        vararg utbetalingsperiode: Utbetalingsperiode = arrayOf(lagUtbetalingsperiode(stønadstype)),
     ) =
         Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-            fagSystem = fagområde,
+            fagSystem = fagsystem,
             saksnummer = fagsak,
             aktoer = AKTOER,
             saksbehandlerId = "Z999999",
@@ -28,7 +30,7 @@ object TestOppdragMedAvstemmingsdato {
         )
 
     fun lagUtbetalingsperiode(
-        fagområde: String = "BA",
+        stønadstype: String = "DPORAS", // TODO Bytt med enum Stønadstype fra dp-kontrakter
         periodeId: Long = 1,
         beløp: Int = 100,
         fom: LocalDate = LocalDate.now().withDayOfMonth(1),
@@ -40,13 +42,13 @@ object TestOppdragMedAvstemmingsdato {
             periodeId = periodeId,
             forrigePeriodeId = null,
             datoForVedtak = LocalDate.now(),
-            klassifisering = if (fagområde.equals("BA")) "BATR" else "EF",
+            klassifisering = stønadstype,
             vedtakdatoFom = fom,
             vedtakdatoTom = tom,
             sats = beløp.toBigDecimal(),
             satsType = Utbetalingsperiode.SatsType.MND,
             utbetalesTil = AKTOER,
-            behandlingId = Random.nextLong().toString(),
+            behandlingId = UUID.randomUUID(),
             utbetalingsgrad = 50
         )
 }

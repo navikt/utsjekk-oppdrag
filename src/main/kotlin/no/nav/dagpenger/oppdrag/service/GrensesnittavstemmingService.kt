@@ -2,8 +2,10 @@ package no.nav.dagpenger.oppdrag.service
 
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Metrics
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingSender
 import no.nav.dagpenger.oppdrag.domene.GrensesnittavstemmingRequest
+import no.nav.dagpenger.oppdrag.domene.tilFagsystem
 import no.nav.dagpenger.oppdrag.grensesnittavstemming.GrensesnittavstemmingMapper
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Grunnlagsdata
@@ -28,8 +30,8 @@ class GrensesnittavstemmingService(
 
     fun utførGrensesnittavstemming(request: GrensesnittavstemmingRequest) {
         val (fagsystem: String, fra: LocalDateTime, til: LocalDateTime) = request
-        val oppdragSomSkalAvstemmes = oppdragLagerRepository.hentIverksettingerForGrensesnittavstemming(fra, til, fagsystem)
-        val avstemmingMapper = GrensesnittavstemmingMapper(oppdragSomSkalAvstemmes, fagsystem, fra, til)
+        val oppdragSomSkalAvstemmes = oppdragLagerRepository.hentIverksettingerForGrensesnittavstemming(fra, til, fagsystem.tilFagsystem())
+        val avstemmingMapper = GrensesnittavstemmingMapper(oppdragSomSkalAvstemmes, fagsystem.tilFagsystem(), fra, til)
         val meldinger = avstemmingMapper.lagAvstemmingsmeldinger()
 
         if (meldinger.isEmpty()) {
@@ -106,13 +108,4 @@ enum class Status(val status: String, val beskrivelse: String) {
     ),
     MANGLER("mangler", "Antall oppdrag hvor kvittering mangler."),
     VARSEL("varsel", "Antall oppdrag som har fått kvittering med mangler (alvorlighetsgrad 04).")
-}
-
-enum class Fagsystem {
-    BA,
-    EFOG,
-    EFBT,
-    EFSP,
-    KS,
-    DP
 }

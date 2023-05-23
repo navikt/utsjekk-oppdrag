@@ -4,6 +4,7 @@ import com.ibm.mq.jakarta.jms.MQConnectionFactory
 import com.ibm.msg.client.jakarta.wmq.WMQConstants
 import io.mockk.spyk
 import io.mockk.verify
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import no.nav.dagpenger.oppdrag.grensesnittavstemming.GrensesnittavstemmingMapper
 import no.nav.dagpenger.oppdrag.repository.somOppdragLager
 import no.nav.dagpenger.oppdrag.util.Containers
@@ -18,7 +19,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
 
 private const val TESTKØ = "DEV.QUEUE.2"
-private const val FAGOMRÅDE = "BA"
+private val FAGSYSTEM = Fagsystem.Dagpenger
 private val IDAG = LocalDateTime.now()
 
 @Testcontainers
@@ -56,8 +57,8 @@ class AvstemmingMQSenderTest {
     }
 
     private fun lagTestGrensesnittavstemming(): List<Avstemmingsdata> {
-        val utbetalingsoppdrag = TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(IDAG, FAGOMRÅDE)
-        val mapper = GrensesnittavstemmingMapper(listOf(utbetalingsoppdrag.somOppdragLager), FAGOMRÅDE, IDAG.minusDays(1), IDAG)
+        val utbetalingsoppdrag = TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(IDAG, FAGSYSTEM)
+        val mapper = GrensesnittavstemmingMapper(listOf(utbetalingsoppdrag.somOppdragLager), FAGSYSTEM, IDAG.minusDays(1), IDAG)
         return mapper.lagAvstemmingsmeldinger()
     }
 }

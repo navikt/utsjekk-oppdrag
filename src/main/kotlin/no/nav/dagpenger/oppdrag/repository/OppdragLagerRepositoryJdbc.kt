@@ -1,6 +1,7 @@
 package no.nav.dagpenger.oppdrag.repository
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.domene.OppdragId
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
@@ -31,9 +32,9 @@ class OppdragLagerRepositoryJdbc(
         val listeAvOppdrag = jdbcTemplate.query(
             hentStatement,
             arrayOf(
-                oppdragId.behandlingsId,
+                oppdragId.behandlingsId.toString(),
                 oppdragId.personIdent,
-                oppdragId.fagsystem,
+                oppdragId.fagsystem.kode,
                 versjon
             ),
             OppdragLagerRowMapper()
@@ -77,7 +78,7 @@ class OppdragLagerRepositoryJdbc(
 
         val update = "UPDATE oppdrag_lager SET status = '${oppdragStatus.name}' " +
             "WHERE person_ident = '${oppdragId.personIdent}' " +
-            "AND fagsystem = '${oppdragId.fagsystem}' " +
+            "AND fagsystem = '${oppdragId.fagsystem.kode}' " +
             "AND behandling_id = '${oppdragId.behandlingsId}'" +
             "AND versjon = $versjon"
 
@@ -91,18 +92,18 @@ class OppdragLagerRepositoryJdbc(
             updateStatement,
             objectMapper.writeValueAsString(kvittering),
             oppdragId.personIdent,
-            oppdragId.fagsystem,
-            oppdragId.behandlingsId,
+            oppdragId.fagsystem.kode,
+            oppdragId.behandlingsId.toString(),
             versjon
         )
     }
 
-    override fun hentIverksettingerForGrensesnittavstemming(fomTidspunkt: LocalDateTime, tomTidspunkt: LocalDateTime, fagOmråde: String): List<OppdragLager> {
+    override fun hentIverksettingerForGrensesnittavstemming(fomTidspunkt: LocalDateTime, tomTidspunkt: LocalDateTime, fagsystem: Fagsystem): List<OppdragLager> {
         val hentStatement = "SELECT * FROM oppdrag_lager WHERE avstemming_tidspunkt >= ? AND avstemming_tidspunkt < ? AND fagsystem = ?"
 
         return jdbcTemplate.query(
             hentStatement,
-            arrayOf(fomTidspunkt, tomTidspunkt, fagOmråde),
+            arrayOf(fomTidspunkt, tomTidspunkt, fagsystem.kode),
             OppdragLagerRowMapper()
         )
     }
@@ -112,7 +113,7 @@ class OppdragLagerRepositoryJdbc(
 
         val jsonUtbetalingsoppdrag = jdbcTemplate.queryForObject(
             hentStatement,
-            arrayOf(oppdragId.behandlingsId, oppdragId.personIdent, oppdragId.fagsystem, versjon),
+            arrayOf(oppdragId.behandlingsId, oppdragId.personIdent, oppdragId.fagsystem.kode, versjon),
             String::class.java
         )
 
@@ -124,7 +125,7 @@ class OppdragLagerRepositoryJdbc(
 
         return jdbcTemplate.query(
             hentStatement,
-            arrayOf(oppdragId.behandlingsId, oppdragId.personIdent, oppdragId.fagsystem),
+            arrayOf(oppdragId.behandlingsId.toString(), oppdragId.personIdent, oppdragId.fagsystem.kode),
             OppdragLagerRowMapper()
         )
     }

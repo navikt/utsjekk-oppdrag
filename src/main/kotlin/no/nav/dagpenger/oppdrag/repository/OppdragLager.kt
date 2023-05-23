@@ -4,6 +4,7 @@ import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.domene.OppdragId
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.domene.behandlingsIdForFørsteUtbetalingsperiode
+import no.nav.dagpenger.oppdrag.domene.tilFagsystem
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
@@ -34,9 +35,9 @@ data class OppdragLager(
         fun lagFraOppdrag(utbetalingsoppdrag: Utbetalingsoppdrag, oppdrag: Oppdrag, versjon: Int = 0): OppdragLager {
             return OppdragLager(
                 personIdent = utbetalingsoppdrag.aktoer,
-                fagsystem = utbetalingsoppdrag.fagSystem,
-                fagsakId = utbetalingsoppdrag.saksnummer,
-                behandlingId = utbetalingsoppdrag.behandlingsIdForFørsteUtbetalingsperiode(),
+                fagsystem = utbetalingsoppdrag.fagSystem.kode,
+                fagsakId = utbetalingsoppdrag.saksnummer.toString(),
+                behandlingId = utbetalingsoppdrag.behandlingsIdForFørsteUtbetalingsperiode().toString(),
                 avstemmingTidspunkt = utbetalingsoppdrag.avstemmingTidspunkt,
                 utbetalingsoppdrag = utbetalingsoppdrag,
                 utgåendeOppdrag = Jaxb.tilXml(oppdrag),
@@ -62,5 +63,5 @@ val Utbetalingsoppdrag.somOppdragLager: OppdragLager
 
 val OppdragLager.id: OppdragId
     get() {
-        return OppdragId(this.fagsystem, this.personIdent, this.behandlingId)
+        return OppdragId(this.fagsystem.tilFagsystem(), this.personIdent, UUID.fromString(this.behandlingId))
     }

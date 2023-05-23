@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingMapper
-import no.nav.dagpenger.oppdrag.avstemming.AvstemmingMapper.fagområdeTilAvleverendeKomponentKode
 import no.nav.dagpenger.oppdrag.avstemming.SystemKode
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.repository.OppdragLager
@@ -23,7 +23,7 @@ import java.util.UUID
 
 class GrensesnittavstemmingMapper(
     private val oppdragsliste: List<OppdragLager>,
-    private val fagområde: String,
+    private val fagsystem: Fagsystem,
     private val fom: LocalDateTime,
     private val tom: LocalDateTime
 ) {
@@ -65,13 +65,13 @@ class GrensesnittavstemmingMapper(
             this.aksjonType = aksjonType
             this.kildeType = KildeType.AVLEV
             this.avstemmingType = AvstemmingType.GRSN
-            this.avleverendeKomponentKode = fagområdeTilAvleverendeKomponentKode(fagområde)
+            this.avleverendeKomponentKode = fagsystem.kode
             this.mottakendeKomponentKode = SystemKode.OPPDRAGSSYSTEMET.kode
-            this.underkomponentKode = fagområde
+            this.underkomponentKode = fagsystem.kode
             this.nokkelFom = fom.format(tidspunktFormatter)
             this.nokkelTom = tom.format(tidspunktFormatter)
             this.avleverendeAvstemmingId = avstemmingId
-            this.brukerId = fagområde
+            this.brukerId = fagsystem.kode
         }
     }
 
@@ -91,7 +91,7 @@ class GrensesnittavstemmingMapper(
                 Detaljdata().apply {
                     this.detaljType = detaljType
                     this.offnr = utbetalingsoppdrag.aktoer
-                    this.avleverendeTransaksjonNokkel = fagområde
+                    this.avleverendeTransaksjonNokkel = fagsystem.kode
                     this.tidspunkt = oppdrag.avstemmingTidspunkt.format(tidspunktFormatter)
                     if (detaljType in listOf(DetaljType.AVVI, DetaljType.VARS) && oppdrag.kvitteringsmelding != null) {
                         val kvitteringsmelding = oppdrag.kvitteringsmelding

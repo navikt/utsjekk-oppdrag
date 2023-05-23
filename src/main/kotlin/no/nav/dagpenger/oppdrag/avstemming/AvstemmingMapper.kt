@@ -1,5 +1,6 @@
 package no.nav.dagpenger.oppdrag.avstemming
 
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import java.nio.ByteBuffer
 import java.util.Base64
 import java.util.UUID
@@ -13,14 +14,9 @@ object AvstemmingMapper {
         return Base64.getUrlEncoder().encodeToString(bb.array()).substring(0, 22)
     }
 
-    fun fagområdeTilAvleverendeKomponentKode(fagområde: String): String {
+    fun fagområdeTilAvleverendeKomponentKode(fagområde: String): Fagsystem {
         return when (fagområde) {
-            "EFOG" -> "EF"
-            "EFBT" -> "EF"
-            "EFSP" -> "EF"
-            "BA" -> "BA"
-            "KS" -> "KS"
-            "DP" -> "DP"
+            "DP" -> Fagsystem.Dagpenger
             else -> throw Error("$fagområde støttes ikke ennå")
         }
     }

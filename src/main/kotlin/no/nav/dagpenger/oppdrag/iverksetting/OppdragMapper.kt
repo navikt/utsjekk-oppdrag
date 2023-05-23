@@ -2,7 +2,6 @@ package no.nav.dagpenger.oppdrag.iverksetting
 
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsperiode
-import no.nav.dagpenger.oppdrag.avstemming.AvstemmingMapper.fagområdeTilAvleverendeKomponentKode
 import no.trygdeetaten.skjema.oppdrag.ObjectFactory
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
@@ -21,7 +20,7 @@ class OppdragMapper {
 
         val avstemming = objectFactory.createAvstemming115().apply {
             nokkelAvstemming = utbetalingsoppdrag.avstemmingTidspunkt.format(tidspunktFormatter)
-            kodeKomponent = fagområdeTilAvleverendeKomponentKode(utbetalingsoppdrag.fagSystem)
+            kodeKomponent = utbetalingsoppdrag.fagSystem.kode
             tidspktMelding = utbetalingsoppdrag.avstemmingTidspunkt.format(tidspunktFormatter)
         }
 
@@ -34,8 +33,8 @@ class OppdragMapper {
         val oppdrag110 = objectFactory.createOppdrag110().apply {
             kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
             kodeEndring = EndringsKode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
-            kodeFagomraade = utbetalingsoppdrag.fagSystem
-            fagsystemId = utbetalingsoppdrag.saksnummer
+            kodeFagomraade = utbetalingsoppdrag.fagSystem.kode
+            fagsystemId = utbetalingsoppdrag.saksnummer.toString()
             utbetFrekvens = UtbetalingsfrekvensKode.MÅNEDLIG.kode
             oppdragGjelderId = utbetalingsoppdrag.aktoer
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
@@ -68,12 +67,12 @@ class OppdragMapper {
             }
             if (!utbetalingsperiode.erEndringPåEksisterendePeriode) {
                 utbetalingsperiode.forrigePeriodeId?.let {
-                    refDelytelseId = utbetalingsoppdrag.saksnummer + it
-                    refFagsystemId = utbetalingsoppdrag.saksnummer
+                    refDelytelseId = utbetalingsoppdrag.saksnummer.toString() + it
+                    refFagsystemId = utbetalingsoppdrag.saksnummer.toString()
                 }
             }
             vedtakId = utbetalingsperiode.datoForVedtak.toString()
-            delytelseId = utbetalingsoppdrag.saksnummer + utbetalingsperiode.periodeId
+            delytelseId = utbetalingsoppdrag.saksnummer.toString() + utbetalingsperiode.periodeId
             kodeKlassifik = utbetalingsperiode.klassifisering
             datoVedtakFom = utbetalingsperiode.vedtakdatoFom.toXMLDate()
             datoVedtakTom = utbetalingsperiode.vedtakdatoTom.toXMLDate()
@@ -83,7 +82,7 @@ class OppdragMapper {
             brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
-            henvisning = utbetalingsperiode.behandlingId
+            henvisning = utbetalingsperiode.behandlingId.toString()
             attestant180.add(attestant)
 
             utbetalingsperiode.utbetalingsgrad?.let { utbetalingsgrad ->

@@ -1,5 +1,6 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.avstemming.SystemKode
 import no.nav.dagpenger.oppdrag.repository.somOppdragLager
@@ -22,12 +23,12 @@ import java.time.format.DateTimeFormatter
 import kotlin.test.assertEquals
 
 class GrensesnittavstemmingMapperTest {
-    val fagområde = "BA"
+    val fagsystem = Fagsystem.Dagpenger
     val tidspunktFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")
 
     @Test
     fun testMappingAvTomListe() {
-        val mapper = GrensesnittavstemmingMapper(emptyList(), fagområde, LocalDateTime.now(), LocalDateTime.now())
+        val mapper = GrensesnittavstemmingMapper(emptyList(), fagsystem, LocalDateTime.now(), LocalDateTime.now())
         val meldinger = mapper.lagAvstemmingsmeldinger()
         assertEquals(0, meldinger.size)
     }
@@ -37,9 +38,9 @@ class GrensesnittavstemmingMapperTest {
         val avstemmingstidspunkt = LocalDateTime.now().minusDays(1).withHour(13)
         val avstemmingFom = avstemmingstidspunkt.toLocalDate().atStartOfDay()
         val avstemmingTom = avstemmingstidspunkt.toLocalDate().atTime(LocalTime.MAX)
-        val utbetalingsoppdrag = TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(avstemmingstidspunkt, fagområde)
+        val utbetalingsoppdrag = TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(avstemmingstidspunkt, fagsystem)
         val oppdragLager = utbetalingsoppdrag.somOppdragLager
-        val mapper = GrensesnittavstemmingMapper(listOf(oppdragLager), fagområde, avstemmingFom, avstemmingTom)
+        val mapper = GrensesnittavstemmingMapper(listOf(oppdragLager), fagsystem, avstemmingFom, avstemmingTom)
         val meldinger = mapper.lagAvstemmingsmeldinger()
         assertEquals(3, meldinger.size)
         assertAksjon(avstemmingFom, avstemmingTom, AksjonType.START, meldinger.first().aksjon)
@@ -59,11 +60,11 @@ class GrensesnittavstemmingMapperTest {
         val avstemmingFom = førsteAvstemmingstidspunkt.toLocalDate().atStartOfDay()
         val avstemmingTom = andreAvstemmingstidspunkt.toLocalDate().atTime(LocalTime.MAX)
         val baOppdragLager1 =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(førsteAvstemmingstidspunkt, fagområde).somOppdragLager
+            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(førsteAvstemmingstidspunkt, fagsystem).somOppdragLager
         val baOppdragLager2 =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(andreAvstemmingstidspunkt, fagområde).somOppdragLager
+            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(andreAvstemmingstidspunkt, fagsystem).somOppdragLager
         val mapper =
-            GrensesnittavstemmingMapper(listOf(baOppdragLager1, baOppdragLager2), fagområde, avstemmingFom, avstemmingTom)
+            GrensesnittavstemmingMapper(listOf(baOppdragLager1, baOppdragLager2), fagsystem, avstemmingFom, avstemmingTom)
         val meldinger = mapper.lagAvstemmingsmeldinger()
         assertEquals(3, meldinger.size)
         assertEquals(avstemmingFom.format(tidspunktFormatter), meldinger.first().aksjon.nokkelFom)
@@ -79,18 +80,18 @@ class GrensesnittavstemmingMapperTest {
         assertEquals(expected, actual.aksjonType)
         assertEquals(KildeType.AVLEV, actual.kildeType)
         assertEquals(AvstemmingType.GRSN, actual.avstemmingType)
-        assertEquals(fagområde, actual.avleverendeKomponentKode)
+        assertEquals(fagsystem.kode, actual.avleverendeKomponentKode)
         assertEquals(SystemKode.OPPDRAGSSYSTEMET.kode, actual.mottakendeKomponentKode)
-        assertEquals(fagområde, actual.underkomponentKode)
+        assertEquals(fagsystem.kode, actual.underkomponentKode)
         assertEquals(avstemmingFom.format(tidspunktFormatter), actual.nokkelFom)
         assertEquals(avstemmingTom.format(tidspunktFormatter), actual.nokkelTom)
-        assertEquals(fagområde, actual.brukerId)
+        assertEquals(fagsystem.kode, actual.brukerId)
     }
 
     fun assertDetaljData(utbetalingsoppdrag: Utbetalingsoppdrag, actual: Detaljdata) {
         assertEquals(DetaljType.MANG, actual.detaljType)
         assertEquals(utbetalingsoppdrag.aktoer, actual.offnr)
-        assertEquals(fagområde, actual.avleverendeTransaksjonNokkel)
+        assertEquals(fagsystem.kode, actual.avleverendeTransaksjonNokkel)
         assertEquals(utbetalingsoppdrag.avstemmingTidspunkt.format(tidspunktFormatter), actual.tidspunkt)
         assertEquals(null, actual.meldingKode)
         assertEquals(null, actual.alvorlighetsgrad)
