@@ -1,10 +1,11 @@
 package no.nav.dagpenger.oppdrag.domene
 
+import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
 import java.math.BigDecimal
 import java.time.LocalDate
 
 data class SimulertPostering(
-    val fagOmrådeKode: FagOmrådeKode,
+    val fagOmrådeKode: Fagsystem,
     val erFeilkonto: Boolean? = null, // brukes for å skille manuelle korigeringer og reelle feilutbetalinger
     val fom: LocalDate,
     val tom: LocalDate,
