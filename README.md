@@ -15,14 +15,10 @@ Secret inneholder et passord til IBM MQ. Passordet er representert gjennom milj�
 
 ## Lokalkjøring
 
-### Kjør lokalt med frittstående MQ og database
-1. Start lokal instans av PostgreSQL database og IBM MQ `docker-compose up -d`
-2. Start appen `./gradlew runServerTest`
-
 ### Kjør lokalt med embedded MQ og database, og automatisk OK-kvittering på MQ
 Hvis du vil kjøre opp dp-oppdrag fort og gæli med tom DB og kø, f.eks for debugging.
 
-Kjør `AutokvitteringTestApp` under `test`
+Kjør `LocalPsqlMqLauncher` under `test`. Da starter app'en opp på port 8087
 
 Følgende miljøvariable må være satt:
 * `AZURE_APP_CLIENT_ID`
@@ -50,14 +46,8 @@ https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-windows/
 
 Husk å endre MQ_-variabler hvis noe ikke er gjort i henhold til instruksjonene i denne lenken
 
-Det er også mulig å slå av MQ-funksjoner i appen (den skal ikke prøve å sende meldinger til IBM MQ).  
-I build.gradle.kts endre  
-`environment["MQ_ENABLED"] = "true"`  
-til  
-`environment["MQ_ENABLED"] = "false"`
-
 ### SwaggerUI
-Swagger UI: http://localhost:8080/internal/swagger-ui/index.html
+Swagger UI: http://localhost:8087/internal/swagger-ui/index.html
 
 ## Kontaktinfo
 
