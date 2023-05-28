@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.rest
 
-import no.nav.dagpenger.kontrakter.utbetaling.GrensesnittavstemmingRequest
+import no.nav.dagpenger.kontrakter.oppdrag.GrensesnittavstemmingRequest
 import no.nav.dagpenger.oppdrag.common.Ressurs
 import no.nav.dagpenger.oppdrag.common.RessursUtils.illegalState
 import no.nav.dagpenger.oppdrag.common.RessursUtils.ok

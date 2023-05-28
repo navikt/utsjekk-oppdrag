@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
-import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
+import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingMapper
 import no.nav.dagpenger.oppdrag.avstemming.SystemKode
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus

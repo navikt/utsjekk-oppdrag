@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.repository
 
-import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
+import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.oppdrag.config.DatabaseConfiguration
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb

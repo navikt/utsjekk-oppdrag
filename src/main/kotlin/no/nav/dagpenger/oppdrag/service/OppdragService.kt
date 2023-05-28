@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.service
 
-import no.nav.dagpenger.kontrakter.utbetaling.OppdragId
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.repository.OppdragLager
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 

@@ -2,8 +2,8 @@ package no.nav.dagpenger.oppdrag.service
 
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Metrics
-import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
-import no.nav.dagpenger.kontrakter.utbetaling.GrensesnittavstemmingRequest
+import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.oppdrag.GrensesnittavstemmingRequest
 import no.nav.dagpenger.oppdrag.avstemming.AvstemmingSender
 import no.nav.dagpenger.oppdrag.grensesnittavstemming.GrensesnittavstemmingMapper
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository

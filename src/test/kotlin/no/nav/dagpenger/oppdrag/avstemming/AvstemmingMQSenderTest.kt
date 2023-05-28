@@ -4,7 +4,7 @@ import com.ibm.mq.jakarta.jms.MQConnectionFactory
 import com.ibm.msg.client.jakarta.wmq.WMQConstants
 import io.mockk.spyk
 import io.mockk.verify
-import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
+import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.oppdrag.grensesnittavstemming.GrensesnittavstemmingMapper
 import no.nav.dagpenger.oppdrag.repository.somOppdragLager
 import no.nav.dagpenger.oppdrag.util.Containers

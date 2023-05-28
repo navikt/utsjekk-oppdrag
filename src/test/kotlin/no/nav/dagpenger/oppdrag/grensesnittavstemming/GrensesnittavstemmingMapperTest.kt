@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
-import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.avstemming.SystemKode
 import no.nav.dagpenger.oppdrag.repository.somOppdragLager
 import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato

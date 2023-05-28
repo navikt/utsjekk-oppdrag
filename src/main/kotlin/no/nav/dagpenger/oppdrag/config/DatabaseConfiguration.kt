@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.config
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.domene.objectMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import org.postgresql.util.PGobject

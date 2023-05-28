@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.util
 
-import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsperiode
+import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID

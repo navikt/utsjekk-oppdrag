@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.domene
 
-import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
+import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import java.math.BigDecimal
 import java.time.LocalDate
 

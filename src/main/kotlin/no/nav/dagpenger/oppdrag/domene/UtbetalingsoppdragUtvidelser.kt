@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.domene
 
-import no.nav.dagpenger.kontrakter.utbetaling.OppdragId
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import java.util.UUID
 
 fun Utbetalingsoppdrag.behandlingsIdForFørsteUtbetalingsperiode(): UUID {

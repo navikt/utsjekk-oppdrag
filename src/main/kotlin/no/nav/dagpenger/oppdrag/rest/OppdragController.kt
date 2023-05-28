@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.rest
 
 import jakarta.validation.Valid
-import no.nav.dagpenger.kontrakter.utbetaling.OppdragId
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.common.Ressurs
 import no.nav.dagpenger.oppdrag.common.RessursUtils.conflict
 import no.nav.dagpenger.oppdrag.common.RessursUtils.illegalState

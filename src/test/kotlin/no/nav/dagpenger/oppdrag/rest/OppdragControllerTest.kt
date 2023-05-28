@@ -5,10 +5,10 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
-import no.nav.dagpenger.kontrakter.utbetaling.Fagsystem
-import no.nav.dagpenger.kontrakter.utbetaling.Opphør
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsperiode
+import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.oppdrag.Opphør
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import no.nav.dagpenger.oppdrag.common.Ressurs
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragMapper

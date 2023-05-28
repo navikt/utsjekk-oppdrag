@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsoppdrag
-import no.nav.dagpenger.kontrakter.utbetaling.Utbetalingsperiode
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import no.trygdeetaten.skjema.oppdrag.ObjectFactory
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
