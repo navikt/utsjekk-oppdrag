@@ -15,7 +15,7 @@ class SwaggerConfig {
 
     @Bean
     fun openApi(): OpenAPI {
-        return OpenAPI().info(Info().title("Familie oppdrag api"))
+        return OpenAPI().info(Info().title("API dp-oppdrag"))
             .components(Components().addSecuritySchemes(bearer, bearerTokenSecurityScheme()))
             .addSecurityItem(SecurityRequirement().addList(bearer, listOf("read", "write")))
     }

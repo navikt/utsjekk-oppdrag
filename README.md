@@ -4,9 +4,7 @@ Generell proxy mot Oppdragsystemet (OS) for dagpenger
 
 ## Bygging
 
-Bygg ved å kjøre `./gradlew clean build`. Dette vil også kjøre testene.  
-Det er også mulig å kjøre `gradle clean build`, men da må man ha en riktig versjon av gradle installert (som støtter
-Java 17)
+Bygg ved å kjøre `mvn clean install`. 
 
 ## Kubernetes secrets
 
@@ -47,7 +45,7 @@ https://developer.ibm.com/tutorials/mq-connect-app-queue-manager-windows/
 Husk å endre MQ_-variabler hvis noe ikke er gjort i henhold til instruksjonene i denne lenken
 
 ### SwaggerUI
-Swagger UI: http://localhost:8087/internal/swagger-ui/index.html
+Swagger UI: http://localhost:8087/swagger-ui/index.html
 
 ## Kontaktinfo
 
