@@ -35,7 +35,7 @@ class OppdragMapper {
             kodeEndring = EndringsKode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
             kodeFagomraade = utbetalingsoppdrag.fagSystem.kode
             fagsystemId = utbetalingsoppdrag.saksnummer.toString()
-            utbetFrekvens = UtbetalingsfrekvensKode.MÅNEDLIG.kode
+            utbetFrekvens = UtbetalingsfrekvensKode.DAGLIG_14.kode
             oppdragGjelderId = utbetalingsoppdrag.aktoer
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
             saksbehId = utbetalingsoppdrag.saksbehandlerId

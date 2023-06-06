@@ -100,7 +100,7 @@ class OppdragMQSenderTest {
             kodeEndring = EndringsKode.NY.kode
             kodeFagomraade = FAGOMRÅDE_BARNETRYGD
             fagsystemId = TEST_FAGSAKID
-            utbetFrekvens = UtbetalingsfrekvensKode.MÅNEDLIG.kode
+            utbetFrekvens = UtbetalingsfrekvensKode.DAGLIG_14.kode
             oppdragGjelderId = "12345678911"
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
             saksbehId = "Z999999"
