@@ -102,7 +102,7 @@ class KontraktTilOppdragTest {
         Assertions.assertEquals(utbetalingsoppdrag.kodeEndring.name, oppdrag110.kodeEndring.toString())
         Assertions.assertEquals(utbetalingsoppdrag.fagSystem.kode, oppdrag110.kodeFagomraade)
         Assertions.assertEquals(utbetalingsoppdrag.saksnummer.toString(), oppdrag110.fagsystemId)
-        Assertions.assertEquals(UtbetalingsfrekvensKode.DAGLIG_14.kode, oppdrag110.utbetFrekvens)
+        Assertions.assertEquals(UtbetalingsfrekvensKode.MÅNEDLIG.kode, oppdrag110.utbetFrekvens)
         Assertions.assertEquals(utbetalingsoppdrag.aktoer, oppdrag110.oppdragGjelderId)
         Assertions.assertEquals(OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate(), oppdrag110.datoOppdragGjelderFom)
         Assertions.assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdrag110.saksbehId)
