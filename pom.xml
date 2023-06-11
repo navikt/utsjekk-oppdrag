@@ -30,7 +30,7 @@
         <jaxb-api.version>4.0.0</jaxb-api.version>
         <jaxb-core.version>3.0.2</jaxb-core.version>
         <jaxb-impl.version>4.0.1</jaxb-impl.version>
-        <cxf.version>4.0.1</cxf.version>
+        <cxf.version>4.0.2</cxf.version>
 
         <ibm-mq.version>9.3.2.1</ibm-mq.version>
         <ibm-mq-jms.version>3.0.6</ibm-mq-jms.version>
