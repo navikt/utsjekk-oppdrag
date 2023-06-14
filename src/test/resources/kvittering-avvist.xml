@@ -12,7 +12,7 @@
         <kodeAksjon>1</kodeAksjon>
         <kodeEndring>NY</kodeEndring>
         <kodeFagomraade>DP</kodeFagomraade>
-        <fagsystemId>62640ece-f941-11ed-be56-0242ac120002</fagsystemId>
+        <fagsystemId>YmQOzvlBEe2+VgJCrBIAAg==</fagsystemId>
         <utbetFrekvens>MND</utbetFrekvens>
         <oppdragGjelderId>12345678911</oppdragGjelderId>
         <datoOppdragGjelderFom>2000-01-01+01:00</datoOppdragGjelderFom>
@@ -30,7 +30,7 @@
         <oppdrags-linje-150>
             <kodeEndringLinje>NY</kodeEndringLinje>
             <vedtakId>2019-12-12</vedtakId>
-            <delytelseId>62640ece-f941-11ed-be56-0242ac1200021</delytelseId>
+            <delytelseId>YmQOzvlBEe2+VgJCrBIAAg==#1</delytelseId>
             <kodeKlassifik>DPORAS</kodeKlassifik>
             <datoVedtakFom>2019-12-20+01:00</datoVedtakFom>
             <datoVedtakTom>2020-12-21+01:00</datoVedtakTom>
@@ -40,7 +40,7 @@
             <brukKjoreplan>N</brukKjoreplan>
             <saksbehId>Z992991</saksbehId>
             <utbetalesTilId>12345678911</utbetalesTilId>
-            <henvisning>62640ece-f941-11ed-be56-0242ac120002</henvisning>
+            <henvisning>YmQOzvlBEe2+VgJCrBIAAg==</henvisning>
             <attestant-180>
                 <attestantId>Z992991</attestantId>
             </attestant-180>

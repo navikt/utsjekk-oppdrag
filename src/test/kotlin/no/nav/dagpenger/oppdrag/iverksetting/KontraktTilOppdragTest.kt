@@ -4,6 +4,7 @@ import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
+import no.nav.dagpenger.oppdrag.iverksetting.UuidUtils.komprimer
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
 import no.trygdeetaten.skjema.oppdrag.OppdragsLinje150
 import org.junit.jupiter.api.Assertions
@@ -101,7 +102,7 @@ class KontraktTilOppdragTest {
         Assertions.assertEquals(OppdragSkjemaConstants.KODE_AKSJON, oppdrag110.kodeAksjon)
         Assertions.assertEquals(utbetalingsoppdrag.kodeEndring.name, oppdrag110.kodeEndring.toString())
         Assertions.assertEquals(utbetalingsoppdrag.fagSystem.kode, oppdrag110.kodeFagomraade)
-        Assertions.assertEquals(utbetalingsoppdrag.saksnummer.toString(), oppdrag110.fagsystemId)
+        Assertions.assertEquals(utbetalingsoppdrag.saksnummer.komprimer(), oppdrag110.fagsystemId)
         Assertions.assertEquals(UtbetalingsfrekvensKode.MÅNEDLIG.kode, oppdrag110.utbetFrekvens)
         Assertions.assertEquals(utbetalingsoppdrag.aktoer, oppdrag110.oppdragGjelderId)
         Assertions.assertEquals(OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate(), oppdrag110.datoOppdragGjelderFom)
@@ -133,7 +134,7 @@ class KontraktTilOppdragTest {
         assertOpphør(utbetalingsperiode, oppdragsLinje150)
         Assertions.assertEquals(utbetalingsperiode.datoForVedtak.toString(), oppdragsLinje150.vedtakId)
         Assertions.assertEquals(
-            utbetalingsoppdrag.saksnummer.toString() + utbetalingsperiode.periodeId.toString(),
+            utbetalingsoppdrag.saksnummer.komprimer() + "#" + utbetalingsperiode.periodeId.toString(),
             oppdragsLinje150.delytelseId
         )
         Assertions.assertEquals(utbetalingsperiode.klassifisering, oppdragsLinje150.kodeKlassifik)
@@ -145,13 +146,13 @@ class KontraktTilOppdragTest {
         Assertions.assertEquals(OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT, oppdragsLinje150.brukKjoreplan)
         Assertions.assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.saksbehId)
         Assertions.assertEquals(utbetalingsoppdrag.aktoer, oppdragsLinje150.utbetalesTilId)
-        Assertions.assertEquals(utbetalingsperiode.behandlingId.toString(), oppdragsLinje150.henvisning)
+        Assertions.assertEquals(utbetalingsperiode.behandlingId.komprimer(), oppdragsLinje150.henvisning)
         Assertions.assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.attestant180[0].attestantId)
         Assertions.assertEquals(utbetalingsperiode.utbetalingsgrad, oppdragsLinje150.grad170.firstOrNull()?.grad?.toInt())
 
         if (utbetalingsperiode.forrigePeriodeId !== null && !utbetalingsperiode.erEndringPåEksisterendePeriode)
             Assertions.assertEquals(
-                utbetalingsoppdrag.saksnummer.toString() + utbetalingsperiode.forrigePeriodeId.toString(),
+                utbetalingsoppdrag.saksnummer.komprimer() + "#" + utbetalingsperiode.forrigePeriodeId.toString(),
                 oppdragsLinje150.refDelytelseId
             )
     }
