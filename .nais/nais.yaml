@@ -39,6 +39,7 @@ spec:
     inbound:
       rules:
         - application: dp-iverksett
+        - application: tiltakspenger-iverksett
     outbound:
       external:
         - host: {{ mqHostname }}
