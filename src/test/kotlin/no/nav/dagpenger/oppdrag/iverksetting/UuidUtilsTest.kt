@@ -23,8 +23,5 @@ class UuidUtilsTest {
         val komprimert = originalUUID.komprimer()
 
         assertEquals(24, komprimert.length)
-
-        val uuid2 = UUID.fromString("62640ece-f941-11ed-be56-0242ac120002")
-        println(uuid2.komprimer())
     }
 }
