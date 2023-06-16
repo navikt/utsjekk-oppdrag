@@ -2,6 +2,7 @@ package no.nav.dagpenger.oppdrag.iverksetting
 
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
+import no.nav.dagpenger.oppdrag.iverksetting.UuidUtils.komprimer
 import no.trygdeetaten.skjema.oppdrag.ObjectFactory
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
@@ -34,7 +35,7 @@ class OppdragMapper {
             kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
             kodeEndring = EndringsKode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
             kodeFagomraade = utbetalingsoppdrag.fagSystem.kode
-            fagsystemId = utbetalingsoppdrag.saksnummer.toString()
+            fagsystemId = utbetalingsoppdrag.saksnummer.komprimer()
             utbetFrekvens = UtbetalingsfrekvensKode.MÅNEDLIG.kode
             oppdragGjelderId = utbetalingsoppdrag.aktoer
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
@@ -53,6 +54,7 @@ class OppdragMapper {
         utbetalingsperiode: Utbetalingsperiode,
         utbetalingsoppdrag: Utbetalingsoppdrag
     ): OppdragsLinje150 {
+        val sakIdKomprimert = utbetalingsoppdrag.saksnummer.komprimer()
 
         val attestant = objectFactory.createAttestant180().apply {
             attestantId = utbetalingsoppdrag.saksbehandlerId
@@ -67,12 +69,12 @@ class OppdragMapper {
             }
             if (!utbetalingsperiode.erEndringPåEksisterendePeriode) {
                 utbetalingsperiode.forrigePeriodeId?.let {
-                    refDelytelseId = utbetalingsoppdrag.saksnummer.toString() + it
-                    refFagsystemId = utbetalingsoppdrag.saksnummer.toString()
+                    refDelytelseId = "$sakIdKomprimert#$it"
+                    refFagsystemId = sakIdKomprimert
                 }
             }
             vedtakId = utbetalingsperiode.datoForVedtak.toString()
-            delytelseId = utbetalingsoppdrag.saksnummer.toString() + utbetalingsperiode.periodeId
+            delytelseId = "$sakIdKomprimert#${utbetalingsperiode.periodeId}"
             kodeKlassifik = utbetalingsperiode.klassifisering
             datoVedtakFom = utbetalingsperiode.vedtakdatoFom.toXMLDate()
             datoVedtakTom = utbetalingsperiode.vedtakdatoTom.toXMLDate()
@@ -82,7 +84,7 @@ class OppdragMapper {
             brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
-            henvisning = utbetalingsperiode.behandlingId.toString()
+            henvisning = utbetalingsperiode.behandlingId.komprimer()
             attestant180.add(attestant)
 
             utbetalingsperiode.utbetalingsgrad?.let { utbetalingsgrad ->
