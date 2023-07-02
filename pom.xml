@@ -32,7 +32,7 @@
         <jaxb-impl.version>4.0.1</jaxb-impl.version>
         <cxf.version>4.0.1</cxf.version>
 
-        <ibm-mq.version>9.3.2.1</ibm-mq.version>
+        <ibm-mq.version>9.3.3.0</ibm-mq.version>
         <ibm-mq-jms.version>3.1.1</ibm-mq-jms.version>
 
         <logback-encoder.version>7.3</logback-encoder.version>
