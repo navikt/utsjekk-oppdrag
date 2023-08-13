@@ -26,7 +26,7 @@
 
         <dp-kontrakter.version>1.0_20230527141033_103f5f1</dp-kontrakter.version>
         <common-java-modules.version>2023.03.21_13.06-9a5b1febdbde</common-java-modules.version>
-        <token-validation-spring.version>3.0.11</token-validation-spring.version>
+        <token-validation-spring.version>3.1.2</token-validation-spring.version>
         <jaxb-api.version>4.0.0</jaxb-api.version>
         <jaxb-core.version>3.0.2</jaxb-core.version>
         <jaxb-impl.version>4.0.1</jaxb-impl.version>
