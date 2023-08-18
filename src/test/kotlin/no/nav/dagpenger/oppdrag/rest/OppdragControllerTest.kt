@@ -30,13 +30,12 @@ internal class OppdragControllerTest {
     val localDateNow = LocalDate.now()
 
     val utbetalingsoppdrag = Utbetalingsoppdrag(
-        Utbetalingsoppdrag.KodeEndring.NY,
-        Fagsystem.Dagpenger,
-        UUID.randomUUID(),
-        "PERSONID",
-        "SAKSBEHANDLERID",
-        localDateTimeNow,
-        listOf(
+        kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+        fagSystem = Fagsystem.Dagpenger,
+        saksnummer = UUID.randomUUID(),
+        aktoer = "PERSONID",
+        saksbehandlerId = "SAKSBEHANDLERID",
+        utbetalingsperiode = listOf(
             Utbetalingsperiode(
                 true,
                 Opphør(localDateNow),

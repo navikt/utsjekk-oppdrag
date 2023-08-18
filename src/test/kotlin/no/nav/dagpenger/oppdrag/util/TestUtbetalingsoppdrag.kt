@@ -15,13 +15,12 @@ object TestUtbetalingsoppdrag {
     private val localDateNow = LocalDate.now()
 
     fun utbetalingsoppdragMedTilfeldigAktoer() = Utbetalingsoppdrag(
-        Utbetalingsoppdrag.KodeEndring.NY,
-        Fagsystem.Dagpenger,
-        UUID.randomUUID(),
-        UUID.randomUUID().toString(), // Foreløpig plass til en 50-tegn string og ingen gyldighetssjekk
-        "SAKSBEHANDLERID",
-        localDateTimeNow,
-        listOf(
+        kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+        fagSystem = Fagsystem.Dagpenger,
+        saksnummer = UUID.randomUUID(),
+        aktoer = UUID.randomUUID().toString(), // Foreløpig plass til en 50-tegn string og ingen gyldighetssjekk
+        saksbehandlerId = "SAKSBEHANDLERID",
+        utbetalingsperiode = listOf(
             Utbetalingsperiode(
                 false,
                 Opphør(localDateNow),
