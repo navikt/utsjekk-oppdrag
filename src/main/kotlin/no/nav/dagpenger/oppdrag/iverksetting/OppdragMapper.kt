@@ -1,5 +1,6 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
+import no.nav.dagpenger.kontrakter.felles.SakIdentifikator
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import no.nav.dagpenger.oppdrag.iverksetting.UuidUtils.komprimer
@@ -105,4 +106,7 @@ class OppdragMapper {
     }
 }
 
-fun Utbetalingsoppdrag.tilFagsystemId() = this.saksnummer?.komprimer() ?: this.saksreferanse
+fun Utbetalingsoppdrag.tilFagsystemId(): String {
+    SakIdentifikator.valider(this.saksnummer, this.saksreferanse)
+    return this.saksnummer?.komprimer() ?: this.saksreferanse!!
+}

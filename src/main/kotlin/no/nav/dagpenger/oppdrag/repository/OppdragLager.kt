@@ -7,6 +7,7 @@ import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.domene.behandlingsIdForFørsteUtbetalingsperiode
 import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragMapper
+import no.nav.dagpenger.oppdrag.iverksetting.tilFagsystemId
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import org.springframework.data.annotation.Id
@@ -36,7 +37,7 @@ data class OppdragLager(
             return OppdragLager(
                 personIdent = utbetalingsoppdrag.aktoer,
                 fagsystem = utbetalingsoppdrag.fagSystem.kode,
-                fagsakId = utbetalingsoppdrag.saksnummer.toString(),
+                fagsakId = utbetalingsoppdrag.tilFagsystemId(),
                 behandlingId = utbetalingsoppdrag.behandlingsIdForFørsteUtbetalingsperiode().toString(),
                 avstemmingTidspunkt = utbetalingsoppdrag.avstemmingTidspunkt,
                 utbetalingsoppdrag = utbetalingsoppdrag,
