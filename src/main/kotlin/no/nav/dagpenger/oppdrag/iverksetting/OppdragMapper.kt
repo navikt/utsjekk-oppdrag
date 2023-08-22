@@ -1,5 +1,6 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
+import no.nav.dagpenger.kontrakter.felles.SakIdentifikator
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import no.nav.dagpenger.oppdrag.iverksetting.UuidUtils.komprimer
@@ -35,7 +36,7 @@ class OppdragMapper {
             kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
             kodeEndring = EndringsKode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
             kodeFagomraade = utbetalingsoppdrag.fagSystem.kode
-            fagsystemId = utbetalingsoppdrag.saksnummer.komprimer()
+            fagsystemId = utbetalingsoppdrag.tilFagsystemId()
             utbetFrekvens = UtbetalingsfrekvensKode.MÅNEDLIG.kode
             oppdragGjelderId = utbetalingsoppdrag.aktoer
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
@@ -54,7 +55,7 @@ class OppdragMapper {
         utbetalingsperiode: Utbetalingsperiode,
         utbetalingsoppdrag: Utbetalingsoppdrag
     ): OppdragsLinje150 {
-        val sakIdKomprimert = utbetalingsoppdrag.saksnummer.komprimer()
+        val sakIdKomprimert = utbetalingsoppdrag.tilFagsystemId()
 
         val attestant = objectFactory.createAttestant180().apply {
             attestantId = utbetalingsoppdrag.saksbehandlerId
@@ -103,4 +104,9 @@ class OppdragMapper {
             this.oppdrag110 = oppdrag110
         }
     }
+}
+
+fun Utbetalingsoppdrag.tilFagsystemId(): String {
+    SakIdentifikator.valider(this.saksnummer, this.saksreferanse)
+    return this.saksnummer?.komprimer() ?: this.saksreferanse!!
 }

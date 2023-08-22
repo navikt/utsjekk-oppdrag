@@ -10,6 +10,7 @@ import no.nav.dagpenger.oppdrag.common.RessursUtils.notFound
 import no.nav.dagpenger.oppdrag.common.RessursUtils.ok
 import no.nav.dagpenger.oppdrag.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.OppdragMapper
+import no.nav.dagpenger.oppdrag.iverksetting.tilFagsystemId
 import no.nav.dagpenger.oppdrag.service.OppdragAlleredeSendtException
 import no.nav.dagpenger.oppdrag.service.OppdragService
 import no.nav.security.token.support.core.api.ProtectedWithClaims
@@ -38,9 +39,9 @@ class OppdragController(
         }.fold(
             onFailure = {
                 if (it is OppdragAlleredeSendtException) {
-                    conflict("Oppdrag er allerede sendt for saksnr ${utbetalingsoppdrag.saksnummer}.")
+                    conflict("Oppdrag er allerede sendt for saksnr ${utbetalingsoppdrag.tilFagsystemId()}.")
                 } else {
-                    illegalState("Klarte ikke sende oppdrag for saksnr ${utbetalingsoppdrag.saksnummer}", it)
+                    illegalState("Klarte ikke sende oppdrag for saksnr ${utbetalingsoppdrag.tilFagsystemId()}", it)
                 }
             },
             onSuccess = {
@@ -61,7 +62,7 @@ class OppdragController(
             oppdragService.opprettOppdrag(utbetalingsoppdrag, oppdrag, versjon)
         }.fold(
             onFailure = {
-                illegalState("Klarte ikke sende oppdrag for saksnr ${utbetalingsoppdrag.saksnummer}", it)
+                illegalState("Klarte ikke sende oppdrag for saksnr ${utbetalingsoppdrag.tilFagsystemId()}", it)
             },
             onSuccess = {
                 ok("Oppdrag sendt OK")
