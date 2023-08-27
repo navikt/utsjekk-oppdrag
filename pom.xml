@@ -37,7 +37,7 @@
 
         <logback-encoder.version>7.3</logback-encoder.version>
 
-        <springdoc.version>2.1.0</springdoc.version>
+        <springdoc.version>2.2.0</springdoc.version>
 
         <mockk.version>1.13.2</mockk.version>
         <testcontainers.version>1.17.5</testcontainers.version>
