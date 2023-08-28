@@ -67,7 +67,7 @@ spec:
         collation: nb_NO.UTF8
         databases:
           - envVarPrefix: DB
-            name: dp-oppdrag-db
+            name: {{ postgres_name }}
         diskAutoresize: true
         diskType: SSD
         flags:
@@ -78,9 +78,7 @@ spec:
           day: 4
           hour: 3
         pointInTimeRecovery: false
+        cascadingDelete: false
         tier: {{ db_tier }}
-        type: POSTGRES_14
+        type: {{ postgres_version }}
         name: dp-oppdrag
-        #cascadingDelete: true # DETTE ER EN DESTRUKTIV OPERASJON! cascadingDelete=true sletter db-instans hvis appen slettes
-        # OBS! Man kan ikke opprette, slette og opprette instance igjen med en gang:
-        # man kan ikke gjenbruke samme instansnavn på 7 dager. Dette er en "feature" i gcp.

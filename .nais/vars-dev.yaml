@@ -2,6 +2,8 @@ limitsMemory: 1024Mi
 requestsMemory: 512Mi
 requestsCpu: 500m
 db_tier: "db-f1-micro"
+postgres_version: "POSTGRES_14"
+postgres_name: "dp-oppdrag-db"
 ingresses:
   - https://dp-oppdrag.intern.dev.nav.no
 mqHostname: mqls02.preprod.local
