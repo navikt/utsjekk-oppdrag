@@ -24,7 +24,7 @@
 
         <jetty.version>11.0.15</jetty.version>
 
-        <dp-kontrakter.version>2.0_20230818211214_738141e</dp-kontrakter.version>
+        <dp-kontrakter.version>2.0_20231109103828_f2a2368</dp-kontrakter.version>
         <common-java-modules.version>2023.03.21_13.06-9a5b1febdbde</common-java-modules.version>
         <token-validation-spring.version>3.0.11</token-validation-spring.version>
         <jaxb-api.version>4.0.0</jaxb-api.version>

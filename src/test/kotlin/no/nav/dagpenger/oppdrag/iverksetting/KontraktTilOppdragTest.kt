@@ -116,7 +116,7 @@ class KontraktTilOppdragTest {
             utbetalingsoppdrag.avstemmingTidspunkt.format(OppdragMapper().tidspunktFormatter),
             oppdrag110.avstemming115.tidspktMelding
         )
-        Assertions.assertEquals(OppdragSkjemaConstants.ENHET_TYPE, oppdrag110.oppdragsEnhet120[0].typeEnhet)
+        Assertions.assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET, oppdrag110.oppdragsEnhet120[0].typeEnhet)
         Assertions.assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[0].enhet)
         Assertions.assertEquals(OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
     }

@@ -14,7 +14,8 @@ class OppdragSkjemaConstants {
         val OPPDRAG_GJELDER_DATO_FOM: LocalDate = LocalDate.of(2000, 1, 1)
         const val KODE_AKSJON = "1"
 
-        const val ENHET_TYPE = "BOS"
+        const val ENHET_TYPE_BOSTEDSENHET = "BOS"
+        const val ENHET_TYPE_BEHANDLENDE_ENHET = "BEH"
         const val ENHET = "8020"
         val ENHET_DATO_FOM: LocalDate = LocalDate.of(1900, 1, 1)
 
