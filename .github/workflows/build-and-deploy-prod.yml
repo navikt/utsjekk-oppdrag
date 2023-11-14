@@ -1,6 +1,5 @@
 name: Build-Deploy-Prod
-on:
-  workflow_dispatch:
+on: push
 
 env:
   IMAGE: ghcr.io/navikt/dp-oppdrag:${{ github.sha }}
@@ -40,24 +39,27 @@ jobs:
       - name: Push Docker image med versjonstag
         run: docker push ${IMAGE}
 
-  deploy:
-    name: Deploy to GCP
+  deploy-dev:
+    name: Deploy to dev-gcp
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+        - uses: actions/checkout@v3
+        - uses: nais/deploy/actions/deploy@v1
+          env:
+            APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+            CLUSTER: dev-gcp
+            RESOURCE: .nais/nais.yaml
+            VARS: .nais/vars-dev.yaml
 
-      - name: Deploy til dev-gcp team namespace
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/nais.yaml
-          VARS: .nais/vars-dev.yaml
-
-      - name: Deploy til prod-gcp team namespace
-        uses: nais/deploy/actions/deploy@v1
+  deploy-prod:
+    name: Deploy to prod-gcp
+    needs: deploy-dev
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
