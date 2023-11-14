@@ -47,7 +47,7 @@ class OppdragMapper {
     }
 
     private fun tilOppdragsEnhet120(utbetalingsoppdrag: Utbetalingsoppdrag): List<OppdragsEnhet120> {
-        return if (utbetalingsoppdrag.enhet == null) {
+        return if (utbetalingsoppdrag.brukersNavKontor == null) {
             listOf(
                 objectFactory.createOppdragsEnhet120().apply {
                     enhet = OppdragSkjemaConstants.ENHET
@@ -63,9 +63,9 @@ class OppdragMapper {
                     datoEnhetFom = OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate()
                 },
                 objectFactory.createOppdragsEnhet120().apply {
-                    enhet = utbetalingsoppdrag.enhet
+                    enhet = utbetalingsoppdrag.brukersNavKontor?.enhet
                     typeEnhet = OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET
-                    datoEnhetFom = OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate()
+                    datoEnhetFom = utbetalingsoppdrag.brukersNavKontor?.gjelderFom?.toXMLDate()
                 }
             )
         }
