@@ -9,17 +9,18 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.PostgreSQLContainer
 
 @Configuration
-@ComponentScan("no.nav.dagpenger.oppdrag") class TestConfig
+@ComponentScan("no.nav.dagpenger.oppdrag")
+class TestConfig
 
 object Containers {
 
-    var postgreSQLContainer = MyPostgreSQLContainer("postgres:latest")
+    var postgreSQLContainer: MyPostgreSQLContainer = MyPostgreSQLContainer("postgres:latest")
         .withDatabaseName("dp-oppdrag")
         .withUsername("postgres")
         .withPassword("test")
         .withExposedPorts(5432)
 
-    var ibmMQContainer = MyGeneralContainer("ibmcom/mq")
+    var ibmMQContainer: MyGeneralContainer = MyGeneralContainer("ibmcom/mq")
         .withEnv("LICENSE", "accept")
         .withEnv("MQ_QMGR_NAME", "QM1")
         .withEnv("persistance.enabled", "true")

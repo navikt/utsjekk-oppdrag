@@ -9,5 +9,5 @@ import org.springframework.jms.annotation.EnableJms
 class Launcher
 
 fun main(args: Array<String>) {
-    SpringApplication.run(no.nav.dagpenger.oppdrag.Launcher::class.java, *args)
+    SpringApplication.run(Launcher::class.java, *args)
 }
