@@ -12,17 +12,14 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootConfiguration
-@EntityScan(ApplicationConfig.pakkenavn, "no.nav.dagpenger.oppdrag.sikkerhet")
-@ComponentScan(ApplicationConfig.pakkenavn, "no.nav.dagpenger.oppdrag.sikkerhet")
+@EntityScan(ApplicationConfig.PAKKENAVN, "no.nav.dagpenger.oppdrag.sikkerhet")
+@ComponentScan(ApplicationConfig.PAKKENAVN, "no.nav.dagpenger.oppdrag.sikkerhet")
 @EnableScheduling
 @EnableJwtTokenValidation(ignore = ["org.springframework", "org.springdoc"])
 class ApplicationConfig {
 
     @Bean
-    fun servletWebServerFactory(): ServletWebServerFactory {
-        val serverFactory = JettyServletWebServerFactory()
-        return serverFactory
-    }
+    fun servletWebServerFactory(): ServletWebServerFactory = JettyServletWebServerFactory()
 
     @Bean
     fun logFilter(): FilterRegistrationBean<LogFilter> {
@@ -33,7 +30,7 @@ class ApplicationConfig {
     }
 
     companion object {
-        const val pakkenavn = "no.nav.dagpenger.oppdrag"
+        const val PAKKENAVN = "no.nav.dagpenger.oppdrag"
         val LOKALE_PROFILER = setOf("local", "e2e")
     }
 }

@@ -27,19 +27,19 @@
         <dp-kontrakter.version>2.0_20231114113957_a29e1a3</dp-kontrakter.version>
         <common-java-modules.version>2023.03.21_13.06-9a5b1febdbde</common-java-modules.version>
         <token-validation-spring.version>3.0.11</token-validation-spring.version>
-        <jaxb-api.version>4.0.0</jaxb-api.version>
+        <jaxb-api.version>4.0.1</jaxb-api.version>
         <jaxb-core.version>3.0.2</jaxb-core.version>
         <jaxb-impl.version>4.0.1</jaxb-impl.version>
         <cxf.version>4.0.1</cxf.version>
 
-        <ibm-mq.version>9.3.2.1</ibm-mq.version>
+        <ibm-mq.version>9.3.4.0</ibm-mq.version>
         <ibm-mq-jms.version>3.1.1</ibm-mq-jms.version>
 
         <logback-encoder.version>7.3</logback-encoder.version>
 
         <springdoc.version>2.2.0</springdoc.version>
 
-        <mockk.version>1.13.2</mockk.version>
+        <mockk.version>1.13.8</mockk.version>
         <testcontainers.version>1.17.5</testcontainers.version>
         <nav-token-validation-test.version>2.0.5</nav-token-validation-test.version>
     </properties>
