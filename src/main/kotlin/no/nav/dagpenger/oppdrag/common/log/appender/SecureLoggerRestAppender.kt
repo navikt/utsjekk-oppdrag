@@ -1,5 +1,6 @@
 package no.nav.dagpenger.oppdrag.common.log.appender
 
+import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.AppenderBase
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.net.URI
@@ -8,12 +9,12 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.time.Duration
 
-class SecureLoggerRestAppender : AppenderBase<ch.qos.logback.classic.spi.ILoggingEvent>() {
+class SecureLoggerRestAppender : AppenderBase<ILoggingEvent>() {
 
     private val client: HttpClient = HttpClient.newHttpClient()
     private val objectMapper = ObjectMapper()
 
-    override fun append(eventObject: ch.qos.logback.classic.spi.ILoggingEvent) {
+    override fun append(eventObject: ILoggingEvent) {
         try {
             val logEvent = mutableMapOf<String, String>()
             logEvent["message"] = eventObject.formattedMessage

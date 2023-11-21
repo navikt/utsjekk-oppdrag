@@ -1,6 +1,5 @@
 package no.nav.dagpenger.oppdrag.common
 
-import no.nav.dagpenger.oppdrag.domene.objectMapper
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -25,19 +24,9 @@ data class Ressurs<T>(
     enum class Status {
         SUKSESS,
         FEILET,
-        IKKE_HENTET,
-        IKKE_TILGANG,
-        FUNKSJONELL_FEIL
     }
 
     companion object {
-        fun <T> success(data: T): Ressurs<T> = Ressurs(
-            data = data,
-            status = Status.SUKSESS,
-            melding = "Innhenting av data var vellykket",
-            stacktrace = null
-        )
-
         fun <T> success(data: T, melding: String?): Ressurs<T> = Ressurs(
             data = data,
             status = Status.SUKSESS,
@@ -57,24 +46,6 @@ data class Ressurs<T>(
             stacktrace = error?.textValue()
         )
 
-        fun <T> ikkeTilgang(melding: String): Ressurs<T> = Ressurs(
-            data = null,
-            status = Status.IKKE_TILGANG,
-            melding = melding,
-            stacktrace = null
-        )
-
-        fun <T> funksjonellFeil(
-            melding: String,
-            frontendFeilmelding: String? = null
-        ): Ressurs<T> = Ressurs(
-            data = null,
-            status = Status.FUNKSJONELL_FEIL,
-            melding = melding,
-            frontendFeilmelding = frontendFeilmelding,
-            stacktrace = null
-        )
-
         private fun Throwable.textValue(): String {
             val sw = StringWriter()
             this.printStackTrace(PrintWriter(sw))
@@ -82,20 +53,7 @@ data class Ressurs<T>(
         }
     }
 
-    fun toJson(): String = objectMapper.writeValueAsString(this)
-
     override fun toString(): String {
         return "Ressurs(status=$status, melding='$melding')"
-    }
-
-    fun toSecureString(): String {
-        return "Ressurs(status=$status, melding='$melding', frontendFeilmelding='$frontendFeilmelding')"
-    }
-}
-
-fun <T> Ressurs<T>.getDataOrThrow(): T {
-    return when (this.status) {
-        Ressurs.Status.SUKSESS -> data ?: error("Data er null i Ressurs")
-        else -> error(melding)
     }
 }

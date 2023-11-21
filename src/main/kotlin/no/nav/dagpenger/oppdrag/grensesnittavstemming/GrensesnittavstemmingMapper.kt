@@ -27,15 +27,15 @@ class GrensesnittavstemmingMapper(
     private val fom: LocalDateTime,
     private val tom: LocalDateTime
 ) {
-    private val ANTALL_DETALJER_PER_MELDING = 70
+    private val antallDetaljerPerMelding = 70
     private val tidspunktFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")
     val avstemmingId = AvstemmingMapper.encodeUUIDBase64(UUID.randomUUID())
 
     fun lagAvstemmingsmeldinger(): List<Avstemmingsdata> {
-        if (oppdragsliste.isEmpty())
-            return emptyList()
+        return if (oppdragsliste.isEmpty())
+            emptyList()
         else
-            return (listOf(lagStartmelding()) + lagDatameldinger() + listOf(lagSluttmelding()))
+            (listOf(lagStartmelding()) + lagDatameldinger() + listOf(lagSluttmelding()))
     }
 
     private fun lagStartmelding() = lagMelding(AksjonType.START)
@@ -45,7 +45,7 @@ class GrensesnittavstemmingMapper(
     private fun lagDatameldinger(): List<Avstemmingsdata> {
         val detaljMeldinger = opprettAvstemmingsdataLister()
 
-        val avstemmingsDataLister = if (detaljMeldinger.isNotEmpty()) detaljMeldinger else listOf(lagMelding(AksjonType.DATA))
+        val avstemmingsDataLister = detaljMeldinger.ifEmpty { listOf(lagMelding(AksjonType.DATA)) }
         avstemmingsDataLister.first().apply {
             this.total = opprettTotalData()
             this.periode = opprettPeriodeData()
@@ -76,7 +76,7 @@ class GrensesnittavstemmingMapper(
     }
 
     private fun opprettAvstemmingsdataLister(): List<Avstemmingsdata> {
-        return opprettDetaljdata().chunked(ANTALL_DETALJER_PER_MELDING).map {
+        return opprettDetaljdata().chunked(antallDetaljerPerMelding).map {
             lagMelding(AksjonType.DATA).apply {
                 this.detalj.addAll(it)
             }
@@ -117,7 +117,7 @@ class GrensesnittavstemmingMapper(
         }
 
     private fun opprettTotalData(): Totaldata {
-        val totalBeløp = oppdragsliste.map { getSatsBeløp(it) }.sum()
+        val totalBeløp = oppdragsliste.sumOf { getSatsBeløp(it) }
         return Totaldata().apply {
             this.totalAntall = oppdragsliste.size
             this.totalBelop = BigDecimal.valueOf(totalBeløp)

@@ -6,7 +6,7 @@ import java.util.UUID
 
 interface OppdragRepository : RepositoryInterface<OppdragLager, UUID>, InsertUpdateRepository<OppdragLager> {
 
-    @Query("""select * from oppdrag_lager where id is null limit 10000""")
+    @Query("select * from oppdrag_lager where id is null limit 10000")
     fun findWhereUuidIsNull(): Iterable<OppdragLager>
 
     @Modifying

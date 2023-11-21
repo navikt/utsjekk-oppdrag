@@ -7,6 +7,7 @@ import no.nav.dagpenger.oppdrag.iverksetting.OppdragSender
 import no.nav.dagpenger.oppdrag.repository.OppdragLager
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Profile
@@ -40,8 +41,8 @@ class OppdragServiceImpl(
     }
 
     companion object {
-        val LOG = LoggerFactory.getLogger(OppdragServiceImpl::class.java)
+        val LOG: Logger = LoggerFactory.getLogger(OppdragServiceImpl::class.java)
     }
 }
 
-class OppdragAlleredeSendtException() : RuntimeException()
+class OppdragAlleredeSendtException : RuntimeException()

@@ -31,7 +31,7 @@ enum class EndringsKode(val kode: String) {
 
     companion object {
         fun fromKode(kode: String): EndringsKode {
-            for (s in values()) {
+            for (s in entries) {
                 if (s.kode == kode) return s
             }
             throw IllegalArgumentException("Ingen Endringskode med kode=$kode")
@@ -39,6 +39,7 @@ enum class EndringsKode(val kode: String) {
     }
 }
 
+@Suppress("unused")
 enum class UtbetalingsfrekvensKode(val kode: String) {
     DAGLIG("DAG"),
     UKENTLIG("UKE"),
@@ -59,7 +60,7 @@ enum class SatsTypeKode(val kode: String) {
 
     companion object {
         fun fromKode(kode: String): SatsTypeKode {
-            for (s in values()) {
+            for (s in entries) {
                 if (s.kode == kode) return s
             }
             throw IllegalArgumentException("Ingen SatsTypeKode med kode=$kode")
@@ -67,6 +68,7 @@ enum class SatsTypeKode(val kode: String) {
     }
 }
 
+@Suppress("unused")
 enum class GradTypeKode(val kode: String) {
     UFØREGRAD("UFOR"),
     UTBETALINGSGRAD("UBGR"),

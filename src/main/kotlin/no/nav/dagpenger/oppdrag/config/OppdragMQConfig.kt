@@ -62,8 +62,7 @@ class OppdragMQConfig(
         pooledFactoryConfig.maxSessionsPerConnection = 10
         val pooledFactoryFactory = JmsPoolConnectionFactoryFactory(pooledFactoryConfig)
 
-        val pooledFactory = pooledFactoryFactory.createPooledConnectionFactory(cf)
-        return pooledFactory
+        return pooledFactoryFactory.createPooledConnectionFactory(cf)
     }
 
     @Bean

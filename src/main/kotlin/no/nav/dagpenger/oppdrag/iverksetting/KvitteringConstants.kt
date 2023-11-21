@@ -12,7 +12,7 @@ enum class Status(val kode: String) {
 
     companion object {
         fun fraKode(kode: String): Status {
-            values().forEach {
+            entries.forEach {
                 if (it.kode == kode) return it
             }
             throw IllegalArgumentException("No enum constant with kode=$kode")

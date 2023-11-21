@@ -2,6 +2,7 @@ package no.nav.dagpenger.oppdrag.iverksetting
 
 import com.ibm.mq.jakarta.jms.MQQueue
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Profile
@@ -44,6 +45,6 @@ class OppdragSenderMQ(
     }
 
     companion object {
-        val LOG = LoggerFactory.getLogger(OppdragSenderMQ::class.java)
+        val LOG: Logger = LoggerFactory.getLogger(OppdragSenderMQ::class.java)
     }
 }

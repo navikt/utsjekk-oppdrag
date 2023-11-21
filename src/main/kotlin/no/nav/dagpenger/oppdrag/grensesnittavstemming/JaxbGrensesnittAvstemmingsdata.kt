@@ -7,7 +7,7 @@ import java.io.StringWriter
 
 object JaxbGrensesnittAvstemmingsdata {
 
-    val jaxbContext = JAXBContext.newInstance(Avstemmingsdata::class.java)
+    private val jaxbContext: JAXBContext = JAXBContext.newInstance(Avstemmingsdata::class.java)
 
     fun tilXml(avstemmingsmelding: Avstemmingsdata): String {
         val stringWriter = StringWriter()

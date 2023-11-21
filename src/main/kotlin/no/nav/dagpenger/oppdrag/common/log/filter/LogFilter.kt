@@ -36,7 +36,7 @@ class LogFilter(
         filterChain: FilterChain
     ) {
         val userId = resolveUserId(httpServletRequest)
-        if (userId == null || userId.isEmpty()) {
+        if (userId.isNullOrEmpty()) {
             // user-id tracking only works if the client is stateful and supports cookies.
             // if no user-id is found, generate one for any following requests but do not use it on the
             // current request to avoid generating large numbers of useless user-ids.
@@ -137,7 +137,7 @@ class LogFilter(
         }
 
         private fun resolveUserId(httpServletRequest: HttpServletRequest): String? {
-            return httpServletRequest.cookies?.firstOrNull { it -> RANDOM_USER_ID_COOKIE_NAME == it.name }?.value
+            return httpServletRequest.cookies?.firstOrNull { RANDOM_USER_ID_COOKIE_NAME == it.name }?.value
         }
     }
 }

@@ -10,10 +10,8 @@ import javax.xml.transform.stream.StreamSource
 
 object Jaxb {
 
-    val jaxbContext = JAXBContext.newInstance(
-        Oppdrag::class.java
-    )
-    val xmlInputFactory = XMLInputFactory.newInstance()
+    private val jaxbContext: JAXBContext = JAXBContext.newInstance(Oppdrag::class.java)
+    private val xmlInputFactory = XMLInputFactory.newInstance()
 
     fun tilOppdrag(oppdragXml: String): Oppdrag {
         val oppdrag = jaxbContext.createUnmarshaller().unmarshal(

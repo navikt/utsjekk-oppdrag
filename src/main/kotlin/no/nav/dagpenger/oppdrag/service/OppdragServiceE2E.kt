@@ -7,6 +7,7 @@ import no.nav.dagpenger.oppdrag.domene.id
 import no.nav.dagpenger.oppdrag.repository.OppdragLager
 import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Profile
@@ -34,6 +35,6 @@ class OppdragServiceE2E(
 
     companion object {
 
-        val LOG = LoggerFactory.getLogger(OppdragServiceE2E::class.java)
+        val LOG: Logger = LoggerFactory.getLogger(OppdragServiceE2E::class.java)
     }
 }

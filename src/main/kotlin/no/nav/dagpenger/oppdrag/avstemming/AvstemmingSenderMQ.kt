@@ -2,6 +2,7 @@ package no.nav.dagpenger.oppdrag.avstemming
 
 import no.nav.dagpenger.oppdrag.grensesnittavstemming.JaxbGrensesnittAvstemmingsdata
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Avstemmingsdata
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.jms.JmsException
@@ -38,6 +39,6 @@ class AvstemmingSenderMQ(
     }
 
     companion object {
-        val LOG = LoggerFactory.getLogger(AvstemmingSenderMQ::class.java)
+        val LOG: Logger = LoggerFactory.getLogger(AvstemmingSenderMQ::class.java)
     }
 }
