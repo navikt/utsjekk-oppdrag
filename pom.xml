@@ -19,7 +19,7 @@
         <sha1/>
         <changelist>-SNAPSHOT</changelist>
         <jvmTarget>17</jvmTarget>
-        <kotlin.version>1.9.20</kotlin.version>
+        <kotlin.version>1.9.21</kotlin.version>
         <main-class>no.nav.dagpenger.oppdrag.LauncherKt</main-class>
 
         <jetty.version>11.0.15</jetty.version>
