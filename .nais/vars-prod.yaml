@@ -1,6 +1,6 @@
 limitsMemory: 4096Mi
 requestsMemory: 1Gi
-requestsCpu: 500m
+requestsCpu: 50m
 db_tier: "db-custom-1-3840"
 postgres_version: "POSTGRES_15"
 postgres_name: "dp-oppdrag"
