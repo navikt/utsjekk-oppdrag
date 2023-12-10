@@ -22,7 +22,7 @@
         <kotlin.version>1.9.20</kotlin.version>
         <main-class>no.nav.dagpenger.oppdrag.LauncherKt</main-class>
 
-        <jetty.version>11.0.15</jetty.version>
+        <jetty.version>12.0.4</jetty.version>
 
         <dp-kontrakter.version>2.0_20231114113957_a29e1a3</dp-kontrakter.version>
         <common-java-modules.version>2023.03.21_13.06-9a5b1febdbde</common-java-modules.version>
