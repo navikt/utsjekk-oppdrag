@@ -1,5 +1,5 @@
-limitsMemory: 4096Mi
-requestsMemory: 1Gi
+limitsMemory: 512Mi
+requestsMemory: 256Mi
 requestsCpu: 50m
 db_tier: "db-custom-1-3840"
 postgres_version: "POSTGRES_15"
