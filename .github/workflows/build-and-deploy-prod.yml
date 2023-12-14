@@ -1,5 +1,8 @@
 name: Build-Deploy-Prod
-on: push
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
 
 env:
   IMAGE: ghcr.io/navikt/dp-oppdrag:${{ github.sha }}
