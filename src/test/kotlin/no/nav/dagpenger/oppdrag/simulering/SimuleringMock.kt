@@ -20,7 +20,7 @@ import java.time.temporal.TemporalAdjusters
 @Service
 @Profile("local")
 class SimuleringServiceMock(simulerFpService: SimulerFpService) : SimuleringService(simulerFpService) {
-    override fun simuler(request: SimuleringRequest) = lagTestSimuleringResponse().tilSimulering()
+    override fun simuler(request: SimuleringRequestBody) = lagTestSimuleringResponse().tilSimulering()
 }
 
 @Configuration

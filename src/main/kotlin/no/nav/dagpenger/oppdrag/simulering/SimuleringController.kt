@@ -14,7 +14,7 @@ class SimuleringController(val simuleringService: SimuleringService) {
 
     @PostMapping(path = ["/simulering"], consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(hidden = true) // TODO: Gjør synlig i api-dok når endepunktet er klart til bruk
-    fun postSimulering(@RequestBody request: SimuleringRequest): ResponseEntity<Simulering> {
+    fun postSimulering(@RequestBody request: SimuleringRequestBody): ResponseEntity<Simulering> {
         val simuleringsresponse = simuleringService.simuler(request)
         return ResponseEntity.ok(simuleringsresponse)
     }

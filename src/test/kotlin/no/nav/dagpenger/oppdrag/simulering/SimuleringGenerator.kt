@@ -16,15 +16,17 @@ import java.time.format.DateTimeFormatter
 import java.util.ArrayList
 
 class SimuleringGenerator {
-    var periodeGenerator = PeriodeGenerator()
-    var erRefusjon: Boolean? = null
-    var refunderesOrgNr: String? = null
-    var oppdragsPeriodeList: List<Periode>? = ArrayList()
+    private var erRefusjon: Boolean? = null
+    private var refunderesOrgNr: String? = null
+    private var oppdragsPeriodeList: List<Periode> = ArrayList()
+
     fun opprettSimuleringsResultat(simulerBeregningRequest: SimulerBeregningRequest): SimulerBeregningResponse {
         erRefusjon = erRefusjon(simulerBeregningRequest.request.oppdrag.oppdragslinje)
-        oppdragsPeriodeList = periodeGenerator.genererPerioder(simulerBeregningRequest.request.oppdrag.oppdragslinje)
+        oppdragsPeriodeList = PeriodeGenerator.genererPerioder(simulerBeregningRequest.request.oppdrag.oppdragslinje)
+
         val response = SimulerBeregningResponse()
         val beregning = lagBeregning(simulerBeregningRequest)
+
         if (beregning == null) {
             response.response = null
         } else {
@@ -62,20 +64,20 @@ class SimuleringGenerator {
     }
 
     private fun leggTilBeregningsperioder(simulerBeregningRequest: SimulerBeregningRequest, beregning: Beregning) {
-        val nesteMåned: YearMonth
-        nesteMåned = if (LocalDate.now().dayOfMonth <= 19) {
+        val nesteMåned = if (LocalDate.now().dayOfMonth <= 19) {
             YearMonth.from(LocalDate.now())
         } else {
             YearMonth.from(LocalDate.now().plusMonths(1))
         }
         val beregningsPerioder = beregning.beregningsPeriode
-        for (oppdragsperiode in oppdragsPeriodeList!!) {
-            var sisteMåned: YearMonth?
-            sisteMåned = if (oppdragsperiode.periodeType == PeriodeType.OPPH) {
+
+        for (oppdragsperiode in oppdragsPeriodeList) {
+            val sisteMåned = if (oppdragsperiode.periodeType == PeriodeType.OPPHØR) {
                 nesteMåned.minusMonths(1)
             } else {
                 nesteMåned
             }
+
             if (!YearMonth.from(oppdragsperiode.fom).isAfter(sisteMåned) && oppdragsperiode.antallVirkedager != 0) {
                 while (YearMonth.from(oppdragsperiode.tom).isAfter(sisteMåned)) {
                     oppdragsperiode.tom = oppdragsperiode.tom.minusMonths(1)
@@ -83,7 +85,7 @@ class SimuleringGenerator {
                 }
                 val beregningsPeriode =
                     opprettBeregningsperiode(oppdragsperiode, simulerBeregningRequest.request.oppdrag)
-                if (!beregningsPeriode.beregningStoppnivaa.isEmpty()) {
+                if (beregningsPeriode.beregningStoppnivaa.isNotEmpty()) {
                     beregningsPerioder.add(
                         opprettBeregningsperiode(
                             oppdragsperiode,
@@ -106,18 +108,19 @@ class SimuleringGenerator {
     private fun opprettBeregningStoppNivaa(oppdragsperiode: Periode, oppdrag: Oppdrag): List<BeregningStoppnivaa> {
         val perioder = splittOppIPeriodePerMnd(oppdragsperiode)
         val beregningStoppnivaaer: MutableList<BeregningStoppnivaa> = ArrayList()
-        val nesteMåned: YearMonth
-        val sisteMåned: YearMonth
-        nesteMåned = if (LocalDate.now().dayOfMonth <= 19) {
+
+        val nesteMåned = if (LocalDate.now().dayOfMonth <= 19) {
             YearMonth.from(LocalDate.now())
         } else {
             YearMonth.from(LocalDate.now().plusMonths(1))
         }
-        sisteMåned = if (oppdragsperiode.periodeType == PeriodeType.OPPH) {
+
+        val sisteMåned = if (oppdragsperiode.periodeType == PeriodeType.OPPHØR) {
             nesteMåned.minusMonths(1)
         } else {
             nesteMåned
         }
+
         for (periode in perioder) {
             if (!YearMonth.from(periode.fom).isAfter(sisteMåned)) {
                 val stoppnivaa = BeregningStoppnivaa()
@@ -139,9 +142,9 @@ class SimuleringGenerator {
                 stoppnivaa.stoppNivaaId = BigInteger.ONE
                 stoppnivaa.fagsystemId = oppdrag.fagsystemId
                 stoppnivaa.bilagsType = "U"
-                stoppnivaa.isFeilkonto = oppdragsperiode.periodeType == PeriodeType.OPPH
+                stoppnivaa.isFeilkonto = oppdragsperiode.periodeType == PeriodeType.OPPHØR
                 stoppnivaa.kid = "12345"
-                if (oppdragsperiode.periodeType == PeriodeType.OPPH) {
+                if (oppdragsperiode.periodeType == PeriodeType.OPPHØR) {
                     for (i in 1..3) {
                         stoppnivaa.beregningStoppnivaaDetaljer.add(
                             opprettNegativBeregningStoppNivaaDetaljer(
@@ -185,7 +188,7 @@ class SimuleringGenerator {
                             oppdragsperiode,
                         ),
                     )
-                } else if (oppdragsperiode.periodeType != PeriodeType.OPPH) {
+                } else if (oppdragsperiode.periodeType != PeriodeType.OPPHØR) {
                     stoppnivaa.beregningStoppnivaaDetaljer.add(
                         opprettBeregningStoppNivaaDetaljer(
                             periode,
@@ -193,7 +196,7 @@ class SimuleringGenerator {
                         ),
                     )
                 }
-                if (!stoppnivaa.beregningStoppnivaaDetaljer.isEmpty()) {
+                if (stoppnivaa.beregningStoppnivaaDetaljer.isNotEmpty()) {
                     beregningStoppnivaaer.add(stoppnivaa)
                 }
             }
@@ -309,7 +312,7 @@ class SimuleringGenerator {
         } else {
             oppdragsperiode.sats!!
         }
-        return if (oppdragsperiode.periodeType == PeriodeType.OPPH) {
+        return if (oppdragsperiode.periodeType == PeriodeType.OPPHØR) {
             if (sequence == 3) {
                 belop.negate()
             } else {
@@ -318,12 +321,12 @@ class SimuleringGenerator {
         } else {
             if (sequence == 2) {
                 if (oppdragsperiode.typeSats == "DAG") {
-                    belop.subtract(oppdragsperiode.gammelSats!!.multiply(BigDecimal.valueOf(antallVirkedager.toLong()))).negate()
-                } else { belop.subtract(oppdragsperiode.gammelSats).negate() }
+                    belop.subtract(oppdragsperiode.oldSats!!.multiply(BigDecimal.valueOf(antallVirkedager.toLong()))).negate()
+                } else { belop.subtract(oppdragsperiode.oldSats).negate() }
             } else if (sequence == 3) {
                 if (oppdragsperiode.typeSats == "DAG") {
-                    oppdragsperiode.gammelSats!!.multiply(BigDecimal.valueOf(antallVirkedager.toLong())).negate()
-                } else { oppdragsperiode.gammelSats!!.negate() }
+                    oppdragsperiode.oldSats!!.multiply(BigDecimal.valueOf(antallVirkedager.toLong())).negate()
+                } else { oppdragsperiode.oldSats!!.negate() }
             } else {
                 belop
             }
@@ -331,7 +334,8 @@ class SimuleringGenerator {
     }
 
     companion object {
-        val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
         fun splittOppIPeriodePerMnd(oppdragsperiode: Periode): List<Periode> {
             val perioder: MutableList<Periode> = ArrayList()
             require(!oppdragsperiode.tom.isBefore(oppdragsperiode.fom)) {

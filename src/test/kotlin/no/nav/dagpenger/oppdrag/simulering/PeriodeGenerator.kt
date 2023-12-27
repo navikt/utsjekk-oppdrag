@@ -1,406 +1,214 @@
 package no.nav.dagpenger.oppdrag.simulering
 
-import no.nav.system.os.entiteter.typer.simpletypes.KodeStatusLinje
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.Oppdragslinje
-import java.lang.IllegalArgumentException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Collections
 
-class PeriodeGenerator {
-    var opphørsPerioder: MutableList<Periode> = ArrayList()
-    var ytelsesPerioder: MutableList<Periode> = ArrayList()
-    fun genererPerioder(oppdragslinjeList: List<Oppdragslinje>): List<Periode>? {
-        lagOpphørOgYtelse(oppdragslinjeList)
-        Collections.sort(ytelsesPerioder)
-        Collections.sort(opphørsPerioder)
+object PeriodeGenerator {
+
+    fun genererPerioder(oppdragslinjer: List<Oppdragslinje>): List<Periode> {
+        validerOppdragslinjer(oppdragslinjer)
+
+        val opphørsPerioder = oppdragslinjer.filter { it.kodeEndringLinje == "ENDR" }.map(Oppdragslinje::tilPeriode).sorted()
+        val ytelsesPerioder = oppdragslinjer.filter { it.kodeEndringLinje == "NY" }.map(Oppdragslinje::tilPeriode).sorted()
+
         if (opphørsPerioder.isEmpty() && ytelsesPerioder.isEmpty()) {
-            return null
+            return emptyList()
         }
+
         if (opphørsPerioder.isEmpty()) {
-            for (periode in ytelsesPerioder) {
-                periode.periodeType = PeriodeType.YTEL
-            }
-            return ytelsesPerioder
+            return ytelsesPerioder.map { it.copy(periodeType = PeriodeType.YTELSE) }
         }
+
         if (ytelsesPerioder.isEmpty()) {
-            for (periode in opphørsPerioder) {
-                periode.periodeType = PeriodeType.OPPH
-            }
-            return opphørsPerioder
+            return opphørsPerioder.map { it.copy(periodeType = PeriodeType.OPPHØR) }
         }
-        val perioder: MutableList<Periode> = ArrayList(definerYtelseOgOmpostPerioder())
-        perioder.addAll(definerOpphørPerioder())
-        Collections.sort(perioder)
-        return perioder
+
+        return (
+            utledYtelsesperioder(opphørsPerioder, ytelsesPerioder) + utledOpphørsperioder(
+                opphørsPerioder,
+                ytelsesPerioder
+            )
+            ).sorted()
     }
 
-    private fun definerOpphørPerioder(): List<Periode> {
-        val periodeList: MutableList<Periode> = ArrayList()
-        val opphørPerioderTemp: MutableList<Periode> = ArrayList(opphørsPerioder)
-        val removeOpphørPerioder: MutableList<Periode> = ArrayList()
-        val addOpphørPerioder: MutableList<Periode> = ArrayList()
-        while (!opphørPerioderTemp.isEmpty()) {
-            opphørloop@ for (opphør in opphørPerioderTemp) {
-                // ytelseloop:
-                for (ytelse in ytelsesPerioder) {
-                    // Scenario 1
-                    if (opphør.fom.isBefore(ytelse.fom) && opphør.tom.isBefore(ytelse.fom)) {
-                        periodeList.add(
-                            Periode(
-                                fom = opphør.fom,
-                                tom = opphør.tom,
-                                sats = opphør.sats,
-                                typeSats = opphør.typeSats,
-                                kodeKlassifik = opphør.kodeKlassifik,
-                                periodeType = PeriodeType.OPPH,
-                            ),
-                        )
-                        removeOpphørPerioder.add(opphør)
-                        continue@opphørloop
-                        // Scenario 2
-                    } else if (opphør.fom.isBefore(ytelse.fom) && opphør.tom.isEqual(ytelse.fom)) {
-                        periodeList.add(
-                            Periode(
-                                fom = opphør.fom,
+    private fun utledOpphørsperioder(
+        opphørsperioder: List<Periode>,
+        ytelsesperioder: List<Periode>,
+    ): List<Periode> {
+        val resultat = ArrayList<Periode>()
+        val temp = ArrayList(opphørsperioder)
+
+        while (temp.isNotEmpty()) {
+            val perioderSomSkalFjernes = mutableSetOf<Periode>()
+            val perioderSomSkalLeggesTil = mutableListOf<Periode>()
+
+            for (opphør in temp) {
+                for (ytelse in ytelsesperioder) {
+                    if (!opphør.overlapperMed(ytelse)) {
+                        resultat.add(opphør.copy(periodeType = PeriodeType.OPPHØR))
+                        perioderSomSkalFjernes.add(opphør)
+                        break
+                    } else if (opphør.tilstøterFør(ytelse) || opphør.overlapperMedFomTil(ytelse)) {
+                        resultat.add(
+                            opphør.copy(
                                 tom = opphør.tom.minusDays(1),
-                                sats = opphør.sats,
-                                typeSats = opphør.typeSats,
-                                kodeKlassifik = opphør.kodeKlassifik,
-                                periodeType = PeriodeType.OPPH,
-                            ),
-                        )
-                        removeOpphørPerioder.add(opphør)
-                        continue@opphørloop
-                        // Scenario 3,4 og 5
-                    } else if (opphør.fom.isBefore(ytelse.fom) && opphør.tom.isAfter(ytelse.fom)) {
-                        periodeList.add(
-                            Periode(
-                                fom = opphør.fom,
-                                tom = ytelse.fom.minusDays(1),
-                                sats = opphør.sats,
-                                typeSats = opphør.typeSats,
-                                kodeKlassifik = opphør.kodeKlassifik,
-                                periodeType = PeriodeType.OPPH,
-                            ),
-                        )
-                        removeOpphørPerioder.add(opphør)
-                        // Scenario 3 & 4
-                        if (!opphør.tom.isAfter(ytelse.tom)) {
-                            continue@opphørloop
-                        } else { // if opphør.getTom().isAfter(ytelse.getTom())
-                            addOpphørPerioder.add(
-                                Periode(
-                                    fom = ytelse.tom.plusDays(1),
-                                    tom = opphør.tom,
-                                    sats = opphør.sats,
-                                    typeSats = opphør.typeSats,
-                                    kodeKlassifik = opphør.kodeKlassifik,
-                                ),
+                                periodeType = PeriodeType.OPPHØR,
                             )
-                            continue@opphørloop
-                        }
-                    } else if (!opphør.fom.isBefore(ytelse.fom) && !opphør.tom.isAfter(ytelse.tom)) {
-                        removeOpphørPerioder.add(opphør)
-                        continue@opphørloop
-                    } else if (opphør.fom.isEqual(ytelse.fom) && opphør.tom.isAfter(ytelse.tom)) {
-                        removeOpphørPerioder.add(opphør)
-                        addOpphørPerioder.add(
-                            Periode(
-                                fom = ytelse.tom.plusDays(1),
-                                tom = opphør.tom,
-                                sats = opphør.sats,
-                                typeSats = opphør.typeSats,
-                                kodeKlassifik = opphør.kodeKlassifik,
-                            ),
                         )
-                        continue@opphørloop
-                    } else if (opphør.fom.isAfter(ytelse.fom) && !opphør.fom.isAfter(ytelse.tom)) {
-                        removeOpphørPerioder.add(opphør)
-                        addOpphørPerioder.add(
-                            Periode(
-                                fom = ytelse.tom.plusDays(1),
-                                tom = opphør.tom,
-                                sats = opphør.sats,
-                                typeSats = opphør.typeSats,
-                                kodeKlassifik = opphør.kodeKlassifik,
-                            ),
-                        )
-                        continue@opphørloop
+                        perioderSomSkalFjernes.add(opphør)
+                        break
+                    } else if (ytelse.omslutterInklusiv(opphør)) {
+                        perioderSomSkalFjernes.add(opphør)
+                        break
+                    } else if (opphør.omslutter(ytelse) || opphør.overlapperMedTomTil(ytelse)) {
+                        perioderSomSkalFjernes.add(opphør)
+                        perioderSomSkalLeggesTil.add(opphør.copy(fom = ytelse.tom.plusDays(1)))
+                        break
                     }
-                    // Scenario 12 - sjekkes mot neste ytelsesperiode
                 }
-                // Scenario 12 - hvis den ikke treffer noen ytelsesperioder.
-                periodeList.add(
-                    Periode(
-                        fom = opphør.fom,
-                        tom = opphør.tom,
-                        sats = opphør.sats,
-                        typeSats = opphør.typeSats,
-                        kodeKlassifik = opphør.kodeKlassifik,
-                        periodeType = PeriodeType.OPPH,
-                    ),
-                )
-                removeOpphørPerioder.add(opphør)
             }
-            opphørPerioderTemp.removeAll(removeOpphørPerioder)
-            removeOpphørPerioder.clear()
-            opphørPerioderTemp.addAll(addOpphørPerioder)
-            addOpphørPerioder.clear()
-            Collections.sort(opphørPerioderTemp)
+
+            temp.removeAll(perioderSomSkalFjernes)
+            temp.addAll(perioderSomSkalLeggesTil)
+            temp.sort()
         }
-        Collections.sort(periodeList)
-        return periodeList
+
+        return resultat.sorted()
     }
 
-    private fun definerYtelseOgOmpostPerioder(): List<Periode> {
-        val periodeList: MutableList<Periode> = ArrayList()
-        val ytelsesPerioderTemp: MutableList<Periode> = ArrayList(ytelsesPerioder)
-        val removeYtelsesPerioder: MutableList<Periode> = ArrayList()
-        val addYtelsesPerioder: MutableList<Periode> = ArrayList()
-        while (!ytelsesPerioderTemp.isEmpty()) {
-            ytelseloop@ for (ytelse in ytelsesPerioderTemp) {
-                // opphørloop:
+    private fun utledYtelsesperioder(
+        opphørsPerioder: List<Periode>,
+        ytelsesPerioder: List<Periode>,
+    ): List<Periode> {
+        val resultat = ArrayList<Periode>()
+        val temp = ArrayList(ytelsesPerioder)
+
+        while (temp.isNotEmpty()) {
+            val perioderSomSkalFjernes = mutableSetOf<Periode>()
+            val perioderSomSkalLeggesTil = ArrayList<Periode>()
+
+            for (ytelse in temp) {
                 for (opphør in opphørsPerioder) {
-                    // Scenarioer beskrevet i readme.md - Ytelse sjekkes mot opphør
-                    // Scenario 1
-                    if (ytelse.fom.isBefore(opphør.fom) && ytelse.tom.isBefore(opphør.fom)) {
-                        periodeList.add(
-                            Periode(
-                                fom = ytelse.fom,
-                                tom = ytelse.tom,
-                                sats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
-                                periodeType = PeriodeType.YTEL,
-                            ),
-                        )
-                        removeYtelsesPerioder.add(ytelse)
-                        continue@ytelseloop
-                        // Scenario 2
-                    } else if (ytelse.fom.isBefore(opphør.fom) && ytelse.tom.isEqual(opphør.fom)) {
-                        periodeList.add(
-                            Periode(
-                                fom = ytelse.fom,
+                    if (!ytelse.overlapperMed(opphør)) {
+                        resultat.add(ytelse.copy(periodeType = PeriodeType.YTELSE))
+                        perioderSomSkalFjernes.add(ytelse)
+                        break
+                    } else if (ytelse.tilstøterFør(opphør)) {
+                        resultat.add(
+                            ytelse.copy(
                                 tom = ytelse.tom.minusDays(1),
-                                sats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
-                                periodeType = PeriodeType.YTEL,
-                            ),
-                        )
-                        opphør.sats?.let {
-                            Periode(
-                                fom = ytelse.tom,
-                                tom = ytelse.tom,
-                                sats = it,
-                                gammelSats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
+                                periodeType = PeriodeType.YTELSE,
                             )
-                        }?.let { periodeList.add(it) }
-                        removeYtelsesPerioder.add(ytelse)
-                        continue@ytelseloop
-                        // Scenario 3,4 og 5
-                    } else if (ytelse.fom.isBefore(opphør.fom) && ytelse.tom.isAfter(opphør.fom)) {
-                        periodeList.add(
-                            Periode(
-                                fom = ytelse.fom,
-                                tom = opphør.fom.minusDays(1),
-                                sats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
-                                periodeType = PeriodeType.YTEL,
-                            ),
                         )
-                        // Scenario 3 & 4
-                        if (!ytelse.tom.isAfter(opphør.tom)) {
-                            opphør.sats?.let {
-                                Periode(
-                                    fom = opphør.fom,
-                                    tom = ytelse.tom,
-                                    sats = it,
-                                    gammelSats = ytelse.sats,
-                                    typeSats = ytelse.typeSats,
-                                    kodeKlassifik = ytelse.kodeKlassifik,
-                                )
-                            }?.let {
-                                periodeList.add(
-                                    it,
-                                )
-                            }
-                            removeYtelsesPerioder.add(ytelse)
-                            continue@ytelseloop
-                            // Scenario 5
-                        } else { // if (ytelse.getTom().isAfter(opphør.getTom())
-                            opphør.sats?.let {
-                                Periode(
-                                    fom = opphør.fom,
-                                    tom = opphør.tom,
-                                    sats = it,
-                                    gammelSats = ytelse.sats,
-                                    typeSats = ytelse.typeSats,
-                                    kodeKlassifik = ytelse.kodeKlassifik,
-                                )
-                            }?.let {
-                                periodeList.add(
-                                    it,
-                                )
-                            }
-                            addYtelsesPerioder.add(
-                                Periode(
-                                    fom = opphør.tom.plusDays(1),
-                                    tom = ytelse.fom,
-                                    sats = ytelse.sats,
-                                    typeSats = ytelse.typeSats,
-                                    kodeKlassifik = ytelse.kodeKlassifik,
-                                ),
-                            ) // Nytt objekt på slutten til samme loop
-                            removeYtelsesPerioder.add(ytelse)
-                            continue@ytelseloop
+                        if (opphør.sats != null) {
+                            resultat.add(ytelse.copy(oldSats = opphør.sats))
                         }
-                        // Scenario 6 & 7
-                    } else if (ytelse.fom.isEqual(opphør.fom) && !ytelse.tom.isAfter(opphør.tom)) {
-                        opphør.sats?.let {
-                            Periode(
-                                fom = ytelse.fom,
-                                tom = ytelse.tom,
-                                sats = it,
-                                gammelSats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
+                        perioderSomSkalFjernes.add(ytelse)
+                        break
+                    } else if (ytelse.overlapperMedFomTil(opphør)) {
+                        resultat.add(
+                            ytelse.copy(
+                                tom = opphør.fom.minusDays(1),
+                                periodeType = PeriodeType.YTELSE,
                             )
-                        }?.let { periodeList.add(it) }
-                        removeYtelsesPerioder.add(ytelse)
-                        continue@ytelseloop
-                        // Scenario 8
-                    } else if (ytelse.fom.isEqual(opphør.fom) && ytelse.tom.isAfter(opphør.tom)) {
-                        opphør.sats?.let {
-                            Periode(
-                                fom = ytelse.fom,
-                                tom = opphør.tom,
-                                sats = it,
-                                gammelSats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
-                            )
-                        }?.let { periodeList.add(it) }
-                        addYtelsesPerioder.add(
-                            Periode(
-                                fom = opphør.tom.plusDays(1),
-                                tom = ytelse.tom,
-                                sats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
-                            ),
-                        ) // //Nytt objekt på slutten til samme loop
-                        removeYtelsesPerioder.add(ytelse)
-                        continue@ytelseloop
-                        // Scenario 9
-                    } else if (ytelse.fom.isAfter(opphør.fom) && !ytelse.tom.isAfter(opphør.tom)) { // ytelse.getFom() er implisit før opphør.getTom() da ytelse.getFom() ikke kan være etter ytelse.getTom()
-                        opphør.sats?.let {
-                            Periode(
-                                fom = ytelse.fom,
-                                tom = ytelse.tom,
-                                sats = it,
-                                gammelSats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
-                            )
-                        }?.let { periodeList.add(it) }
-                        removeYtelsesPerioder.add(ytelse)
-                        continue@ytelseloop
-                        // Scenario 10 & 11
-                    } else if (ytelse.fom.isAfter(opphør.fom) && !ytelse.fom.isAfter(opphør.tom)) { // ytelse.getTom() er implisit after opphør.getTom() ellers ville den truffet forrige if-statement
-                        opphør.sats?.let {
-                            Periode(
-                                fom = ytelse.fom,
-                                tom = opphør.tom,
-                                sats = it,
-                                gammelSats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
-                            )
-                        }?.let { periodeList.add(it) }
-                        addYtelsesPerioder.add(
-                            Periode(
-                                fom = opphør.tom.plusDays(1),
-                                tom = ytelse.tom,
-                                sats = ytelse.sats,
-                                typeSats = ytelse.typeSats,
-                                kodeKlassifik = ytelse.kodeKlassifik,
-                            ),
                         )
-                        removeYtelsesPerioder.add(ytelse)
-                        continue@ytelseloop
+                        if (ytelse.omslutterInklusiv(opphør)) {
+                            if (opphør.sats != null) {
+                                resultat.add(
+                                    ytelse.copy(
+                                        fom = opphør.fom,
+                                        tom = opphør.tom,
+                                        oldSats = opphør.sats,
+                                    )
+                                )
+                            }
+                            perioderSomSkalLeggesTil.add(ytelse.copy(fom = opphør.tom.plusDays(1)))
+                        } else {
+                            if (opphør.sats != null) {
+                                resultat.add(
+                                    ytelse.copy(
+                                        fom = opphør.fom,
+                                        oldSats = opphør.sats,
+                                    )
+                                )
+                            }
+                        }
+                        perioderSomSkalFjernes.add(ytelse)
+                        break
+                    } else if (opphør.omslutterInklusiv(ytelse)) {
+                        if (opphør.sats != null) {
+                            resultat.add(ytelse.copy(oldSats = opphør.sats))
+                        }
+                        perioderSomSkalFjernes.add(ytelse)
+                        break
+                    } else if (ytelse.overlapperMedTomTil(opphør)) {
+                        if (opphør.sats != null) {
+                            resultat.add(
+                                ytelse.copy(
+                                    tom = opphør.tom,
+                                    oldSats = opphør.sats,
+                                )
+                            )
+                        }
+                        perioderSomSkalLeggesTil.add(ytelse.copy(fom = opphør.tom.plusDays(1)))
+                        perioderSomSkalFjernes.add(ytelse)
+                        break
+                    } else if (opphør.omslutter(ytelse)) {
+                        if (opphør.sats != null) {
+                            resultat.add(ytelse.copy(oldSats = opphør.sats,))
+                        }
+                        perioderSomSkalFjernes.add(ytelse)
+                        break
                     }
-                    // Scenario 12 - prøver igjen mot neste opphørsperiode
                 }
-                // Scenario 12 - hvis ytelsen ikke treffer noen opphørsperioder.
-                periodeList.add(
-                    Periode(
-                        fom = ytelse.fom,
-                        tom = ytelse.tom,
-                        sats = ytelse.sats,
-                        typeSats = ytelse.typeSats,
-                        kodeKlassifik = ytelse.kodeKlassifik,
-                        periodeType = PeriodeType.YTEL,
-                    ),
-                ) // Hvis ytelsen ikke treffer noen opphør
-                removeYtelsesPerioder.add(ytelse)
             }
-            ytelsesPerioderTemp.removeAll(removeYtelsesPerioder)
-            removeYtelsesPerioder.clear()
-            ytelsesPerioderTemp.addAll(addYtelsesPerioder)
-            addYtelsesPerioder.clear()
-            Collections.sort(ytelsesPerioderTemp)
+
+            temp.removeAll(perioderSomSkalFjernes.toSet())
+            temp.addAll(perioderSomSkalLeggesTil)
+            temp.sort()
         }
-        return periodeList
+
+        return resultat
     }
 
-    private fun lagOpphørOgYtelse(oppdragslinjeList: List<Oppdragslinje>) {
-        for (oppdragslinje in oppdragslinjeList) {
-            assert(oppdragslinje.typeSats == "MND" || oppdragslinje.typeSats == "DAG") { "Forventet at typeSats er enten DAG eller MND, men typeSats var: " + oppdragslinje.typeSats }
-            if (oppdragslinje.kodeEndringLinje == "ENDR") {
-                assert(oppdragslinje.kodeStatusLinje == KodeStatusLinje.OPPH) { "Forventet at KodeStatusLinje er OPPH når KodeEndringLinje er ENDR" }
-                if (oppdragslinje.datoStatusFom != null) {
-                    opphørsPerioder.add(
-                        Periode(
-                            fom = LocalDate.parse(oppdragslinje.datoStatusFom, dateTimeFormatter),
-                            tom = LocalDate.parse(oppdragslinje.datoVedtakTom, dateTimeFormatter),
-                            sats = oppdragslinje.sats,
-                            typeSats = oppdragslinje.typeSats,
-                            kodeKlassifik = oppdragslinje.kodeKlassifik,
-                        ),
-                    )
-                } else {
-                    opphørsPerioder.add(
-                        Periode(
-                            fom = LocalDate.parse(oppdragslinje.datoVedtakFom, dateTimeFormatter),
-                            tom = LocalDate.parse(oppdragslinje.datoVedtakTom, dateTimeFormatter),
-                            sats = oppdragslinje.sats,
-                            typeSats = oppdragslinje.typeSats,
-                            kodeKlassifik = oppdragslinje.kodeKlassifik,
-                        ),
-                    )
-                }
-            } else if (oppdragslinje.kodeEndringLinje == "NY") {
-                ytelsesPerioder.add(
-                    Periode(
-                        fom = LocalDate.parse(oppdragslinje.datoVedtakFom, dateTimeFormatter),
-                        tom = LocalDate.parse(oppdragslinje.datoVedtakTom, dateTimeFormatter),
-                        sats = oppdragslinje.sats,
-                        typeSats = oppdragslinje.typeSats,
-                        kodeKlassifik = oppdragslinje.kodeKlassifik,
-                    ),
-                )
-            } else {
-                throw IllegalArgumentException("Forventet kodeEndringLinje NY eller ENDR. Verdi var: " + oppdragslinje.kodeEndringLinje)
+    private fun validerOppdragslinjer(linjer: List<Oppdragslinje>) {
+        for (linje in linjer) {
+            assert(linje.typeSats == "MND" || linje.typeSats == "DAG") {
+                "Forventet at typeSats er enten DAG eller MND, men typeSats var: " + linje.typeSats
+            }
+            assert(linje.kodeEndringLinje == "NY" || linje.kodeEndringLinje == "ENDR") {
+                "Forventet kodeEndringLinje NY eller ENDR. Verdi var: " + linje.kodeEndringLinje
             }
         }
-    }
-
-    companion object {
-        val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     }
 }
+
+private fun Periode.overlapperMed(periode: Periode) =
+    !(tom.isBefore(periode.fom) || fom.isAfter(periode.tom))
+
+private fun Periode.tilstøterFør(periode: Periode) =
+    tom.isEqual(periode.fom)
+
+private fun Periode.overlapperMedFomTil(periode: Periode) =
+    fom.isBefore(periode.fom) && tom.isAfter(periode.fom)
+
+private fun Periode.overlapperMedTomTil(periode: Periode) =
+    (fom.isBefore(periode.tom)) && !fom.isAfter(periode.tom)
+
+private fun Periode.omslutter(periode: Periode) =
+    fom.isBefore(periode.fom) && tom.isAfter(periode.tom)
+
+private fun Periode.omslutterInklusiv(periode: Periode) =
+    (fom.isBefore(periode.fom) || fom.isEqual(periode.fom)) && (tom.isAfter(periode.tom) || tom.isEqual(periode.tom))
+
+private val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+private fun Oppdragslinje.tilPeriode() =
+    Periode(
+        fom = LocalDate.parse(datoStatusFom ?: datoVedtakFom, dateTimeFormatter),
+        tom = LocalDate.parse(datoVedtakTom, dateTimeFormatter),
+        sats = sats,
+        typeSats = typeSats,
+        kodeKlassifik = kodeKlassifik,
+    )

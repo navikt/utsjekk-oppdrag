@@ -5,7 +5,7 @@ import no.nav.dagpenger.kontrakter.felles.Ident
 import no.nav.dagpenger.kontrakter.felles.Personident
 import java.time.LocalDate
 
-data class SimuleringRequest(
+data class SimuleringRequestBody(
     val fagområde: String,
     val fagsystemId: String,
     val fødselsnummer: Personident,
