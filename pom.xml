@@ -24,7 +24,7 @@
 
         <jetty.version>11.0.15</jetty.version>
 
-        <dp-kontrakter.version>2.0_20231114113957_a29e1a3</dp-kontrakter.version>
+        <dp-kontrakter.version>2.0_20231222084529_f0d8240</dp-kontrakter.version>
         <common-java-modules.version>2023.03.21_13.06-9a5b1febdbde</common-java-modules.version>
         <token-validation-spring.version>3.0.11</token-validation-spring.version>
         <jaxb-api.version>4.0.1</jaxb-api.version>
@@ -193,6 +193,11 @@
             <version>${dp-kontrakter.version}</version>
         </dependency>
         <dependency>
+            <groupId>no.nav.dagpenger.kontrakter</groupId>
+            <artifactId>felles</artifactId>
+            <version>${dp-kontrakter.version}</version>
+        </dependency>
+        <dependency>
             <groupId>no.nav.security</groupId>
             <artifactId>token-validation-spring</artifactId>
             <version>${token-validation-spring.version}</version>
@@ -207,6 +212,11 @@
                     <artifactId>log</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
+            <artifactId>nav-system-os-simuler-fp-service-tjenestespesifikasjon</artifactId>
+            <version>2618.0448179</version>
         </dependency>
 
         <!-- Open API -->

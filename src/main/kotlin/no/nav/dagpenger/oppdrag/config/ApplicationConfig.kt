@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootConfiguration
 @EntityScan(ApplicationConfig.PAKKENAVN, "no.nav.dagpenger.oppdrag.sikkerhet")
-@ComponentScan(ApplicationConfig.PAKKENAVN, "no.nav.dagpenger.oppdrag.sikkerhet")
+@ComponentScan(ApplicationConfig.PAKKENAVN)
 @EnableScheduling
 @EnableJwtTokenValidation(ignore = ["org.springframework", "org.springdoc"])
 class ApplicationConfig {

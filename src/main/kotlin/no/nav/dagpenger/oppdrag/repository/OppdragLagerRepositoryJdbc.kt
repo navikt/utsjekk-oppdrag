@@ -19,7 +19,8 @@ import java.util.*
 
 @Repository
 class OppdragLagerRepositoryJdbc(
-    val jdbcTemplate: JdbcTemplate, val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
+    val jdbcTemplate: JdbcTemplate,
+    val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
 ) : OppdragLagerRepository {
 
     internal var LOG = LoggerFactory.getLogger(OppdragLagerRepositoryJdbc::class.java)
@@ -94,7 +95,9 @@ class OppdragLagerRepositoryJdbc(
     }
 
     override fun hentIverksettingerForGrensesnittavstemming(
-        fomTidspunkt: LocalDateTime, tomTidspunkt: LocalDateTime, fagsystem: Fagsystem
+        fomTidspunkt: LocalDateTime,
+        tomTidspunkt: LocalDateTime,
+        fagsystem: Fagsystem
     ): List<OppdragLager> {
         val hentStatement =
             "SELECT * FROM oppdrag_lager WHERE avstemming_tidspunkt >= ? AND avstemming_tidspunkt < ? AND fagsystem = ?"
@@ -137,7 +140,8 @@ class OppdragLagerRepositoryJdbc(
     }
 
     override fun hentUtbetalingsoppdragForKonsistensavstemming(
-        fagsystem: String, behandlingIder: Set<String>
+        fagsystem: String,
+        behandlingIder: Set<String>
     ): List<UtbetalingsoppdragForKonsistensavstemming> {
 
         val query = """SELECT fagsak_id, behandling_id, utbetalingsoppdrag FROM (

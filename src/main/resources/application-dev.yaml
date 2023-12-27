@@ -13,4 +13,3 @@ no.nav.security.jwt:
 
 OPPDRAG_SERVICE_URL: https://cics-q1.adeo.no/oppdrag/simulerFpServiceWSBinding
 SECURITYTOKENSERVICE_URL: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
-TILBAKEKREVING_V1_URL: https://cics-q1.adeo.no/oppdrag/K231CW80
