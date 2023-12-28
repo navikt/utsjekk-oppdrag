@@ -59,7 +59,7 @@ internal class SimuleringRequestBuilder(private val request: SimuleringRequestBo
         "Mangler utbetalingsdager"
     }
 
-    private val sisteUtbetalingsdag get() = checkNotNull(request.utbetalingslinjer.maxByOrNull { it.fom }?.fom) {
+    private val sisteUtbetalingsdag get() = checkNotNull(request.utbetalingslinjer.maxByOrNull { it.tom }?.tom) {
         "Mangler utbetalingsdager"
     }
 
