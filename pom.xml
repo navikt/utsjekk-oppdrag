@@ -25,7 +25,7 @@
         <jetty.version>11.0.15</jetty.version>
 
         <dp-kontrakter.version>2.0_20231222084529_f0d8240</dp-kontrakter.version>
-        <common-java-modules.version>2023.03.21_13.06-9a5b1febdbde</common-java-modules.version>
+        <common-java-modules.version>3.2023.07.07_09.10-85326e9557f0</common-java-modules.version>
         <token-validation-spring.version>3.0.11</token-validation-spring.version>
         <jaxb-api.version>4.0.1</jaxb-api.version>
         <jaxb-core.version>3.0.2</jaxb-core.version>
@@ -208,7 +208,7 @@
             <version>${common-java-modules.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>no.nav.common</groupId>
+                    <groupId>com.github.navikt.common-java-modules</groupId>
                     <artifactId>log</artifactId>
                 </exclusion>
             </exclusions>
