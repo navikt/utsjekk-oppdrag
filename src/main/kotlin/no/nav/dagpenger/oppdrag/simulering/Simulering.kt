@@ -44,10 +44,10 @@ data class Detaljer(
     val typeSats: String,
     val antallSats: Int,
     val uforegrad: Int,
-    val klassekode: String,
-    val klassekodeBeskrivelse: String,
     val utbetalingsType: String,
-    val refunderesOrgNr: String
+    val klassekode: String,
+    val klassekodeBeskrivelse: String?,
+    val refunderesOrgNr: String?
 )
 
 fun SimulerBeregningResponse?.tilSimulering() = this?.response?.simulering?.let { simulering ->
@@ -88,8 +88,8 @@ private fun BeregningStoppnivaaDetaljer.tilDetaljer() =
         typeSats = typeSats.trim(),
         antallSats = antallSats.intValueExact(),
         uforegrad = uforeGrad.intValueExact(),
+        utbetalingsType = typeKlasse,
         klassekode = klassekode.trim(),
         klassekodeBeskrivelse = klasseKodeBeskrivelse,
-        utbetalingsType = typeKlasse,
-        refunderesOrgNr = refunderesOrgNr.removePrefix("00"),
+        refunderesOrgNr = refunderesOrgNr?.removePrefix("00"),
     )

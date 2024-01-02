@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 class SimuleringService(private val simulerFpService: SimulerFpService) {
     private val secureLogger = LoggerFactory.getLogger("secureLogger")
 
-    fun simuler(request: SimuleringRequestBody): Simulering? {
-        return try {
+    fun simuler(request: SimuleringRequestBody) =
+        try {
             SimuleringRequestBuilder(request).build().let {
                 simulerFpService.simulerBeregning(it).tilSimulering()
             }
@@ -18,5 +18,4 @@ class SimuleringService(private val simulerFpService: SimulerFpService) {
             secureLogger.error("", e)
             throw e
         }
-    }
 }
