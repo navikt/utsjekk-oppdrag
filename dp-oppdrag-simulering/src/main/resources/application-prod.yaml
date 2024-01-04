@@ -1,0 +1,17 @@
+oppdrag.mq:
+  queuemanager: MPLS02
+  send: QA.P231.OB04_OPPDRAG_XML
+  mottak: QA.P_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
+  avstemming: QA.P234.OB29_AVSTEMMING_XML
+  channel: P_DP_OPPDRAG
+  enabled: false
+
+no.nav.security.jwt:
+  issuer.azuread:
+    discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
+    accepted_audience: ${AZURE_APP_CLIENT_ID}
+    cookie_name: azure_token
+
+OPPDRAG_SERVICE_URL: https://wasapp.adeo.no/cics/services/simulerFpServiceWSBinding
+SECURITYTOKENSERVICE_URL: https://sts.adeo.no/SecurityTokenServiceProvider/
+TILBAKEKREVING_V1_URL: https://cics.adeo.no/oppdrag/K231CW80

@@ -1,0 +1,15 @@
+oppdrag.mq:
+  queuemanager: MQLS02
+  send: QA.Q1_231.OB04_OPPDRAG_XML
+  mottak: QA.Q1_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
+  avstemming: QA.Q1_234.OB29_AVSTEMMING_XML
+  channel: Q1_DP_OPPDRAG
+
+no.nav.security.jwt:
+  issuer.azuread:
+    discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
+    accepted_audience: ${AZURE_APP_CLIENT_ID}
+    cookie_name: azure_token
+
+OPPDRAG_SERVICE_URL: https://cics-q1.adeo.no/oppdrag/simulerFpServiceWSBinding
+SECURITYTOKENSERVICE_URL: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
