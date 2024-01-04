@@ -18,12 +18,8 @@ management:
   endpoints.web:
     exposure.include: info, health, metrics, prometheus
     base-path: "/internal"
-  metrics.export.prometheus.enabled: true
-  health:
-    livenessstate:
-      enabled: true
-    readinessstate:
-      enabled: true
+    path-mapping:
+      info: "isAlive"
 
 springdoc:
   packagesToScan: no.nav.dagpenger.simulering

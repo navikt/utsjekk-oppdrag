@@ -9,11 +9,11 @@ metadata:
 spec:
   image: {{ image }}
   liveness:
-    path: /internal/health/liveness
+    path: /internal/isAlive
     initialDelay: 30
     failureThreshold: 10
   readiness:
-    path: /internal/health/readyness
+    path: /internal/isAlive
     initialDelay: 30
     failureThreshold: 10
   prometheus:
