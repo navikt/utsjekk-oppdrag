@@ -15,11 +15,6 @@ management:
   endpoint:
     health:
       show-details: always
-      group:
-        readyness:
-          include: db
-        liveness:
-          include: db
   endpoints.web:
     exposure.include: info, health, metrics, prometheus
     base-path: "/internal"
