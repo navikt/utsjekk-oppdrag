@@ -1,0 +1,6 @@
+simulering_hostname: wasapp.adeo.no
+sts_hostname: sts.adeo.no
+springProfil: prod
+limitsMemory: 512Mi
+requestsMemory: 256Mi
+requestsCpu: 50m

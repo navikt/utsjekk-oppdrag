@@ -1,11 +1,11 @@
-name: Build-Deploy-Prod
+name: DP-Oppdrag-Simulering Build-Deploy
 on:
   push:
     branches-ignore:
       - 'dependabot/**'
 
 env:
-  IMAGE: ghcr.io/navikt/dp-oppdrag:${{ github.sha }}
+  IMAGE: ghcr.io/navikt/dp-oppdrag-simulering:${{ github.sha }}
 jobs:
   build:
     name: Bygg app/image, push til github
@@ -27,11 +27,11 @@ jobs:
         env:
           GITHUB_USERNAME: x-access-token
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn -B --no-transfer-progress package verify --settings .m2/maven-settings.xml --file dp-oppdrag-app/pom.xml
+        run: mvn -B --no-transfer-progress package verify --settings .m2/maven-settings.xml --file dp-oppdrag-simulering/pom.xml
 
       - name: Bygg Docker image
         run: |
-          docker build -t $IMAGE ./dp-oppdrag-app
+          docker build -t $IMAGE ./dp-oppdrag-simulering
 
       - name: Login to Github Package Registry
         env:
@@ -43,7 +43,7 @@ jobs:
         run: docker push ${IMAGE}
 
   deploy-dev:
-    name: Deploy to dev-gcp
+    name: Deploy to dev-fss
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -51,12 +51,12 @@ jobs:
         - uses: nais/deploy/actions/deploy@v1
           env:
             APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-            CLUSTER: dev-gcp
-            RESOURCE: .nais/nais.yaml
-            VARS: .nais/vars-dev.yaml
+            CLUSTER: dev-fss
+            RESOURCE: .nais/nais-simulering.yaml
+            VARS: .nais/vars-simulering-dev.yaml
 
   deploy-prod:
-    name: Deploy to prod-gcp
+    name: Deploy to prod-fss
     needs: deploy-dev
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -65,6 +65,6 @@ jobs:
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: .nais/nais.yaml
-          VARS: .nais/vars-prod.yaml
+          CLUSTER: prod-fss
+          RESOURCE: .nais/nais-simulering.yaml
+          VARS: .nais/vars-simulering-prod.yaml

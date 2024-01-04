@@ -1,0 +1,6 @@
+simulering_hostname: cics-q1.adeo.no
+sts_hostname: sts-q1.preprod.local
+springProfil: dev
+limitsMemory: 512Mi
+requestsMemory: 256Mi
+requestsCpu: 50m
