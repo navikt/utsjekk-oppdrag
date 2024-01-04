@@ -6,7 +6,7 @@
     <parent>
         <groupId>no.nav</groupId>
         <artifactId>dp-oppdrag</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}${sha1}${changelist}</version>
     </parent>
 
     <artifactId>dp-oppdrag-app</artifactId>
