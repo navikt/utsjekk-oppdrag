@@ -4,3 +4,6 @@ springProfil: dev
 limitsMemory: 512Mi
 requestsMemory: 256Mi
 requestsCpu: 50m
+ingresses:
+  - https://dp-oppdrag-simulering.intern.dev.nav.no
+  - https://dp-oppdrag-simulering.dev-fss-pub.nais.io
