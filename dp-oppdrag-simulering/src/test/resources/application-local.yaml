@@ -9,6 +9,8 @@ no.nav.security.jwt:
 
 OPPDRAG_SERVICE_URL: http://localhost #Mockes ut lokalt
 SECURITYTOKENSERVICE_URL: http://localhost:8063/soap/SecurityTokenServiceProvider/
-SERVICEUSER_USERNAME: not-a-real-srvuser
-SERVICEUSER_PASSWORD: not-a-real-pw
 AZURE_APP_WELL_KNOWN_URL: "https://login.microsoftonline.com/navq.onmicrosoft.com/v2.0/.well-known/openid-configuration"
+
+srv:
+  username: not-a-real-srvuser
+  password: not-a-real-pw

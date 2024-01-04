@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Profile
 @Configuration
 class SimuleringConfig(
     @Value("\${SECURITYTOKENSERVICE_URL}") private val stsUrl: String,
-    @Value("\${SERVICEUSER_USERNAME}") private val systemuserUsername: String,
-    @Value("\${SERVICEUSER_PASSWORD}") private val systemuserPwd: String,
+    @Value("\${srv.username}") private val systemuserUsername: String,
+    @Value("\${srv.password}") private val systemuserPwd: String,
     @Value("\${OPPDRAG_SERVICE_URL}") private val simulerFpServiceUrl: String,
 ) {
 
