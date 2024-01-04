@@ -1,6 +1,11 @@
 name: DP-oppdrag Build-Deploy
 on:
   push:
+    paths:
+      - 'dp-oppdrag-app/**'
+      - '.nais/oppdrag-**'
+      - 'pom.xml'
+      - '.github/workflows/build-and-deploy-oppdrag.yml'
     branches-ignore:
       - 'dependabot/**'
 
@@ -52,8 +57,8 @@ jobs:
           env:
             APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
             CLUSTER: dev-gcp
-            RESOURCE: .nais/nais.yaml
-            VARS: .nais/vars-dev.yaml
+            RESOURCE: .nais/oppdrag-nais.yaml
+            VARS: .nais/oppdrag-vars-dev.yaml
 
   deploy-prod:
     name: Deploy to prod-gcp
@@ -66,5 +71,5 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          RESOURCE: .nais/nais.yaml
-          VARS: .nais/vars-prod.yaml
+          RESOURCE: .nais/oppdrag-nais.yaml
+          VARS: .nais/oppdrag-vars-prod.yaml
