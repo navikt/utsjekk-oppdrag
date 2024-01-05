@@ -188,11 +188,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>no.nav.tjenestespesifikasjoner</groupId>
-            <artifactId>nav-system-os-simuler-fp-service-tjenestespesifikasjon</artifactId>
-            <version>2618.0448179</version>
-        </dependency>
 
         <!-- Open API -->
         <dependency>

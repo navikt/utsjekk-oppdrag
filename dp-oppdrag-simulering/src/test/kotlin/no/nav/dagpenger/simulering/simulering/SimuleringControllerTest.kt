@@ -3,13 +3,13 @@ package no.nav.dagpenger.simulering.simulering
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.dagpenger.kontrakter.felles.Personident
-import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerFpService
 import no.nav.system.os.entiteter.beregningskjema.Beregning
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaa
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer
 import no.nav.system.os.entiteter.beregningskjema.BeregningsPeriode
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse
+import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerFpService
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.math.BigDecimal

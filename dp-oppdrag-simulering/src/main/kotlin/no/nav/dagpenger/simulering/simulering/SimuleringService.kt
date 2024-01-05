@@ -1,7 +1,7 @@
 package no.nav.dagpenger.simulering.simulering
 
 import jakarta.xml.ws.soap.SOAPFaultException
-import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerFpService
+import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerFpService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

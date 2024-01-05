@@ -17,4 +17,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main-class>no.nav.dagpenger.simulering.LauncherKt</main-class>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>no.nav.familie.tjenestespesifikasjoner</groupId>
+            <artifactId>nav-system-os-simuler-fp-service-tjenestespesifikasjon</artifactId>
+            <version>1.0_20230718100517_1e1beb0</version>
+        </dependency>
+    </dependencies>
 </project>
