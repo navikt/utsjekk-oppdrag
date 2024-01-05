@@ -28,8 +28,8 @@ springdoc:
     disable-swagger-default-url: true
 
 srv:
-  username: srvdp-oppdrag
-  password: ${srvbruker_passord}
+  username: srvdp-simulering
+  password: ${srvdp-simulering_passord}
 
 DP_IVERKSETT_CLIENT_ID: ""
 AZURE_APP_WELL_KNOWN_URL: ""
