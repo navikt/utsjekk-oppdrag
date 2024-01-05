@@ -13,14 +13,14 @@ data class Simulering(
     val gjelderNavn: String,
     val datoBeregnet: LocalDate,
     val totalBelop: Int,
-    val perioder: List<SimulertPeriode>
+    val perioder: List<SimulertPeriode>,
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class SimulertPeriode(
     val fom: LocalDate,
     val tom: LocalDate,
-    val utbetalinger: List<Utbetaling>
+    val utbetalinger: List<Utbetaling>,
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -30,7 +30,7 @@ data class Utbetaling(
     val utbetalesTilNavn: String,
     val forfall: LocalDate,
     val feilkonto: Boolean,
-    val detaljer: List<Detaljer>
+    val detaljer: List<Detaljer>,
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -47,24 +47,25 @@ data class Detaljer(
     val utbetalingsType: String,
     val klassekode: String,
     val klassekodeBeskrivelse: String?,
-    val refunderesOrgNr: String?
+    val refunderesOrgNr: String?,
 )
 
-fun SimulerBeregningResponse?.tilSimulering() = this?.response?.simulering?.let { simulering ->
-    Simulering(
-        gjelderId = simulering.gjelderId,
-        gjelderNavn = simulering.gjelderNavn.trim(),
-        datoBeregnet = LocalDate.parse(simulering.datoBeregnet),
-        totalBelop = simulering.belop.intValueExact(),
-        perioder = simulering.beregningsPeriode.map(BeregningsPeriode::tilSimulertPeriode)
-    )
-}
+fun SimulerBeregningResponse?.tilSimulering() =
+    this?.response?.simulering?.let { simulering ->
+        Simulering(
+            gjelderId = simulering.gjelderId,
+            gjelderNavn = simulering.gjelderNavn.trim(),
+            datoBeregnet = LocalDate.parse(simulering.datoBeregnet),
+            totalBelop = simulering.belop.intValueExact(),
+            perioder = simulering.beregningsPeriode.map(BeregningsPeriode::tilSimulertPeriode),
+        )
+    }
 
 private fun BeregningsPeriode.tilSimulertPeriode() =
     SimulertPeriode(
         fom = LocalDate.parse(periodeFom),
         tom = LocalDate.parse(periodeTom),
-        utbetalinger = beregningStoppnivaa.map(BeregningStoppnivaa::tilUtbetaling)
+        utbetalinger = beregningStoppnivaa.map(BeregningStoppnivaa::tilUtbetaling),
     )
 
 private fun BeregningStoppnivaa.tilUtbetaling() =
@@ -74,7 +75,7 @@ private fun BeregningStoppnivaa.tilUtbetaling() =
         utbetalesTilNavn = utbetalesTilNavn.trim(),
         forfall = LocalDate.parse(forfall),
         feilkonto = isFeilkonto,
-        detaljer = beregningStoppnivaaDetaljer.map(BeregningStoppnivaaDetaljer::tilDetaljer)
+        detaljer = beregningStoppnivaaDetaljer.map(BeregningStoppnivaaDetaljer::tilDetaljer),
     )
 
 private fun BeregningStoppnivaaDetaljer.tilDetaljer() =
@@ -90,6 +91,6 @@ private fun BeregningStoppnivaaDetaljer.tilDetaljer() =
         uforegrad = uforeGrad.intValueExact(),
         utbetalingsType = typeKlasse,
         klassekode = klassekode.trim(),
-        klassekodeBeskrivelse = klasseKodeBeskrivelse,
-        refunderesOrgNr = refunderesOrgNr?.removePrefix("00"),
+        klassekodeBeskrivelse = klasseKodeBeskrivelse.trim(),
+        refunderesOrgNr = refunderesOrgNr?.removePrefix("00")?.trim(),
     )
