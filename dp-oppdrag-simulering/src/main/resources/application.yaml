@@ -29,7 +29,7 @@ springdoc:
 
 srv:
   username: srvdp-simulering
-  password: ${srvdp-simulering_passord}
+  password: ${servicebruker_passord}
 
 DP_IVERKSETT_CLIENT_ID: ""
 AZURE_APP_WELL_KNOWN_URL: ""
