@@ -22,12 +22,12 @@
         <dependency>
             <groupId>com.ibm.mq</groupId>
             <artifactId>com.ibm.mq.allclient</artifactId>
-            <version>${ibm-mq.version}</version>
+            <version>9.3.4.1</version>
         </dependency>
         <dependency>
             <groupId>com.ibm.mq</groupId>
             <artifactId>mq-jms-spring-boot-starter</artifactId>
-            <version>${ibm-mq-jms.version}</version>
+            <version>3.1.1</version>
         </dependency>
         <dependency>
             <groupId>jakarta.jms</groupId>
