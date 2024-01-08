@@ -26,7 +26,7 @@ class SimuleringService(private val simulerFpService: SimulerFpService) {
                 when {
                     contains("Personen finnes ikke") -> throw NotFoundException(this)
                     contains("ugyldig") -> throw BadRequestException(this)
-                    else -> throw Exception(this)
+                    else -> throw e
                 }
             }
         } catch (e: SOAPFaultException) {

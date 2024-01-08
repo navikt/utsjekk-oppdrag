@@ -2,6 +2,8 @@ package no.nav.dagpenger.simulering.simulering
 
 import io.mockk.every
 import io.mockk.mockk
+import jakarta.ws.rs.BadRequestException
+import jakarta.ws.rs.NotFoundException
 import no.nav.dagpenger.kontrakter.felles.Personident
 import no.nav.dagpenger.simulering.simulering.dto.Endringskode
 import no.nav.dagpenger.simulering.simulering.dto.Satstype
@@ -12,11 +14,14 @@ import no.nav.system.os.entiteter.beregningskjema.Beregning
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaa
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer
 import no.nav.system.os.entiteter.beregningskjema.BeregningsPeriode
+import no.nav.system.os.tjenester.simulerfpservice.feil.FeilUnderBehandling
+import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningFeilUnderBehandling
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerFpService
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.time.LocalDate
@@ -31,7 +36,7 @@ class SimuleringControllerTest {
     private val simuleringController = SimuleringController(simuleringService)
 
     @Test
-    fun `post simulering`() {
+    fun `svarer med 200 OK og simuleringsresultat`() {
         val requestBody = enSimuleringRequestBody()
         val request = SimuleringRequestBuilder(requestBody).build()
 
@@ -46,6 +51,40 @@ class SimuleringControllerTest {
         }
     }
 
+    @Test
+    fun `svarer med 400 Bad Request ved feil på request body`() {
+        every {
+            simulerFpService.simulerBeregning(any())
+        } throws
+            SimulerBeregningFeilUnderBehandling(
+                "Fødselsnummeret er ugyldig",
+                FeilUnderBehandling().apply {
+                    errorMessage = "Fødselsnummeret er ugyldig"
+                },
+            )
+
+        assertThrows<BadRequestException> {
+            simuleringController.postSimulering(enSimuleringRequestBody())
+        }
+    }
+
+    @Test
+    fun `svarer med 404 Not Found når personen ikke finnes`() {
+        every {
+            simulerFpService.simulerBeregning(any())
+        } throws
+            SimulerBeregningFeilUnderBehandling(
+                "Personen finnes ikke",
+                FeilUnderBehandling().apply {
+                    errorMessage = "Personen finnes ikke"
+                },
+            )
+
+        assertThrows<NotFoundException> {
+            simuleringController.postSimulering(enSimuleringRequestBody())
+        }
+    }
+
     private fun enSimuleringRequestBody() =
         SimuleringRequestBody(
             fagområde = "TEST",
@@ -56,22 +95,22 @@ class SimuleringControllerTest {
             saksbehandler = "TEST",
             utbetalingsfrekvens = Utbetalingsfrekvens.UKENTLIG,
             utbetalingslinjer =
-            listOf(
-                Utbetalingslinje(
-                    delytelseId = "",
-                    endringskode = Endringskode.NY,
-                    klassekode = "",
-                    fom = LocalDate.of(2023, 1, 1),
-                    tom = LocalDate.of(2023, 1, 30),
-                    sats = 1000,
-                    grad = 100,
-                    refDelytelseId = null,
-                    refFagsystemId = null,
-                    datoStatusFom = null,
-                    statuskode = null,
-                    satstype = Satstype.MÅNED,
+                listOf(
+                    Utbetalingslinje(
+                        delytelseId = "",
+                        endringskode = Endringskode.NY,
+                        klassekode = "",
+                        fom = LocalDate.of(2023, 1, 1),
+                        tom = LocalDate.of(2023, 1, 30),
+                        sats = 1000,
+                        grad = 100,
+                        refDelytelseId = null,
+                        refFagsystemId = null,
+                        datoStatusFom = null,
+                        statuskode = null,
+                        satstype = Satstype.MÅNED,
+                    ),
                 ),
-            ),
         )
 
     private fun enSimulerBeregningResponse(request: SimulerBeregningRequest) =

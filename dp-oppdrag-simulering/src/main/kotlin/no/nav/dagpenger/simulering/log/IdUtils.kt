@@ -1,4 +1,4 @@
-package no.nav.dagpenger.simulering.common.log
+package no.nav.dagpenger.simulering.log
 
 import java.util.UUID
 

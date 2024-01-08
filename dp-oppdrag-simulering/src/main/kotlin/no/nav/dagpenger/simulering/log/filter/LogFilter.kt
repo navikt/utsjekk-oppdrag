@@ -1,4 +1,4 @@
-package no.nav.dagpenger.simulering.common.log.filter
+package no.nav.dagpenger.simulering.log.filter
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.FilterConfig
@@ -7,12 +7,12 @@ import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpFilter
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import no.nav.dagpenger.simulering.common.log.IdUtils
-import no.nav.dagpenger.simulering.common.log.NavHttpHeaders
-import no.nav.dagpenger.simulering.common.log.mdc.MDCConstants.MDC_CALL_ID
-import no.nav.dagpenger.simulering.common.log.mdc.MDCConstants.MDC_CONSUMER_ID
-import no.nav.dagpenger.simulering.common.log.mdc.MDCConstants.MDC_REQUEST_ID
-import no.nav.dagpenger.simulering.common.log.mdc.MDCConstants.MDC_USER_ID
+import no.nav.dagpenger.simulering.log.IdUtils
+import no.nav.dagpenger.simulering.log.NavHttpHeaders
+import no.nav.dagpenger.simulering.log.mdc.MDCConstants.MDC_CALL_ID
+import no.nav.dagpenger.simulering.log.mdc.MDCConstants.MDC_CONSUMER_ID
+import no.nav.dagpenger.simulering.log.mdc.MDCConstants.MDC_REQUEST_ID
+import no.nav.dagpenger.simulering.log.mdc.MDCConstants.MDC_USER_ID
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import java.io.EOFException
@@ -26,14 +26,13 @@ class LogFilter(
      * Defaults to always false
      */
     private val exposeErrorDetails: Supplier<Boolean> = Supplier { false },
-    private val serverName: String? = null
+    private val serverName: String? = null,
 ) : HttpFilter() {
-
     @Throws(ServletException::class, IOException::class)
     override fun doFilter(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         val userId = resolveUserId(httpServletRequest)
         if (userId.isNullOrEmpty()) {
@@ -66,7 +65,7 @@ class LogFilter(
     private fun filterWithErrorHandling(
         httpServletRequest: HttpServletRequest,
         httpServletResponse: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         try {
             filterChain.doFilter(httpServletRequest, httpServletResponse)
@@ -99,13 +98,13 @@ class LogFilter(
                 NavHttpHeaders.NAV_CALL_ID.asString(),
                 "Nav-CallId",
                 "Nav-Callid",
-                "X-Correlation-Id"
+                "X-Correlation-Id",
             )
 
         private val NAV_REQUEST_ID_HEADER_NAMES =
             listOf(
                 "X_Request_Id",
-                "X-Request-Id"
+                "X-Request-Id",
             )
         private val log = LoggerFactory.getLogger(LogFilter::class.java)
         private const val RANDOM_USER_ID_COOKIE_NAME = "RUIDC"
@@ -127,12 +126,13 @@ class LogFilter(
 
         private fun generateUserIdCookie(httpServletResponse: HttpServletResponse) {
             val userId = IdUtils.generateId()
-            val cookie = Cookie(RANDOM_USER_ID_COOKIE_NAME, userId).apply {
-                path = "/"
-                maxAge = ONE_MONTH_IN_SECONDS
-                isHttpOnly = true
-                secure = true
-            }
+            val cookie =
+                Cookie(RANDOM_USER_ID_COOKIE_NAME, userId).apply {
+                    path = "/"
+                    maxAge = ONE_MONTH_IN_SECONDS
+                    isHttpOnly = true
+                    secure = true
+                }
             httpServletResponse.addCookie(cookie)
         }
 

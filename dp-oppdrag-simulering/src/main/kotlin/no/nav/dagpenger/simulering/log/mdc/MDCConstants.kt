@@ -1,4 +1,4 @@
-package no.nav.dagpenger.simulering.common.log.mdc
+package no.nav.dagpenger.simulering.log.mdc
 
 object MDCConstants {
     const val MDC_USER_ID = "userId"

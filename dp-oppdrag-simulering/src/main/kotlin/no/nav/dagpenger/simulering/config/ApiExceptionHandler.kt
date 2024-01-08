@@ -1,25 +1,31 @@
 package no.nav.dagpenger.simulering.config
 
-import no.nav.dagpenger.simulering.common.Ressurs
-import no.nav.dagpenger.simulering.common.RessursUtils.illegalState
-import no.nav.dagpenger.simulering.common.RessursUtils.unauthorized
+import jakarta.ws.rs.BadRequestException
+import jakarta.ws.rs.NotFoundException
+import jakarta.ws.rs.ServiceUnavailableException
 import no.nav.security.token.support.spring.validation.interceptor.JwtTokenUnauthorizedException
-import org.springframework.core.NestedExceptionUtils.getMostSpecificCause
+import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningFeilUnderBehandling
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
 class ApiExceptionHandler {
-
     @ExceptionHandler(JwtTokenUnauthorizedException::class)
-    fun handleJwtTokenUnauthorizedException(jwtTokenUnauthorizedException: JwtTokenUnauthorizedException): ResponseEntity<Ressurs<Nothing>> {
-        return unauthorized("Unauthorized")
-    }
+    fun handleJwtTokenUnauthorizedException(exception: JwtTokenUnauthorizedException): ResponseEntity<String> =
+        ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized")
 
-    @ExceptionHandler(Throwable::class)
-    fun handleThrowable(throwable: Throwable): ResponseEntity<Ressurs<Nothing>> {
-        val mostSpecificThrowable = getMostSpecificCause(throwable)
-        return illegalState(mostSpecificThrowable.message.toString(), mostSpecificThrowable)
-    }
+    @ExceptionHandler(BadRequestException::class)
+    fun handleBadRequest(throwable: Throwable): ResponseEntity<String> = ResponseEntity.status(400).body(throwable.message)
+
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFound(throwable: Throwable): ResponseEntity<String> = ResponseEntity.status(404).body(throwable.message)
+
+    @ExceptionHandler(ServiceUnavailableException::class)
+    fun handleServiceUnavailable(throwable: Throwable): ResponseEntity<String> = ResponseEntity.status(503).body(throwable.message)
+
+    @ExceptionHandler(SimulerBeregningFeilUnderBehandling::class)
+    fun handleFeilUnderBehandling(throwable: SimulerBeregningFeilUnderBehandling): ResponseEntity<String> =
+        ResponseEntity.status(500).body(throwable.faultInfo.errorMessage)
 }
