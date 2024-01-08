@@ -1,5 +1,6 @@
 package no.nav.dagpenger.simulering.simulering
 
+import no.nav.dagpenger.simulering.simulering.dto.SimuleringRequestBody
 import no.nav.system.os.entiteter.beregningskjema.Beregning
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaa
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer
@@ -106,4 +107,5 @@ private fun enBeregningStoppnivaaDetaljer(
     uforeGrad = BigInteger.valueOf(100)
     klassekode = "en-klassekode"
     typeKlasse = posteringType
+    klasseKodeBeskrivelse = "en-klassekodebeskrivelse"
 }
