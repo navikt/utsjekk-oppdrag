@@ -1,5 +1,6 @@
 package no.nav.dagpenger.simulering.simulering.dto
 
+import io.swagger.v3.oas.annotations.media.Schema
 import no.nav.dagpenger.kontrakter.felles.Ident
 import no.nav.dagpenger.kontrakter.felles.Personident
 import java.time.LocalDate
@@ -7,7 +8,9 @@ import java.time.LocalDate
 data class SimuleringRequestBody(
     val fagområde: String,
     val fagsystemId: String,
+    @Schema(example = "15507600333", type = "string")
     val personident: Personident,
+    @Schema(example = "15507600333", type = "string")
     val mottaker: Ident,
     val endringskode: Endringskode,
     val saksbehandler: String,

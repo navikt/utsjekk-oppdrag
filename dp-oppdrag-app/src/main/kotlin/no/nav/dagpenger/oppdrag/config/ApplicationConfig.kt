@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.config
 
-import no.nav.dagpenger.oppdrag.common.log.filter.LogFilter
+import no.nav.dagpenger.felles.log.filter.LogFilter
 import no.nav.security.token.support.spring.api.EnableJwtTokenValidation
 import org.springframework.boot.SpringBootConfiguration
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -12,25 +12,18 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootConfiguration
-@EntityScan(ApplicationConfig.PAKKENAVN, "no.nav.dagpenger.oppdrag.sikkerhet")
-@ComponentScan(ApplicationConfig.PAKKENAVN)
+@EntityScan("no.nav.dagpenger.oppdrag")
+@ComponentScan("no.nav.dagpenger.oppdrag", "no.nav.dagpenger.felles")
 @EnableScheduling
 @EnableJwtTokenValidation(ignore = ["org.springframework", "org.springdoc"])
-class ApplicationConfig {
-
+internal class ApplicationConfig {
     @Bean
     fun servletWebServerFactory(): ServletWebServerFactory = JettyServletWebServerFactory()
 
     @Bean
-    fun logFilter(): FilterRegistrationBean<LogFilter> {
-        val filterRegistration = FilterRegistrationBean<LogFilter>()
-        filterRegistration.filter = LogFilter()
-        filterRegistration.order = 1
-        return filterRegistration
-    }
-
-    companion object {
-        const val PAKKENAVN = "no.nav.dagpenger.oppdrag"
-        val LOKALE_PROFILER = setOf("local", "e2e")
-    }
+    fun logFilter() =
+        FilterRegistrationBean<LogFilter>().apply {
+            filter = LogFilter()
+            order = 1
+        }
 }

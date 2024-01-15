@@ -6,12 +6,16 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import jakarta.jms.TextMessage
-import no.nav.dagpenger.oppdrag.domene.OppdragStatus
-import no.nav.dagpenger.oppdrag.repository.OppdragLager
-import no.nav.dagpenger.oppdrag.repository.OppdragLagerRepository
-import no.nav.dagpenger.oppdrag.repository.somOppdragLager
-import no.nav.dagpenger.oppdrag.repository.somOppdragLagerMedVersjon
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.iverksetting.domene.Kvitteringstatus
+import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
+import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
+import no.nav.dagpenger.oppdrag.iverksetting.domene.kvitteringstatus
+import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragMottaker
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer
+import no.nav.dagpenger.oppdrag.util.somOppdragLager
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -19,37 +23,33 @@ import org.springframework.core.env.Environment
 import kotlin.test.assertEquals
 
 class OppdragMQMottakTest {
+    private lateinit var oppdragMottaker: OppdragMottaker
 
-    lateinit var oppdragMottaker: OppdragMottaker
-
-    val localEnv: Environment
-        get() {
-            val env = mockk<Environment>()
-            every { env.activeProfiles } returns arrayOf("local")
-            return env
-        }
+    private val localEnv: Environment
+        get() =
+            mockk<Environment>().apply {
+                every { activeProfiles } returns arrayOf("local")
+            }
 
     @BeforeEach
     fun setUp() {
-        val env = mockk<Environment>()
-        val oppdragLagerRepository = mockk<OppdragLagerRepository>()
-        every { env.activeProfiles } returns arrayOf("local")
-
-        oppdragMottaker = OppdragMottaker(oppdragLagerRepository, env)
+        oppdragMottaker = OppdragMottaker(mockk(), localEnv)
     }
 
     @Test
     fun skal_tolke_kvittering_riktig_ved_OK() {
-        val kvittering: String = lesKvittering("kvittering-akseptert.xml")
-        val statusFraKvittering = oppdragMottaker.lesKvittering(kvittering).status
-        assertEquals(Status.OK, statusFraKvittering)
+        val kvittering = lesKvittering("kvittering-akseptert.xml")
+        val statusFraKvittering = oppdragMottaker.lesKvittering(kvittering).kvitteringstatus
+
+        assertEquals(Kvitteringstatus.OK, statusFraKvittering)
     }
 
     @Test
     fun skal_tolke_kvittering_riktig_ved_feil() {
         val kvittering: String = lesKvittering("kvittering-avvist.xml")
-        val statusFraKvittering = oppdragMottaker.lesKvittering(kvittering).status
-        assertEquals(Status.AVVIST_FUNKSJONELLE_FEIL, statusFraKvittering)
+        val statusFraKvittering = oppdragMottaker.lesKvittering(kvittering).kvitteringstatus
+
+        assertEquals(Kvitteringstatus.AVVIST_FUNKSJONELLE_FEIL, statusFraKvittering)
     }
 
     @Test
@@ -98,7 +98,6 @@ class OppdragMQMottakTest {
 
     @Test
     fun skal_logge_error_hvis_det_finnes_to_identiske_oppdrag_i_databasen() {
-
         val oppdragLagerRepository = mockk<OppdragLagerRepository>()
 
         every { oppdragLagerRepository.hentAlleVersjonerAvOppdrag(any()) } throws Exception()
@@ -106,10 +105,6 @@ class OppdragMQMottakTest {
         every { oppdragLagerRepository.opprettOppdrag(any()) } just Runs
 
         val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, localEnv)
-        oppdragMottaker.LOG = mockk()
-
-        every { oppdragMottaker.LOG.info(any()) } just Runs
-        every { oppdragMottaker.LOG.error(any()) } just Runs
 
         assertThrows<Exception> { oppdragMottaker.mottaKvitteringFraOppdrag("kvittering-akseptert.xml".fraRessursSomTextMessage) }
         verify(exactly = 0) { oppdragLagerRepository.opprettOppdrag(any<OppdragLager>()) }
@@ -123,10 +118,6 @@ class OppdragMQMottakTest {
         every { oppdragLagerRepository.opprettOppdrag(any()) } just Runs
 
         val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, localEnv)
-        oppdragMottaker.LOG = mockk()
-
-        every { oppdragMottaker.LOG.info(any()) } just Runs
-        every { oppdragMottaker.LOG.error(any()) } just Runs
 
         assertThrows<Exception> { oppdragMottaker.mottaKvitteringFraOppdrag("kvittering-akseptert.xml".fraRessursSomTextMessage) }
         verify(exactly = 0) { oppdragLagerRepository.opprettOppdrag(any<OppdragLager>()) }
@@ -145,26 +136,25 @@ class OppdragMQMottakTest {
         every { oppdragLagerRepository.oppdaterKvitteringsmelding(any(), any()) } just Runs
 
         val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, localEnv)
-        oppdragMottaker.LOG = mockk()
-
-        every { oppdragMottaker.LOG.info(any()) } just Runs
-        every { oppdragMottaker.LOG.warn(any()) } just Runs
-        every { oppdragMottaker.LOG.debug(any()) } just Runs
 
         oppdragMottaker.mottaKvitteringFraOppdrag("kvittering-akseptert.xml".fraRessursSomTextMessage)
 
         verify(exactly = 1) { oppdragLagerRepository.hentAlleVersjonerAvOppdrag(any()) }
-        verify(exactly = 1) { oppdragMottaker.LOG.warn(any()) }
     }
 
-    private fun lesKvittering(filnavn: String): String {
-        return this::class.java.getResourceAsStream("/$filnavn").bufferedReader().use { it.readText() }
-    }
+    private fun lesKvittering(filnavn: String) =
+        this::class.java.getResourceAsStream("/$filnavn")?.bufferedReader().use { it?.readText() ?: "" }
 
-    val String.fraRessursSomTextMessage: TextMessage
-        get() {
-            val textMessage = mockk<TextMessage>()
-            every { textMessage.text } returns lesKvittering(this)
-            return textMessage
-        }
+    private val String.fraRessursSomTextMessage: TextMessage
+        get() =
+            mockk<TextMessage>().apply {
+                every<String?> { text } returns lesKvittering(this@fraRessursSomTextMessage)
+            }
+}
+
+internal fun Utbetalingsoppdrag.somOppdragLagerMedVersjon(versjon: Int): OppdragLager {
+    val tilOppdrag110 = OppdragMapper.tilOppdrag110(this)
+    val oppdrag = OppdragMapper.tilOppdrag(tilOppdrag110)
+
+    return OppdragLager.lagFraOppdrag(this, oppdrag, versjon)
 }

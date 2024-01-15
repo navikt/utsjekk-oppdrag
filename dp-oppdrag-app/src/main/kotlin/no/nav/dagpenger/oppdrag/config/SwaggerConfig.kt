@@ -8,23 +8,22 @@ import io.swagger.v3.oas.models.security.SecurityScheme
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+private const val BEARER = "JWT"
+
 @Configuration
-class SwaggerConfig {
-
-    private val bearer = "JWT"
-
+internal class SwaggerConfig {
     @Bean
     fun openApi(): OpenAPI {
         return OpenAPI().info(Info().title("API dp-oppdrag"))
-            .components(Components().addSecuritySchemes(bearer, bearerTokenSecurityScheme()))
-            .addSecurityItem(SecurityRequirement().addList(bearer, listOf("read", "write")))
+            .components(Components().addSecuritySchemes(BEARER, bearerTokenSecurityScheme()))
+            .addSecurityItem(SecurityRequirement().addList(BEARER, listOf("read", "write")))
     }
 
     private fun bearerTokenSecurityScheme(): SecurityScheme {
         return SecurityScheme()
             .type(SecurityScheme.Type.APIKEY)
-            .scheme(bearer)
-            .bearerFormat("JWT")
+            .scheme(BEARER)
+            .bearerFormat(BEARER)
             .`in`(SecurityScheme.In.HEADER)
             .name("Authorization")
     }

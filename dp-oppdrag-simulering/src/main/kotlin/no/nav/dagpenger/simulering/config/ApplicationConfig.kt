@@ -1,6 +1,6 @@
 package no.nav.dagpenger.simulering.config
 
-import no.nav.dagpenger.simulering.log.filter.LogFilter
+import no.nav.dagpenger.felles.log.filter.LogFilter
 import no.nav.security.token.support.spring.api.EnableJwtTokenValidation
 import org.springframework.boot.SpringBootConfiguration
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 
 @SpringBootConfiguration
-@ComponentScan("no.nav.dagpenger.simulering")
+@ComponentScan("no.nav.dagpenger.simulering", "no.nav.dagpenger.felles")
 @EnableJwtTokenValidation(ignore = ["org.springframework", "org.springdoc"])
 class ApplicationConfig {
     @Bean

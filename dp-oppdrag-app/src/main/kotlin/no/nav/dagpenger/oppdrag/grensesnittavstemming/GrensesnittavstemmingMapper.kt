@@ -1,10 +1,8 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
-import no.nav.dagpenger.oppdrag.avstemming.AvstemmingMapper
-import no.nav.dagpenger.oppdrag.avstemming.SystemKode
-import no.nav.dagpenger.oppdrag.domene.OppdragStatus
-import no.nav.dagpenger.oppdrag.repository.OppdragLager
+import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AksjonType
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Aksjonsdata
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AvstemmingType
@@ -17,96 +15,108 @@ import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.KildeType
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Periodedata
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Totaldata
 import java.math.BigDecimal
+import java.nio.ByteBuffer
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Base64
 import java.util.UUID
 
-class GrensesnittavstemmingMapper(
+internal class GrensesnittavstemmingMapper(
     private val oppdragsliste: List<OppdragLager>,
     private val fagsystem: Fagsystem,
     private val fom: LocalDateTime,
-    private val tom: LocalDateTime
+    private val tom: LocalDateTime,
 ) {
-    private val antallDetaljerPerMelding = 70
-    private val tidspunktFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")
-    val avstemmingId = AvstemmingMapper.encodeUUIDBase64(UUID.randomUUID())
+    val avstemmingId = getAvstemmingId()
+
+    private val datameldinger
+        get(): List<Avstemmingsdata> {
+            val avstemmingsDataLister = avstemmingsdataliste.ifEmpty { listOf(lagMelding(AksjonType.DATA)) }
+
+            avstemmingsDataLister.first().apply {
+                total = totaldata
+                periode = periodedata
+                grunnlag = grunnlagsdata
+            }
+
+            return avstemmingsDataLister
+        }
+
+    private val avstemmingsdataliste
+        get() =
+            detaljdataliste.chunked(ANTALL_DETALJER_PR_MELDING).map {
+                lagMelding(AksjonType.DATA).apply {
+                    this.detalj.addAll(it)
+                }
+            }
+
+    private val detaljdataliste
+        get() =
+            oppdragsliste.mapNotNull { oppdrag ->
+                val detaljtype = opprettDetaljType(oppdrag)
+                if (detaljtype != null) {
+                    val utbetalingsoppdrag = oppdrag.utbetalingsoppdrag
+
+                    Detaljdata().apply {
+                        detaljType = detaljtype
+                        offnr = utbetalingsoppdrag.aktoer
+                        avleverendeTransaksjonNokkel = fagsystem.kode
+                        tidspunkt = oppdrag.avstemmingTidspunkt.format(timeFormatter)
+
+                        if (detaljtype in
+                            listOf(
+                                    DetaljType.AVVI,
+                                    DetaljType.VARS,
+                                ) && oppdrag.kvitteringsmelding != null
+                        ) {
+                            val kvitteringsmelding = oppdrag.kvitteringsmelding
+
+                            meldingKode = kvitteringsmelding.kodeMelding
+                            alvorlighetsgrad = kvitteringsmelding.alvorlighetsgrad
+                            tekstMelding = kvitteringsmelding.beskrMelding
+                        }
+                    }
+                } else {
+                    null
+                }
+            }
+
+    private val høyesteAvstemmingstidspunkt get() = sortertAvstemmingstidspunkt.first()
+
+    private val lavesteAvstemmingstidspunkt get() = sortertAvstemmingstidspunkt.last()
+
+    private val sortertAvstemmingstidspunkt
+        get() = oppdragsliste.map(OppdragLager::avstemmingTidspunkt).sortedDescending()
 
     fun lagAvstemmingsmeldinger(): List<Avstemmingsdata> {
-        return if (oppdragsliste.isEmpty())
+        val startmelding = lagMelding(AksjonType.START)
+        val sluttmelding = lagMelding(AksjonType.AVSL)
+
+        return if (oppdragsliste.isEmpty()) {
             emptyList()
-        else
-            (listOf(lagStartmelding()) + lagDatameldinger() + listOf(lagSluttmelding()))
-    }
-
-    private fun lagStartmelding() = lagMelding(AksjonType.START)
-
-    private fun lagSluttmelding() = lagMelding(AksjonType.AVSL)
-
-    private fun lagDatameldinger(): List<Avstemmingsdata> {
-        val detaljMeldinger = opprettAvstemmingsdataLister()
-
-        val avstemmingsDataLister = detaljMeldinger.ifEmpty { listOf(lagMelding(AksjonType.DATA)) }
-        avstemmingsDataLister.first().apply {
-            this.total = opprettTotalData()
-            this.periode = opprettPeriodeData()
-            this.grunnlag = opprettGrunnlagsData()
+        } else {
+            (listOf(startmelding) + datameldinger + listOf(sluttmelding))
         }
-
-        return avstemmingsDataLister
     }
 
-    private fun lagMelding(aksjonType: AksjonType): Avstemmingsdata =
+    private fun lagMelding(aksjonType: AksjonType) =
         Avstemmingsdata().apply {
-            aksjon = opprettAksjonsdata(aksjonType)
-        }
-
-    private fun opprettAksjonsdata(aksjonType: AksjonType): Aksjonsdata {
-        return Aksjonsdata().apply {
-            this.aksjonType = aksjonType
-            this.kildeType = KildeType.AVLEV
-            this.avstemmingType = AvstemmingType.GRSN
-            this.avleverendeKomponentKode = fagsystem.kode
-            this.mottakendeKomponentKode = SystemKode.OPPDRAGSSYSTEMET.kode
-            this.underkomponentKode = fagsystem.kode
-            this.nokkelFom = fom.format(tidspunktFormatter)
-            this.nokkelTom = tom.format(tidspunktFormatter)
-            this.avleverendeAvstemmingId = avstemmingId
-            this.brukerId = fagsystem.kode
-        }
-    }
-
-    private fun opprettAvstemmingsdataLister(): List<Avstemmingsdata> {
-        return opprettDetaljdata().chunked(antallDetaljerPerMelding).map {
-            lagMelding(AksjonType.DATA).apply {
-                this.detalj.addAll(it)
-            }
-        }
-    }
-
-    private fun opprettDetaljdata(): List<Detaljdata> {
-        return oppdragsliste.mapNotNull { oppdrag ->
-            val detaljType = opprettDetaljType(oppdrag)
-            if (detaljType != null) {
-                val utbetalingsoppdrag = oppdrag.utbetalingsoppdrag
-                Detaljdata().apply {
-                    this.detaljType = detaljType
-                    this.offnr = utbetalingsoppdrag.aktoer
-                    this.avleverendeTransaksjonNokkel = fagsystem.kode
-                    this.tidspunkt = oppdrag.avstemmingTidspunkt.format(tidspunktFormatter)
-                    if (detaljType in listOf(DetaljType.AVVI, DetaljType.VARS) && oppdrag.kvitteringsmelding != null) {
-                        val kvitteringsmelding = oppdrag.kvitteringsmelding
-                        this.meldingKode = kvitteringsmelding.kodeMelding
-                        this.alvorlighetsgrad = kvitteringsmelding.alvorlighetsgrad
-                        this.tekstMelding = kvitteringsmelding.beskrMelding
-                    }
+            aksjon =
+                Aksjonsdata().apply {
+                    this.aksjonType = aksjonType
+                    kildeType = KildeType.AVLEV
+                    avstemmingType = AvstemmingType.GRSN
+                    avleverendeKomponentKode = fagsystem.kode
+                    mottakendeKomponentKode = "OS"
+                    underkomponentKode = fagsystem.kode
+                    nokkelFom = fom.format(timeFormatter)
+                    nokkelTom = tom.format(timeFormatter)
+                    avleverendeAvstemmingId = avstemmingId
+                    brukerId = fagsystem.kode
                 }
-            } else {
-                null
-            }
         }
-    }
 
-    private fun opprettDetaljType(oppdrag: OppdragLager): DetaljType? =
+    private fun opprettDetaljType(oppdrag: OppdragLager) =
         when (oppdrag.status) {
             OppdragStatus.LAGT_PAA_KOE -> DetaljType.MANG
             OppdragStatus.KVITTERT_MED_MANGLER -> DetaljType.VARS
@@ -116,92 +126,101 @@ class GrensesnittavstemmingMapper(
             OppdragStatus.KVITTERT_UKJENT -> null
         }
 
-    private fun opprettTotalData(): Totaldata {
-        val totalBeløp = oppdragsliste.sumOf { getSatsBeløp(it) }
-        return Totaldata().apply {
-            this.totalAntall = oppdragsliste.size
-            this.totalBelop = BigDecimal.valueOf(totalBeløp)
-            this.fortegn = getFortegn(totalBeløp)
-        }
-    }
+    private val totaldata
+        get(): Totaldata =
+            Totaldata().apply {
+                val totalBeløp = oppdragsliste.sumOf { getSatsBeløp(it) }
+                this.totalAntall = oppdragsliste.size
+                this.totalBelop = BigDecimal.valueOf(totalBeløp)
+                this.fortegn = getFortegn(totalBeløp)
+            }
 
-    private fun opprettPeriodeData(): Periodedata {
-        return Periodedata().apply {
-            this.datoAvstemtFom = formaterTilPeriodedataFormat(getLavesteAvstemmingstidspunkt().format(tidspunktFormatter))
-            this.datoAvstemtTom = formaterTilPeriodedataFormat(getHøyesteAvstemmingstidspunkt().format(tidspunktFormatter))
-        }
-    }
+    private val periodedata
+        get() =
+            Periodedata().apply {
+                this.datoAvstemtFom =
+                    formaterTilPeriodedataFormat(lavesteAvstemmingstidspunkt.format(timeFormatter))
+                this.datoAvstemtTom =
+                    formaterTilPeriodedataFormat(høyesteAvstemmingstidspunkt.format(timeFormatter))
+            }
 
-    private fun opprettGrunnlagsData(): Grunnlagsdata {
-        var godkjentAntall = 0
-        var godkjentBelop = 0L
-        var varselAntall = 0
-        var varselBelop = 0L
-        var avvistAntall = 0
-        var avvistBelop = 0L
-        var manglerAntall = 0
-        var manglerBelop = 0L
+    private val grunnlagsdata
+        get(): Grunnlagsdata {
+            var godkjentAntall = 0
+            var godkjentBelop = 0L
+            var varselAntall = 0
+            var varselBelop = 0L
+            var avvistAntall = 0
+            var avvistBelop = 0L
+            var manglerAntall = 0
+            var manglerBelop = 0L
 
-        for (oppdrag in oppdragsliste) {
-            val satsbeløp = getSatsBeløp(oppdrag)
-            when (oppdrag.status) {
-                OppdragStatus.LAGT_PAA_KOE -> {
-                    manglerBelop += satsbeløp
-                    manglerAntall++
+            for (oppdrag in oppdragsliste) {
+                val satsbeløp = getSatsBeløp(oppdrag)
+                when (oppdrag.status) {
+                    OppdragStatus.LAGT_PAA_KOE -> {
+                        manglerBelop += satsbeløp
+                        manglerAntall++
+                    }
+
+                    OppdragStatus.KVITTERT_OK -> {
+                        godkjentBelop += satsbeløp
+                        godkjentAntall++
+                    }
+
+                    OppdragStatus.KVITTERT_MED_MANGLER -> {
+                        varselBelop += satsbeløp
+                        varselAntall++
+                    }
+
+                    else -> {
+                        avvistBelop += satsbeløp
+                        avvistAntall++
+                    }
                 }
-                OppdragStatus.KVITTERT_OK -> {
-                    godkjentBelop += satsbeløp
-                    godkjentAntall++
-                }
-                OppdragStatus.KVITTERT_MED_MANGLER -> {
-                    varselBelop += satsbeløp
-                    varselAntall++
-                }
-                else -> {
-                    avvistBelop += satsbeløp
-                    avvistAntall++
-                }
+            }
+
+            return Grunnlagsdata().apply {
+                this.godkjentAntall = godkjentAntall
+                this.godkjentBelop = BigDecimal.valueOf(godkjentBelop)
+                this.godkjentFortegn = getFortegn(godkjentBelop)
+
+                this.varselAntall = varselAntall
+                this.varselBelop = BigDecimal.valueOf(varselBelop)
+                this.varselFortegn = getFortegn(varselBelop)
+
+                this.manglerAntall = manglerAntall
+                this.manglerBelop = BigDecimal.valueOf(manglerBelop)
+                this.manglerFortegn = getFortegn(manglerBelop)
+
+                this.avvistAntall = avvistAntall
+                this.avvistBelop = BigDecimal.valueOf(avvistBelop)
+                this.avvistFortegn = getFortegn(avvistBelop)
             }
         }
 
-        return Grunnlagsdata().apply {
-            this.godkjentAntall = godkjentAntall
-            this.godkjentBelop = BigDecimal.valueOf(godkjentBelop)
-            this.godkjentFortegn = getFortegn(godkjentBelop)
-
-            this.varselAntall = varselAntall
-            this.varselBelop = BigDecimal.valueOf(varselBelop)
-            this.varselFortegn = getFortegn(varselBelop)
-
-            this.manglerAntall = manglerAntall
-            this.manglerBelop = BigDecimal.valueOf(manglerBelop)
-            this.manglerFortegn = getFortegn(manglerBelop)
-
-            this.avvistAntall = avvistAntall
-            this.avvistBelop = BigDecimal.valueOf(avvistBelop)
-            this.avvistFortegn = getFortegn(avvistBelop)
-        }
-    }
-
-    private fun getSatsBeløp(oppdrag: OppdragLager): Long =
+    private fun getSatsBeløp(oppdrag: OppdragLager) =
         oppdrag.utbetalingsoppdrag.utbetalingsperiode.map { it.sats }.reduce(BigDecimal::add).toLong()
 
-    private fun getFortegn(satsbeløp: Long): Fortegn {
-        return if (satsbeløp >= 0) Fortegn.T else Fortegn.F
-    }
+    private fun getFortegn(satsbeløp: Long) = if (satsbeløp >= 0) Fortegn.T else Fortegn.F
 
-    private fun getHøyesteAvstemmingstidspunkt(): LocalDateTime {
-        return sortertAvstemmingstidspunkt().first()
-    }
-
-    private fun getLavesteAvstemmingstidspunkt(): LocalDateTime {
-        return sortertAvstemmingstidspunkt().last()
-    }
-
-    private fun sortertAvstemmingstidspunkt() =
-        oppdragsliste.map(OppdragLager::avstemmingTidspunkt).sortedDescending()
-
-    private fun formaterTilPeriodedataFormat(stringTimestamp: String): String =
-        LocalDateTime.parse(stringTimestamp, tidspunktFormatter)
+    private fun formaterTilPeriodedataFormat(stringTimestamp: String) =
+        LocalDateTime.parse(stringTimestamp, timeFormatter)
             .format(DateTimeFormatter.ofPattern("yyyyMMddHH"))
+
+    companion object {
+        private const val ANTALL_DETALJER_PR_MELDING = 70
+        private val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")
+
+        private fun getAvstemmingId(): String {
+            val uuid = UUID.randomUUID()
+            val byteBuffer =
+                ByteBuffer.wrap(ByteArray(16)).apply {
+                    putLong(uuid.mostSignificantBits)
+                    putLong(uuid.leastSignificantBits)
+                }
+
+            return Base64.getUrlEncoder().encodeToString(byteBuffer.array()).substring(0, 22)
+        }
+    }
 }

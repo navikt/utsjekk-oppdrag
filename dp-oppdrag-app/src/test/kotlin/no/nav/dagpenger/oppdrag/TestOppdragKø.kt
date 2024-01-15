@@ -8,8 +8,8 @@ import jakarta.jms.MessageListener
 import jakarta.jms.QueueConnection
 import jakarta.jms.Session
 import jakarta.jms.TextMessage
-import no.nav.dagpenger.oppdrag.iverksetting.Jaxb
-import no.nav.dagpenger.oppdrag.iverksetting.Status
+import no.nav.dagpenger.oppdrag.iverksetting.domene.Kvitteringstatus
+import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
 import no.nav.dagpenger.oppdrag.util.Containers
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import org.springframework.boot.test.util.TestPropertyValues
@@ -18,17 +18,17 @@ import org.springframework.context.ConfigurableApplicationContext
 import java.io.Closeable
 import java.lang.IllegalStateException
 
-class TestOppdragKø(private val kvitteringStatus: Status, private val kvitteringsmelding: String? = null) :
+internal class TestOppdragKø(private val kvitteringStatus: Kvitteringstatus, private val kvitteringsmelding: String? = null) :
     MessageListener,
     ApplicationContextInitializer<ConfigurableApplicationContext>,
     Closeable {
-
     private val mq = Containers.MyGeneralContainer("ibmcom/mq")
     private lateinit var queueConnection: QueueConnection
 
     private fun startMQ(context: ConfigurableApplicationContext) {
-        val port = context.environment.getProperty("oppdrag.mq.port")?.toInt()
-            ?: throw IllegalStateException("Fant ikke port for MQ i config")
+        val port =
+            context.environment.getProperty("oppdrag.mq.port")?.toInt()
+                ?: throw IllegalStateException("Fant ikke port for MQ i config")
 
         mq
             .withEnv("LICENSE", "accept")
@@ -55,7 +55,7 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
 
     override fun onMessage(message: Message?) {
         val meldingTilOppdrag = (message as TextMessage).text
-        val oppdrag = Jaxb.tilOppdrag(meldingTilOppdrag)
+        val oppdrag = OppdragXmlMapper.tilOppdrag(meldingTilOppdrag)
 
         val mmel = Mmel()
         mmel.alvorlighetsgrad = kvitteringStatus.kode
@@ -68,7 +68,7 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
         val queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE)
         val queueSender = queueSession.createSender(queue)
 
-        val kvitteringXml = Jaxb.tilXml(oppdrag)
+        val kvitteringXml = OppdragXmlMapper.tilXml(oppdrag)
         val kvittering = queueSession.createTextMessage(kvitteringXml)
         queueSender.send(kvittering)
 
@@ -92,7 +92,7 @@ class TestOppdragKø(private val kvitteringStatus: Status, private val kvitterin
 
         return qcf.createQueueConnection(
             context.environment.getProperty("oppdrag.mq.user"),
-            context.environment.getProperty("oppdrag.mq.password")
+            context.environment.getProperty("oppdrag.mq.password"),
         )
     }
 

@@ -9,6 +9,7 @@
     <modules>
         <module>dp-oppdrag-simulering</module>
         <module>dp-oppdrag-app</module>
+        <module>dp-oppdrag-felles</module>
     </modules>
     <artifactId>dp-oppdrag</artifactId>
     <version>${revision}${sha1}${changelist}</version>
