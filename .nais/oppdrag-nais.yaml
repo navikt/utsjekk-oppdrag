@@ -61,21 +61,20 @@ spec:
       enabled: true
   gcp:
     sqlInstances:
-        collation: nb_NO.UTF8
+      - type: {{ postgres_version }} # IF This is changed, all data will be lost. Read on nais.io how to upgrade
         databases:
-          - envVarPrefix: DB
-            name: {{ postgres_name }}
+          - name: dp-oppdrag
+            envVarPrefix: DB
         diskAutoresize: true
+        tier: {{ db_tier }}
+        cascadingDelete: false
+        highAvailability: true
+        pointInTimeRecovery: true
+        collation: nb_NO.UTF8
         diskType: SSD
+        maintenance:
+          day: 4
+          hour: 23
         flags:
           - name: max_connections
             value: "100"
-        highAvailability: true
-        maintenance:
-          day: 4
-          hour: 3
-        pointInTimeRecovery: false
-        cascadingDelete: false
-        tier: {{ db_tier }}
-        type: {{ postgres_version }}
-        name: dp-oppdrag
