@@ -6,6 +6,7 @@ import no.nav.dagpenger.kontrakter.felles.somUUID
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
+import no.nav.dagpenger.oppdrag.domene.tilKomprimertFagsystemId
 import no.nav.dagpenger.oppdrag.iverksetting.domene.Endringskode
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragSkjemaConstants
@@ -116,7 +117,7 @@ class KontraktTilOppdragTest {
         Assertions.assertEquals(OppdragSkjemaConstants.KODE_AKSJON, oppdrag110.kodeAksjon)
         Assertions.assertEquals(utbetalingsoppdrag.kodeEndring.name, oppdrag110.kodeEndring.toString())
         Assertions.assertEquals(utbetalingsoppdrag.fagSystem.kode, oppdrag110.kodeFagomraade)
-        Assertions.assertEquals(utbetalingsoppdrag.fagsystemId, oppdrag110.fagsystemId)
+        Assertions.assertEquals(utbetalingsoppdrag.tilKomprimertFagsystemId(), oppdrag110.fagsystemId)
         Assertions.assertEquals(Utbetalingsfrekvens.MÅNEDLIG.kode, oppdrag110.utbetFrekvens)
         Assertions.assertEquals(utbetalingsoppdrag.aktør, oppdrag110.oppdragGjelderId)
         Assertions.assertEquals(OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate(), oppdrag110.datoOppdragGjelderFom)
@@ -151,7 +152,7 @@ class KontraktTilOppdragTest {
         assertOpphør(utbetalingsperiode, oppdragsLinje150)
         Assertions.assertEquals(utbetalingsperiode.datoForVedtak.toString(), oppdragsLinje150.vedtakId)
         Assertions.assertEquals(
-            utbetalingsoppdrag.fagsystemId + "#" + utbetalingsperiode.periodeId.toString(),
+            utbetalingsoppdrag.tilKomprimertFagsystemId() + "#" + utbetalingsperiode.periodeId.toString(),
             oppdragsLinje150.delytelseId,
         )
         Assertions.assertEquals(utbetalingsperiode.klassifisering, oppdragsLinje150.kodeKlassifik)
@@ -169,7 +170,7 @@ class KontraktTilOppdragTest {
 
         if (utbetalingsperiode.forrigePeriodeId !== null && !utbetalingsperiode.erEndringPåEksisterendePeriode) {
             Assertions.assertEquals(
-                utbetalingsoppdrag.fagsystemId + "#" + utbetalingsperiode.forrigePeriodeId.toString(),
+                utbetalingsoppdrag.tilKomprimertFagsystemId() + "#" + utbetalingsperiode.forrigePeriodeId.toString(),
                 oppdragsLinje150.refDelytelseId,
             )
         }

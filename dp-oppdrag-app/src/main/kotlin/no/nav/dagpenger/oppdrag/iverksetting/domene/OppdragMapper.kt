@@ -34,7 +34,7 @@ internal object OppdragMapper {
             kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
             kodeEndring = Endringskode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
             kodeFagomraade = utbetalingsoppdrag.fagSystem.kode
-            fagsystemId = utbetalingsoppdrag.fagsystemId
+            fagsystemId = utbetalingsoppdrag.komprimertFagsystemId
             utbetFrekvens = Utbetalingsfrekvens.MÅNEDLIG.kode
             oppdragGjelderId = utbetalingsoppdrag.aktør
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
@@ -84,7 +84,7 @@ internal object OppdragMapper {
         utbetalingsperiode: Utbetalingsperiode,
         utbetalingsoppdrag: Utbetalingsoppdrag,
     ): OppdragsLinje150 {
-        val sakIdKomprimert = utbetalingsoppdrag.fagsystemId
+        val sakIdKomprimert = utbetalingsoppdrag.komprimertFagsystemId
 
         val attestant =
             objectFactory.createAttestant180().apply {
@@ -158,6 +158,13 @@ internal val Utbetalingsoppdrag.fagsystemId get() =
         is GeneriskIdSomString -> this.saksnummer.somString
         is GeneriskIdSomUUID -> this.saksnummer.somUUID.komprimer()
     }
+
+internal val Utbetalingsoppdrag.komprimertFagsystemId get(): String {
+    return when (this.saksnummer) {
+        is GeneriskIdSomString -> this.saksnummer.somString
+        is GeneriskIdSomUUID -> this.saksnummer.somUUID.komprimer()
+    }
+}
 
 internal val Oppdrag.status: OppdragStatus
     get() =

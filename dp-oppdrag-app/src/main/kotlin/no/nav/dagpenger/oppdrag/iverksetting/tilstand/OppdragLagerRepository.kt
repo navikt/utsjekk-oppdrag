@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 import java.time.LocalDateTime
 import java.util.UUID
+import kotlin.NoSuchElementException
 
 @Repository
 internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
