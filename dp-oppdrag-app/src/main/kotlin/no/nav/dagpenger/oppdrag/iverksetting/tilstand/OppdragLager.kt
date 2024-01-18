@@ -1,5 +1,6 @@
 package no.nav.dagpenger.oppdrag.iverksetting.tilstand
 
+import no.nav.dagpenger.kontrakter.felles.somString
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.fagsystemId
@@ -32,10 +33,10 @@ internal data class OppdragLager(
             oppdrag: Oppdrag,
             versjon: Int = 0,
         ) = OppdragLager(
-            personIdent = utbetalingsoppdrag.aktoer,
+            personIdent = utbetalingsoppdrag.aktør,
             fagsystem = utbetalingsoppdrag.fagSystem.kode,
             fagsakId = utbetalingsoppdrag.fagsystemId,
-            behandlingId = utbetalingsoppdrag.utbetalingsperiode.first().behandlingId.toString(),
+            behandlingId = utbetalingsoppdrag.utbetalingsperiode.first().behandlingId.somString,
             avstemmingTidspunkt = utbetalingsoppdrag.avstemmingTidspunkt,
             utbetalingsoppdrag = utbetalingsoppdrag,
             utgåendeOppdrag = OppdragXmlMapper.tilXml(oppdrag),

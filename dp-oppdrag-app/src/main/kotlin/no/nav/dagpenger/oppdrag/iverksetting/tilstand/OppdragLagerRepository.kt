@@ -2,6 +2,7 @@ package no.nav.dagpenger.oppdrag.iverksetting.tilstand
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.felles.somString
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
 import no.nav.dagpenger.oppdrag.config.objectMapper
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
@@ -27,7 +28,7 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
             jdbcTemplate.query(
                 hentStatement,
                 OppdragLagerRowMapper(),
-                oppdragId.behandlingsId.toString(),
+                oppdragId.behandlingId.somString,
                 oppdragId.personIdent,
                 oppdragId.fagsystem.kode,
                 versjon,
@@ -83,7 +84,7 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
             UPDATE oppdrag_lager SET status = '${oppdragStatus.name}' 
             WHERE person_ident = '${oppdragId.personIdent}' 
                 AND fagsystem = '${oppdragId.fagsystem.kode}' 
-                AND behandling_id = '${oppdragId.behandlingsId}'
+                AND behandling_id = '${oppdragId.behandlingId.somString}'
                 AND versjon = $versjon
             """.trimIndent(),
         )
@@ -102,7 +103,7 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
             objectMapper.writeValueAsString(kvittering),
             oppdragId.personIdent,
             oppdragId.fagsystem.kode,
-            oppdragId.behandlingsId.toString(),
+            oppdragId.behandlingId.somString,
             versjon,
         )
     }
@@ -128,7 +129,7 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
         jdbcTemplate.query(
             "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND person_ident = ? AND fagsystem = ?",
             OppdragLagerRowMapper(),
-            oppdragId.behandlingsId.toString(),
+            oppdragId.behandlingId.somString,
             oppdragId.personIdent,
             oppdragId.fagsystem.kode,
         )

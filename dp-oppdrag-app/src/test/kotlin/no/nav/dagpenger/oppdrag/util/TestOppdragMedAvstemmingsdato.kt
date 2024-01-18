@@ -2,6 +2,8 @@ package no.nav.dagpenger.oppdrag.util
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.UtbetalingType
+import no.nav.dagpenger.kontrakter.felles.GeneriskId
+import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import java.time.LocalDate
@@ -16,13 +18,13 @@ internal object TestOppdragMedAvstemmingsdato {
         avstemmingstidspunkt: LocalDateTime,
         fagsystem: Fagsystem = Fagsystem.Dagpenger,
         stønadstype: String = "DPORAS",
-        fagsak: UUID = FAGSAKID,
+        fagsak: GeneriskId = GeneriskIdSomUUID(FAGSAKID),
         vararg utbetalingsperiode: Utbetalingsperiode = arrayOf(lagUtbetalingsperiode(utbetalingstypeForKode(stønadstype))),
     ) = Utbetalingsoppdrag(
         kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
         fagSystem = fagsystem,
         saksnummer = fagsak,
-        aktoer = AKTØR,
+        aktør = AKTØR,
         saksbehandlerId = "Z999999",
         avstemmingTidspunkt = avstemmingstidspunkt,
         utbetalingsperiode = utbetalingsperiode.toList(),
@@ -46,7 +48,7 @@ internal object TestOppdragMedAvstemmingsdato {
         sats = beløp.toBigDecimal(),
         satsType = Utbetalingsperiode.SatsType.MND,
         utbetalesTil = AKTØR,
-        behandlingId = UUID.randomUUID(),
+        behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
         utbetalingsgrad = 50,
     )
 

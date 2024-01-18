@@ -102,7 +102,7 @@ internal class GrensesnittavstemmingMapperTest {
         actual: Detaljdata,
     ) {
         assertEquals(DetaljType.MANG, actual.detaljType)
-        assertEquals(utbetalingsoppdrag.aktoer, actual.offnr)
+        assertEquals(utbetalingsoppdrag.aktør, actual.offnr)
         assertEquals(Fagsystem.Dagpenger.kode, actual.avleverendeTransaksjonNokkel)
         assertEquals(utbetalingsoppdrag.avstemmingTidspunkt.format(timeFormatter), actual.tidspunkt)
         assertEquals(null, actual.meldingKode)

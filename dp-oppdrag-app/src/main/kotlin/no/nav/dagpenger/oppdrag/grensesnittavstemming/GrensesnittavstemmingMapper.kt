@@ -59,7 +59,7 @@ internal class GrensesnittavstemmingMapper(
 
                     Detaljdata().apply {
                         detaljType = detaljtype
-                        offnr = utbetalingsoppdrag.aktoer
+                        offnr = utbetalingsoppdrag.aktør
                         avleverendeTransaksjonNokkel = fagsystem.kode
                         tidspunkt = oppdrag.avstemmingTidspunkt.format(timeFormatter)
 

@@ -1,6 +1,8 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomString
+import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.tilFagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
 import no.nav.dagpenger.oppdrag.config.DatabaseConfiguration
@@ -125,5 +127,11 @@ internal class OppdragLagerRepositoryJdbcTest {
         ).mmel
 }
 
-private val OppdragLager.id: OppdragId
-    get() = OppdragId(this.fagsystem.tilFagsystem(), this.personIdent, UUID.fromString(this.behandlingId))
+private val OppdragLager.id: OppdragId get() {
+    val behandlingId =
+        Result.runCatching { UUID.fromString(this@id.behandlingId) }.fold(
+            onSuccess = { GeneriskIdSomUUID(it) },
+            onFailure = { GeneriskIdSomString(this.behandlingId) },
+        )
+    return OppdragId(this.fagsystem.tilFagsystem(), this.personIdent, behandlingId)
+}

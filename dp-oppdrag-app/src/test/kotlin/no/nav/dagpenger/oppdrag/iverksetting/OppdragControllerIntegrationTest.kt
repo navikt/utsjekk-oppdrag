@@ -78,4 +78,4 @@ internal class OppdragControllerIntegrationTest {
 }
 
 private val Utbetalingsoppdrag.oppdragId
-    get() = OppdragId(fagSystem, aktoer, utbetalingsperiode[0].behandlingId)
+    get() = OppdragId(fagSystem, aktør, utbetalingsperiode[0].behandlingId)

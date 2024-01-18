@@ -1,6 +1,7 @@
 package no.nav.dagpenger.oppdrag.util
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
@@ -8,19 +9,17 @@ import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 object TestUtbetalingsoppdrag {
-    private val localDateTimeNow = LocalDateTime.now()
     private val localDateNow = LocalDate.now()
 
     fun utbetalingsoppdragMedTilfeldigAktoer() =
         Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
             fagSystem = Fagsystem.Dagpenger,
-            saksnummer = UUID.randomUUID(),
-            aktoer = UUID.randomUUID().toString(),
+            saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
+            aktør = UUID.randomUUID().toString(),
             saksbehandlerId = "SAKSBEHANDLERID",
             utbetalingsperiode =
             listOf(
@@ -36,7 +35,7 @@ object TestUtbetalingsoppdrag {
                     BigDecimal.ONE,
                     Utbetalingsperiode.SatsType.MND,
                     "UTEBETALES_TIL",
-                    UUID.randomUUID(),
+                    GeneriskIdSomUUID(UUID.randomUUID()),
                 ),
             ),
         )

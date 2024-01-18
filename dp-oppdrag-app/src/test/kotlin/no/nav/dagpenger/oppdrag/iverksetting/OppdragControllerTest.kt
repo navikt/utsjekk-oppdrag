@@ -6,6 +6,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
@@ -30,8 +31,8 @@ internal class OppdragControllerTest {
         Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
             fagSystem = Fagsystem.Dagpenger,
-            saksnummer = UUID.randomUUID(),
-            aktoer = "PERSONID",
+            saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
+            aktør = "PERSONID",
             saksbehandlerId = "SAKSBEHANDLERID",
             utbetalingsperiode =
             listOf(
@@ -47,7 +48,7 @@ internal class OppdragControllerTest {
                     BigDecimal.ONE,
                     Utbetalingsperiode.SatsType.MND,
                     "UTEBETALES_TIL",
-                    UUID.randomUUID(),
+                    GeneriskIdSomUUID(UUID.randomUUID()),
                 ),
             ),
         )

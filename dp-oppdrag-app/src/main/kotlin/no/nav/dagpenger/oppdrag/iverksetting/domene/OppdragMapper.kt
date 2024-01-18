@@ -1,5 +1,10 @@
 package no.nav.dagpenger.oppdrag.iverksetting.domene
 
+import no.nav.dagpenger.kontrakter.felles.GeneriskId
+import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomString
+import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
+import no.nav.dagpenger.kontrakter.felles.somString
+import no.nav.dagpenger.kontrakter.felles.somUUID
 import no.nav.dagpenger.kontrakter.felles.tilFagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
@@ -24,13 +29,14 @@ internal object OppdragMapper {
     val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")
 
     fun tilOppdrag110(utbetalingsoppdrag: Utbetalingsoppdrag): Oppdrag110 =
+
         objectFactory.createOppdrag110().apply {
             kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
             kodeEndring = Endringskode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
             kodeFagomraade = utbetalingsoppdrag.fagSystem.kode
             fagsystemId = utbetalingsoppdrag.fagsystemId
             utbetFrekvens = Utbetalingsfrekvens.MÅNEDLIG.kode
-            oppdragGjelderId = utbetalingsoppdrag.aktoer
+            oppdragGjelderId = utbetalingsoppdrag.aktør
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             avstemming115 =
@@ -109,7 +115,11 @@ internal object OppdragMapper {
             brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
-            henvisning = utbetalingsperiode.behandlingId.komprimer()
+            henvisning =
+                when (utbetalingsperiode.behandlingId) {
+                    is GeneriskIdSomString -> utbetalingsperiode.behandlingId.somString
+                    is GeneriskIdSomUUID -> utbetalingsperiode.behandlingId.somUUID.komprimer()
+                }
             attestant180.add(attestant)
 
             utbetalingsperiode.utbetalingsgrad?.let { utbetalingsgrad ->
@@ -134,8 +144,20 @@ internal val Oppdrag.id: OppdragId
         OppdragId(
             oppdrag110.kodeFagomraade.tilFagsystem(),
             oppdrag110.oppdragGjelderId,
-            oppdrag110.oppdragsLinje150?.get(0)?.henvisning!!.dekomprimer(),
+            oppdrag110.oppdragsLinje150?.get(0)?.henvisning!!.dekomprimerOgLagGeneriskId(),
         )
+
+private fun String.dekomprimerOgLagGeneriskId(): GeneriskId =
+    Result.runCatching { this@dekomprimerOgLagGeneriskId.dekomprimer() }.fold(
+        onSuccess = { GeneriskIdSomUUID(it) },
+        onFailure = { GeneriskIdSomString(this) },
+    )
+
+internal val Utbetalingsoppdrag.fagsystemId get() =
+    when (this.saksnummer) {
+        is GeneriskIdSomString -> this.saksnummer.somString
+        is GeneriskIdSomUUID -> this.saksnummer.somUUID.komprimer()
+    }
 
 internal val Oppdrag.status: OppdragStatus
     get() =
@@ -146,8 +168,6 @@ internal val Oppdrag.status: OppdragStatus
             Kvitteringstatus.AVVIST_TEKNISK_FEIL -> OppdragStatus.KVITTERT_TEKNISK_FEIL
             Kvitteringstatus.UKJENT -> OppdragStatus.KVITTERT_UKJENT
         }
-
-internal val Utbetalingsoppdrag.fagsystemId get() = this.saksnummer?.komprimer() ?: this.saksreferanse!!
 
 internal fun LocalDate.toXMLDate(): XMLGregorianCalendar =
     DatatypeFactory.newInstance()
