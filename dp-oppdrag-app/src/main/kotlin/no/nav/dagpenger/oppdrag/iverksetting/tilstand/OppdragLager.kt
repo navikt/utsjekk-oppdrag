@@ -34,10 +34,10 @@ internal data class OppdragLager(
             versjon: Int = 0,
         ) = OppdragLager(
             personIdent = utbetalingsoppdrag.aktør,
-            fagsystem = utbetalingsoppdrag.fagSystem.kode,
+            fagsystem = utbetalingsoppdrag.fagsystem.kode,
             fagsakId = utbetalingsoppdrag.fagsystemId,
             behandlingId = utbetalingsoppdrag.utbetalingsperiode.first().behandlingId.somString,
-            avstemmingTidspunkt = utbetalingsoppdrag.avstemmingTidspunkt,
+            avstemmingTidspunkt = utbetalingsoppdrag.avstemmingstidspunkt,
             utbetalingsoppdrag = utbetalingsoppdrag,
             utgåendeOppdrag = OppdragXmlMapper.tilXml(oppdrag),
             kvitteringsmelding = null,

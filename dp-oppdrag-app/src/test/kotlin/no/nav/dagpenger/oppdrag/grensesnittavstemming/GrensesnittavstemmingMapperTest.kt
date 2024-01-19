@@ -104,7 +104,7 @@ internal class GrensesnittavstemmingMapperTest {
         assertEquals(DetaljType.MANG, actual.detaljType)
         assertEquals(utbetalingsoppdrag.aktør, actual.offnr)
         assertEquals(Fagsystem.Dagpenger.kode, actual.avleverendeTransaksjonNokkel)
-        assertEquals(utbetalingsoppdrag.avstemmingTidspunkt.format(timeFormatter), actual.tidspunkt)
+        assertEquals(utbetalingsoppdrag.avstemmingstidspunkt.format(timeFormatter), actual.tidspunkt)
         assertEquals(null, actual.meldingKode)
         assertEquals(null, actual.alvorlighetsgrad)
         assertEquals(null, actual.tekstMelding)
@@ -124,11 +124,11 @@ internal class GrensesnittavstemmingMapperTest {
         actual: Periodedata,
     ) {
         assertEquals(
-            utbetalingsoppdrag.avstemmingTidspunkt.format(DateTimeFormatter.ofPattern("yyyyMMddHH")),
+            utbetalingsoppdrag.avstemmingstidspunkt.format(DateTimeFormatter.ofPattern("yyyyMMddHH")),
             actual.datoAvstemtFom,
         )
         assertEquals(
-            utbetalingsoppdrag.avstemmingTidspunkt.format(DateTimeFormatter.ofPattern("yyyyMMddHH")),
+            utbetalingsoppdrag.avstemmingstidspunkt.format(DateTimeFormatter.ofPattern("yyyyMMddHH")),
             actual.datoAvstemtTom,
         )
     }

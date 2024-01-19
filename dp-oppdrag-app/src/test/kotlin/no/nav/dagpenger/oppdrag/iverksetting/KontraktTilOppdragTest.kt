@@ -32,12 +32,12 @@ class KontraktTilOppdragTest {
                 opphør = null,
                 periodeId = 1,
                 forrigePeriodeId = null,
-                datoForVedtak = iDag,
+                vedtaksdato = iDag,
                 klassifisering = "BATR",
-                vedtakdatoFom = iDag,
-                vedtakdatoTom = iDag.plusYears(6),
+                fom = iDag,
+                tom = iDag.plusYears(6),
                 sats = BigDecimal.valueOf(1354L),
-                satsType = Utbetalingsperiode.SatsType.MND,
+                satstype = Utbetalingsperiode.Satstype.MND,
                 utbetalesTil = "12345678911",
                 behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
             )
@@ -48,12 +48,12 @@ class KontraktTilOppdragTest {
                 opphør = null,
                 periodeId = 2,
                 forrigePeriodeId = 1,
-                datoForVedtak = iDag,
+                vedtaksdato = iDag,
                 klassifisering = "BATR",
-                vedtakdatoFom = iDag.plusYears(6).plusMonths(1),
-                vedtakdatoTom = iDag.plusYears(12).plusMonths(1),
+                fom = iDag.plusYears(6).plusMonths(1),
+                tom = iDag.plusYears(12).plusMonths(1),
                 sats = BigDecimal.valueOf(1054L),
-                satsType = Utbetalingsperiode.SatsType.MND,
+                satstype = Utbetalingsperiode.Satstype.MND,
                 utbetalesTil = "12345678911",
                 behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
                 utbetalingsgrad = 60,
@@ -62,7 +62,7 @@ class KontraktTilOppdragTest {
         val utbetalingsoppdrag =
             Utbetalingsoppdrag(
                 kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-                fagSystem = Fagsystem.Dagpenger,
+                fagsystem = Fagsystem.Dagpenger,
                 saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
                 aktør = "12345678911",
                 saksbehandlerId = "Z992991",
@@ -84,19 +84,19 @@ class KontraktTilOppdragTest {
                 opphør = Opphør(iDag.plusMonths(1)),
                 periodeId = 3,
                 forrigePeriodeId = 2,
-                datoForVedtak = iDag,
+                vedtaksdato = iDag,
                 klassifisering = "BATR",
-                vedtakdatoFom = iDag,
-                vedtakdatoTom = iDag.plusYears(2),
+                fom = iDag,
+                tom = iDag.plusYears(2),
                 sats = BigDecimal.valueOf(1354L),
-                satsType = Utbetalingsperiode.SatsType.MND,
+                satstype = Utbetalingsperiode.Satstype.MND,
                 utbetalesTil = "12345678911",
                 behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
             )
         val utbetalingsoppdrag =
             Utbetalingsoppdrag(
                 kodeEndring = Utbetalingsoppdrag.KodeEndring.ENDR,
-                fagSystem = Fagsystem.Dagpenger,
+                fagsystem = Fagsystem.Dagpenger,
                 saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
                 aktør = "12345678911",
                 saksbehandlerId = "Z992991",
@@ -115,19 +115,19 @@ class KontraktTilOppdragTest {
     ) {
         Assertions.assertEquals(OppdragSkjemaConstants.KODE_AKSJON, oppdrag110.kodeAksjon)
         Assertions.assertEquals(utbetalingsoppdrag.kodeEndring.name, oppdrag110.kodeEndring.toString())
-        Assertions.assertEquals(utbetalingsoppdrag.fagSystem.kode, oppdrag110.kodeFagomraade)
+        Assertions.assertEquals(utbetalingsoppdrag.fagsystem.kode, oppdrag110.kodeFagomraade)
         Assertions.assertEquals(utbetalingsoppdrag.komprimertFagsystemId, oppdrag110.fagsystemId)
         Assertions.assertEquals(Utbetalingsfrekvens.MÅNEDLIG.kode, oppdrag110.utbetFrekvens)
         Assertions.assertEquals(utbetalingsoppdrag.aktør, oppdrag110.oppdragGjelderId)
         Assertions.assertEquals(OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate(), oppdrag110.datoOppdragGjelderFom)
         Assertions.assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdrag110.saksbehId)
-        Assertions.assertEquals(utbetalingsoppdrag.fagSystem.kode, oppdrag110.avstemming115.kodeKomponent)
+        Assertions.assertEquals(utbetalingsoppdrag.fagsystem.kode, oppdrag110.avstemming115.kodeKomponent)
         Assertions.assertEquals(
-            utbetalingsoppdrag.avstemmingTidspunkt.format(OppdragMapper.timeFormatter),
+            utbetalingsoppdrag.avstemmingstidspunkt.format(OppdragMapper.timeFormatter),
             oppdrag110.avstemming115.nokkelAvstemming,
         )
         Assertions.assertEquals(
-            utbetalingsoppdrag.avstemmingTidspunkt.format(OppdragMapper.timeFormatter),
+            utbetalingsoppdrag.avstemmingstidspunkt.format(OppdragMapper.timeFormatter),
             oppdrag110.avstemming115.tidspktMelding,
         )
         Assertions.assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET, oppdrag110.oppdragsEnhet120[0].typeEnhet)
@@ -149,17 +149,17 @@ class KontraktTilOppdragTest {
             oppdragsLinje150.kodeEndringLinje,
         )
         assertOpphør(utbetalingsperiode, oppdragsLinje150)
-        Assertions.assertEquals(utbetalingsperiode.datoForVedtak.toString(), oppdragsLinje150.vedtakId)
+        Assertions.assertEquals(utbetalingsperiode.vedtaksdato.toString(), oppdragsLinje150.vedtakId)
         Assertions.assertEquals(
             utbetalingsoppdrag.komprimertFagsystemId + "#" + utbetalingsperiode.periodeId.toString(),
             oppdragsLinje150.delytelseId,
         )
         Assertions.assertEquals(utbetalingsperiode.klassifisering, oppdragsLinje150.kodeKlassifik)
-        Assertions.assertEquals(utbetalingsperiode.vedtakdatoFom.toXMLDate(), oppdragsLinje150.datoVedtakFom)
-        Assertions.assertEquals(utbetalingsperiode.vedtakdatoTom.toXMLDate(), oppdragsLinje150.datoVedtakTom)
+        Assertions.assertEquals(utbetalingsperiode.fom.toXMLDate(), oppdragsLinje150.datoVedtakFom)
+        Assertions.assertEquals(utbetalingsperiode.tom.toXMLDate(), oppdragsLinje150.datoVedtakTom)
         Assertions.assertEquals(utbetalingsperiode.sats, oppdragsLinje150.sats)
         Assertions.assertEquals(OppdragSkjemaConstants.FRADRAG_TILLEGG, oppdragsLinje150.fradragTillegg)
-        Assertions.assertEquals(utbetalingsperiode.satsType.name, oppdragsLinje150.typeSats)
+        Assertions.assertEquals(utbetalingsperiode.satstype.name, oppdragsLinje150.typeSats)
         Assertions.assertEquals(OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT, oppdragsLinje150.brukKjoreplan)
         Assertions.assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.saksbehId)
         Assertions.assertEquals(utbetalingsoppdrag.aktør, oppdragsLinje150.utbetalesTilId)
@@ -185,7 +185,7 @@ class KontraktTilOppdragTest {
         } else {
             utbetalingsperiode.opphør?.let {
                 Assertions.assertEquals("OPPH", oppdragsLinje150.kodeStatusLinje.name)
-                Assertions.assertEquals(it.opphørDatoFom.toXMLDate(), oppdragsLinje150.datoStatusFom)
+                Assertions.assertEquals(it.fom.toXMLDate(), oppdragsLinje150.datoStatusFom)
             }
         }
     }

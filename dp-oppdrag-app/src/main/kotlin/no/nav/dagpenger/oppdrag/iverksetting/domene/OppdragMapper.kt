@@ -33,7 +33,7 @@ internal object OppdragMapper {
         objectFactory.createOppdrag110().apply {
             kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
             kodeEndring = Endringskode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
-            kodeFagomraade = utbetalingsoppdrag.fagSystem.kode
+            kodeFagomraade = utbetalingsoppdrag.fagsystem.kode
             fagsystemId = utbetalingsoppdrag.komprimertFagsystemId
             utbetFrekvens = Utbetalingsfrekvens.MÅNEDLIG.kode
             oppdragGjelderId = utbetalingsoppdrag.aktør
@@ -41,9 +41,9 @@ internal object OppdragMapper {
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             avstemming115 =
                 objectFactory.createAvstemming115().apply {
-                    nokkelAvstemming = utbetalingsoppdrag.avstemmingTidspunkt.format(timeFormatter)
-                    kodeKomponent = utbetalingsoppdrag.fagSystem.kode
-                    tidspktMelding = utbetalingsoppdrag.avstemmingTidspunkt.format(timeFormatter)
+                    nokkelAvstemming = utbetalingsoppdrag.avstemmingstidspunkt.format(timeFormatter)
+                    kodeKomponent = utbetalingsoppdrag.fagsystem.kode
+                    tidspktMelding = utbetalingsoppdrag.avstemmingstidspunkt.format(timeFormatter)
                 }
             tilOppdragsEnhet120(utbetalingsoppdrag).map { oppdragsEnhet120.add(it) }
             utbetalingsoppdrag.utbetalingsperiode.map { periode ->
@@ -96,7 +96,7 @@ internal object OppdragMapper {
                 if (utbetalingsperiode.erEndringPåEksisterendePeriode) Endringskode.ENDRING.kode else Endringskode.NY.kode
             utbetalingsperiode.opphør?.let {
                 kodeStatusLinje = TkodeStatusLinje.OPPH
-                datoStatusFom = it.opphørDatoFom.toXMLDate()
+                datoStatusFom = it.fom.toXMLDate()
             }
             if (!utbetalingsperiode.erEndringPåEksisterendePeriode) {
                 utbetalingsperiode.forrigePeriodeId?.let {
@@ -104,14 +104,14 @@ internal object OppdragMapper {
                     refFagsystemId = sakIdKomprimert
                 }
             }
-            vedtakId = utbetalingsperiode.datoForVedtak.toString()
+            vedtakId = utbetalingsperiode.vedtaksdato.toString()
             delytelseId = "$sakIdKomprimert#${utbetalingsperiode.periodeId}"
             kodeKlassifik = utbetalingsperiode.klassifisering
-            datoVedtakFom = utbetalingsperiode.vedtakdatoFom.toXMLDate()
-            datoVedtakTom = utbetalingsperiode.vedtakdatoTom.toXMLDate()
+            datoVedtakFom = utbetalingsperiode.fom.toXMLDate()
+            datoVedtakTom = utbetalingsperiode.tom.toXMLDate()
             sats = utbetalingsperiode.sats
             fradragTillegg = OppdragSkjemaConstants.FRADRAG_TILLEGG
-            typeSats = Satstype.fromKode(utbetalingsperiode.satsType.name).kode
+            typeSats = Satstype.fromKode(utbetalingsperiode.satstype.name).kode
             brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil

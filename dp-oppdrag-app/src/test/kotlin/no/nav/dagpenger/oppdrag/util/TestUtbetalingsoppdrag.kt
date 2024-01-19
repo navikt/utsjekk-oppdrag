@@ -9,7 +9,7 @@ import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 object TestUtbetalingsoppdrag {
     private val localDateNow = LocalDate.now()
@@ -17,7 +17,7 @@ object TestUtbetalingsoppdrag {
     fun utbetalingsoppdragMedTilfeldigAktoer() =
         Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-            fagSystem = Fagsystem.Dagpenger,
+            fagsystem = Fagsystem.Dagpenger,
             saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
             aktør = UUID.randomUUID().toString(),
             saksbehandlerId = "SAKSBEHANDLERID",
@@ -33,7 +33,7 @@ object TestUtbetalingsoppdrag {
                     localDateNow,
                     localDateNow,
                     BigDecimal.ONE,
-                    Utbetalingsperiode.SatsType.MND,
+                    Utbetalingsperiode.Satstype.MND,
                     "UTEBETALES_TIL",
                     GeneriskIdSomUUID(UUID.randomUUID()),
                 ),

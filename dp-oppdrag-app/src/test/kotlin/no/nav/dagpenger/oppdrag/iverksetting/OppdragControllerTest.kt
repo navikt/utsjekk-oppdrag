@@ -30,7 +30,7 @@ internal class OppdragControllerTest {
     private val utbetalingsoppdrag =
         Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-            fagSystem = Fagsystem.Dagpenger,
+            fagsystem = Fagsystem.Dagpenger,
             saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
             aktør = "PERSONID",
             saksbehandlerId = "SAKSBEHANDLERID",
@@ -46,7 +46,7 @@ internal class OppdragControllerTest {
                     localDateNow,
                     localDateNow,
                     BigDecimal.ONE,
-                    Utbetalingsperiode.SatsType.MND,
+                    Utbetalingsperiode.Satstype.MND,
                     "UTEBETALES_TIL",
                     GeneriskIdSomUUID(UUID.randomUUID()),
                 ),
