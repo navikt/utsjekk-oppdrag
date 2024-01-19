@@ -28,7 +28,6 @@
             <groupId>no.nav</groupId>
             <artifactId>dp-oppdrag-felles</artifactId>
             <version>${revision}${sha1}${changelist}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
