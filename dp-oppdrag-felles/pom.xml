@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>dp-oppdrag-felles</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
