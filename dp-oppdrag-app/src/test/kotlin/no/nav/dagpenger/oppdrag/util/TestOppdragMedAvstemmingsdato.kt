@@ -1,9 +1,9 @@
 package no.nav.dagpenger.oppdrag.util
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
-import no.nav.dagpenger.kontrakter.oppdrag.UtbetalingType
 import no.nav.dagpenger.kontrakter.felles.GeneriskId
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
+import no.nav.dagpenger.kontrakter.oppdrag.UtbetalingType
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import java.time.LocalDate
@@ -31,7 +31,7 @@ internal object TestOppdragMedAvstemmingsdato {
     )
 
     private fun lagUtbetalingsperiode(
-        utbetalingstype: UtbetalingType = UtbetalingType.DAGPENGER_ARBEIDSSOKER_ORDINAER,
+        utbetalingstype: UtbetalingType = UtbetalingType.DAGPENGER_ARBEIDSSØKER_ORDINÆR,
         periodeId: Long = 1,
         beløp: Int = 100,
         fom: LocalDate = LocalDate.now().withDayOfMonth(1),
