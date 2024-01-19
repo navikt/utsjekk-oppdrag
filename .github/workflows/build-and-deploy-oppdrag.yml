@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'dp-oppdrag-app/**'
+      - 'dp-oppdrag-felles/**'
       - '.nais/oppdrag-**'
       - 'pom.xml'
       - '.github/workflows/build-and-deploy-oppdrag.yml'

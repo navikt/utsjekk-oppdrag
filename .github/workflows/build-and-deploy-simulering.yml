@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'dp-oppdrag-simulering/**'
+      - 'dp-oppdrag-felles/**'
       - '.nais/simulering-**'
       - 'pom.xml'
       - '.github/workflows/build-and-deploy-simulering.yml'
