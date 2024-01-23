@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.iverksetting.mq
 
 import jakarta.jms.TextMessage
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.id
 import no.nav.dagpenger.oppdrag.iverksetting.domene.kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.status
@@ -47,7 +47,7 @@ internal class OppdragMottaker(
 
         val førsteOppdragUtenKvittering =
             oppdragLagerRepository.hentAlleVersjonerAvOppdrag(oppdragId)
-                .find { it.status == OppdragStatus.LAGT_PAA_KOE }
+                .find { it.status == OppdragStatus.LAGT_PÅ_KØ }
 
         if (førsteOppdragUtenKvittering == null) {
             logger.warn("Oppdraget tilknyttet mottatt kvittering har uventet status i databasen. Oppdraget er: $oppdragId")

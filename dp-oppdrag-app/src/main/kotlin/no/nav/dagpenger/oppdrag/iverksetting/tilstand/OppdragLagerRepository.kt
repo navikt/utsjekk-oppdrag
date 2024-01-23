@@ -4,8 +4,8 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.somString
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.config.objectMapper
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import org.slf4j.LoggerFactory
 import org.springframework.jdbc.core.JdbcTemplate

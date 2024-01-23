@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.iverksetting.tilstand
 
 import no.nav.dagpenger.kontrakter.felles.somString
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.fagsystemId
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
@@ -21,7 +21,7 @@ internal data class OppdragLager(
     @Column("behandling_id") val behandlingId: String,
     val utbetalingsoppdrag: Utbetalingsoppdrag,
     @Column("utgaaende_oppdrag") val utgåendeOppdrag: String,
-    var status: OppdragStatus = OppdragStatus.LAGT_PAA_KOE,
+    var status: OppdragStatus = OppdragStatus.LAGT_PÅ_KØ,
     @Column("avstemming_tidspunkt") val avstemmingTidspunkt: LocalDateTime,
     @Column("opprettet_tidspunkt") val opprettetTidspunkt: LocalDateTime = LocalDateTime.now(),
     val kvitteringsmelding: Mmel?,

@@ -5,8 +5,8 @@ import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomString
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.tilFagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.config.DatabaseConfiguration
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
@@ -61,12 +61,12 @@ internal class OppdragLagerRepositoryJdbcTest {
     fun skal_lagre_status() {
         val oppdragLager =
             TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer().somOppdragLager
-                .copy(status = OppdragStatus.LAGT_PAA_KOE)
+                .copy(status = OppdragStatus.LAGT_PÅ_KØ)
 
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
 
         val hentetOppdrag = oppdragLagerRepository.hentOppdrag(oppdragLager.id)
-        Assertions.assertEquals(OppdragStatus.LAGT_PAA_KOE, hentetOppdrag.status)
+        Assertions.assertEquals(OppdragStatus.LAGT_PÅ_KØ, hentetOppdrag.status)
 
         oppdragLagerRepository.oppdaterStatus(hentetOppdrag.id, OppdragStatus.KVITTERT_OK)
 
@@ -78,7 +78,7 @@ internal class OppdragLagerRepositoryJdbcTest {
     fun skal_lagre_kvitteringsmelding() {
         val oppdragLager =
             TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer().somOppdragLager
-                .copy(status = OppdragStatus.LAGT_PAA_KOE)
+                .copy(status = OppdragStatus.LAGT_PÅ_KØ)
 
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
         val hentetOppdrag = oppdragLagerRepository.hentOppdrag(oppdragLager.id)

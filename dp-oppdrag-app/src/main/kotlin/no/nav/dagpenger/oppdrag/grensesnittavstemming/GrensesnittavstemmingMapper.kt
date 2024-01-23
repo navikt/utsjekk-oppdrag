@@ -1,7 +1,7 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AksjonType
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Aksjonsdata
@@ -118,12 +118,10 @@ internal class GrensesnittavstemmingMapper(
 
     private fun opprettDetaljType(oppdrag: OppdragLager) =
         when (oppdrag.status) {
-            OppdragStatus.LAGT_PAA_KOE -> DetaljType.MANG
+            OppdragStatus.LAGT_PÅ_KØ -> DetaljType.MANG
             OppdragStatus.KVITTERT_MED_MANGLER -> DetaljType.VARS
-            OppdragStatus.KVITTERT_FUNKSJONELL_FEIL -> DetaljType.AVVI
-            OppdragStatus.KVITTERT_TEKNISK_FEIL -> DetaljType.AVVI
-            OppdragStatus.KVITTERT_OK -> null
-            OppdragStatus.KVITTERT_UKJENT -> null
+            OppdragStatus.KVITTERT_FUNKSJONELL_FEIL, OppdragStatus.KVITTERT_TEKNISK_FEIL -> DetaljType.AVVI
+            OppdragStatus.KVITTERT_OK, OppdragStatus.KVITTERT_UKJENT -> null
         }
 
     private val totaldata
@@ -158,7 +156,7 @@ internal class GrensesnittavstemmingMapper(
             for (oppdrag in oppdragsliste) {
                 val satsbeløp = getSatsBeløp(oppdrag)
                 when (oppdrag.status) {
-                    OppdragStatus.LAGT_PAA_KOE -> {
+                    OppdragStatus.LAGT_PÅ_KØ -> {
                         manglerBelop += satsbeløp
                         manglerAntall++
                     }

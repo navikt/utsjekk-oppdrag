@@ -1,6 +1,6 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.status
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import no.trygdeetaten.skjema.oppdrag.Oppdrag

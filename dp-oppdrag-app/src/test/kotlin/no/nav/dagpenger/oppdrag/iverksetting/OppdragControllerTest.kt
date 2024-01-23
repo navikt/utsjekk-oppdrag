@@ -7,10 +7,10 @@ import io.mockk.mockk
 import io.mockk.verify
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragSender
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
@@ -63,7 +63,7 @@ internal class OppdragControllerTest {
             oppdragLagerRepository.opprettOppdrag(
                 match<OppdragLager> {
                     it.utgåendeOppdrag.contains("BA") &&
-                        it.status == OppdragStatus.LAGT_PAA_KOE &&
+                        it.status == OppdragStatus.LAGT_PÅ_KØ &&
                         it.opprettetTidspunkt > localDateTimeNow
                 },
             )

@@ -6,10 +6,10 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import jakarta.jms.TextMessage
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.domene.Kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragMottaker
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
