@@ -58,7 +58,7 @@ internal class OppdragControllerIntegrationTest {
         val utbetalingsoppdrag = utbetalingsoppdragMedTilfeldigAktoer()
 
         oppdragController.sendOppdrag(utbetalingsoppdrag).also {
-            assertEquals(HttpStatus.OK, it.statusCode)
+            assertEquals(HttpStatus.CREATED, it.statusCode)
         }
 
         oppdragController.sendOppdrag(utbetalingsoppdrag).also {

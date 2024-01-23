@@ -32,7 +32,7 @@ internal class OppdragController(
             }
         },
         onSuccess = {
-            ResponseEntity.ok("Oppdrag sendt OK")
+            ResponseEntity.status(HttpStatus.CREATED).build()
         },
     )
 
@@ -45,7 +45,7 @@ internal class OppdragController(
             KlarteIkkeSendeOppdragResponse(utbetalingsoppdrag.fagsystemId)
         },
         onSuccess = {
-            ResponseEntity.ok("Oppdrag sendt OK")
+            ResponseEntity.status(HttpStatus.CREATED).build()
         },
     )
 
