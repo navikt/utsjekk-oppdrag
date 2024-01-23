@@ -153,11 +153,7 @@ private fun String.dekomprimerOgLagGeneriskId(): GeneriskId =
         onFailure = { GeneriskIdSomString(this) },
     )
 
-internal val Utbetalingsoppdrag.fagsystemId get() =
-    when (this.saksnummer) {
-        is GeneriskIdSomString -> this.saksnummer.somString
-        is GeneriskIdSomUUID -> this.saksnummer.somUUID.komprimer()
-    }
+internal val Utbetalingsoppdrag.fagsystemId get() = this.saksnummer.somString
 
 internal val Utbetalingsoppdrag.komprimertFagsystemId get(): String {
     return when (this.saksnummer) {
