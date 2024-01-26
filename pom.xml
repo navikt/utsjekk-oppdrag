@@ -30,7 +30,7 @@
         <jetty.version>11.0.19</jetty.version>
         <dp-kontrakter.version>3.0_20240123161544_daec3af</dp-kontrakter.version>
         <cxf.version>4.0.3</cxf.version>
-        <springdoc.version>2.2.0</springdoc.version>
+        <springdoc.version>2.3.0</springdoc.version>
         <testcontainers.version>1.17.5</testcontainers.version>
     </properties>
 
