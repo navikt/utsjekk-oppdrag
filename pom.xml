@@ -166,7 +166,7 @@
         <dependency>
             <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>cxf</artifactId>
-            <version>3.2023.07.07_09.10-85326e9557f0</version>
+            <version>3.2023.10.23_12.41-bafec3836d28</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.github.navikt.common-java-modules</groupId>
