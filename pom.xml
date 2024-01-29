@@ -26,7 +26,7 @@
 
         <jvmTarget>17</jvmTarget>
 
-        <kotlin.version>1.9.20</kotlin.version>
+        <kotlin.version>1.9.22</kotlin.version>
         <jetty.version>11.0.19</jetty.version>
         <dp-kontrakter.version>3.0_20240123161544_daec3af</dp-kontrakter.version>
         <cxf.version>4.0.3</cxf.version>
