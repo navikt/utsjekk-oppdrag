@@ -17,7 +17,7 @@ object TestUtbetalingsoppdrag {
     fun utbetalingsoppdragMedTilfeldigAktoer() =
         Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-            fagsystem = Fagsystem.Dagpenger,
+            fagsystem = Fagsystem.DAGPENGER,
             saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
             aktør = UUID.randomUUID().toString(),
             saksbehandlerId = "SAKSBEHANDLERID",

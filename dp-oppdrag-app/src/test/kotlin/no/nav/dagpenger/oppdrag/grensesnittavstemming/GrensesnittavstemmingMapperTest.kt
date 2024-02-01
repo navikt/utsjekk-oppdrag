@@ -25,7 +25,7 @@ internal class GrensesnittavstemmingMapperTest {
     @Test
     fun `test mapping av tom liste`() {
         val mapper =
-            GrensesnittavstemmingMapper(emptyList(), Fagsystem.Dagpenger, LocalDateTime.now(), LocalDateTime.now())
+            GrensesnittavstemmingMapper(emptyList(), Fagsystem.DAGPENGER, LocalDateTime.now(), LocalDateTime.now())
         val meldinger = mapper.lagAvstemmingsmeldinger()
 
         assertEquals(0, meldinger.size)
@@ -39,11 +39,11 @@ internal class GrensesnittavstemmingMapperTest {
         val utbetalingsoppdrag =
             TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(
                 avstemmingstidspunkt,
-                Fagsystem.Dagpenger,
+                Fagsystem.DAGPENGER,
             )
         val oppdragLager = utbetalingsoppdrag.somOppdragLager
         val mapper =
-            GrensesnittavstemmingMapper(listOf(oppdragLager), Fagsystem.Dagpenger, fom, tom)
+            GrensesnittavstemmingMapper(listOf(oppdragLager), Fagsystem.DAGPENGER, fom, tom)
         val meldinger = mapper.lagAvstemmingsmeldinger()
 
         assertEquals(3, meldinger.size)
@@ -64,13 +64,13 @@ internal class GrensesnittavstemmingMapperTest {
         val avstemmingFom = førsteAvstemmingstidspunkt.toLocalDate().atStartOfDay()
         val avstemmingTom = andreAvstemmingstidspunkt.toLocalDate().atTime(LocalTime.MAX)
         val baOppdragLager1 =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(førsteAvstemmingstidspunkt, Fagsystem.Dagpenger).somOppdragLager
+            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(førsteAvstemmingstidspunkt, Fagsystem.DAGPENGER).somOppdragLager
         val baOppdragLager2 =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(andreAvstemmingstidspunkt, Fagsystem.Dagpenger).somOppdragLager
+            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(andreAvstemmingstidspunkt, Fagsystem.DAGPENGER).somOppdragLager
         val mapper =
             GrensesnittavstemmingMapper(
                 listOf(baOppdragLager1, baOppdragLager2),
-                Fagsystem.Dagpenger,
+                Fagsystem.DAGPENGER,
                 avstemmingFom,
                 avstemmingTom,
             )
@@ -89,12 +89,12 @@ internal class GrensesnittavstemmingMapperTest {
         assertEquals(expected, actual.aksjonType)
         assertEquals(KildeType.AVLEV, actual.kildeType)
         assertEquals(AvstemmingType.GRSN, actual.avstemmingType)
-        assertEquals(Fagsystem.Dagpenger.kode, actual.avleverendeKomponentKode)
+        assertEquals(Fagsystem.DAGPENGER.kode, actual.avleverendeKomponentKode)
         assertEquals("OS", actual.mottakendeKomponentKode)
-        assertEquals(Fagsystem.Dagpenger.kode, actual.underkomponentKode)
+        assertEquals(Fagsystem.DAGPENGER.kode, actual.underkomponentKode)
         assertEquals(avstemmingFom.format(timeFormatter), actual.nokkelFom)
         assertEquals(avstemmingTom.format(timeFormatter), actual.nokkelTom)
-        assertEquals(Fagsystem.Dagpenger.kode, actual.brukerId)
+        assertEquals(Fagsystem.DAGPENGER.kode, actual.brukerId)
     }
 
     private fun assertDetaljData(
@@ -103,7 +103,7 @@ internal class GrensesnittavstemmingMapperTest {
     ) {
         assertEquals(DetaljType.MANG, actual.detaljType)
         assertEquals(utbetalingsoppdrag.aktør, actual.offnr)
-        assertEquals(Fagsystem.Dagpenger.kode, actual.avleverendeTransaksjonNokkel)
+        assertEquals(Fagsystem.DAGPENGER.kode, actual.avleverendeTransaksjonNokkel)
         assertEquals(utbetalingsoppdrag.avstemmingstidspunkt.format(timeFormatter), actual.tidspunkt)
         assertEquals(null, actual.meldingKode)
         assertEquals(null, actual.alvorlighetsgrad)

@@ -28,7 +28,7 @@
 
         <kotlin.version>1.9.22</kotlin.version>
         <jetty.version>11.0.19</jetty.version>
-        <dp-kontrakter.version>3.0_20240123161544_daec3af</dp-kontrakter.version>
+        <dp-kontrakter.version>3.0_20240130102707_8ff4810</dp-kontrakter.version>
         <cxf.version>4.0.3</cxf.version>
         <springdoc.version>2.3.0</springdoc.version>
         <testcontainers.version>1.19.4</testcontainers.version>

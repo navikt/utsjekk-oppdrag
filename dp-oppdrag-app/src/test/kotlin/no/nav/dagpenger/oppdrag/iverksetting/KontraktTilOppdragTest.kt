@@ -62,7 +62,7 @@ class KontraktTilOppdragTest {
         val utbetalingsoppdrag =
             Utbetalingsoppdrag(
                 kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
-                fagsystem = Fagsystem.Dagpenger,
+                fagsystem = Fagsystem.DAGPENGER,
                 saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
                 aktør = "12345678911",
                 saksbehandlerId = "Z992991",
@@ -96,7 +96,7 @@ class KontraktTilOppdragTest {
         val utbetalingsoppdrag =
             Utbetalingsoppdrag(
                 kodeEndring = Utbetalingsoppdrag.KodeEndring.ENDR,
-                fagsystem = Fagsystem.Dagpenger,
+                fagsystem = Fagsystem.DAGPENGER,
                 saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
                 aktør = "12345678911",
                 saksbehandlerId = "Z992991",

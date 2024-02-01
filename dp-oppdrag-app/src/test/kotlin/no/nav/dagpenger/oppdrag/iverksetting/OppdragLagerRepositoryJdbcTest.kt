@@ -109,7 +109,7 @@ internal class OppdragLagerRepositoryJdbcTest {
             oppdragLagerRepository.hentIverksettingerForGrensesnittavstemming(
                 startenPåDagen,
                 sluttenAvDagen,
-                Fagsystem.Dagpenger,
+                Fagsystem.DAGPENGER,
             )
 
         Assertions.assertEquals(1, oppdrageneTilGrensesnittavstemming.size)

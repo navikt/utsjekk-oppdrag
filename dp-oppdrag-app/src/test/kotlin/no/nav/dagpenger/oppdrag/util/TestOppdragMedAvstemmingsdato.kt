@@ -16,7 +16,7 @@ internal object TestOppdragMedAvstemmingsdato {
 
     fun lagTestUtbetalingsoppdrag(
         avstemmingstidspunkt: LocalDateTime,
-        fagsystem: Fagsystem = Fagsystem.Dagpenger,
+        fagsystem: Fagsystem = Fagsystem.DAGPENGER,
         stønadstype: String = "DPORAS",
         fagsak: GeneriskId = GeneriskIdSomUUID(FAGSAKID),
         vararg utbetalingsperiode: Utbetalingsperiode = arrayOf(lagUtbetalingsperiode(utbetalingstypeForKode(stønadstype))),

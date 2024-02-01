@@ -18,7 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
 
 private const val TESTKØ = "DEV.QUEUE.2"
-private val FAGSYSTEM = Fagsystem.Dagpenger
+private val FAGSYSTEM = Fagsystem.DAGPENGER
 private val IDAG = LocalDateTime.now()
 
 @Testcontainers
