@@ -1,4 +1,4 @@
-FROM ghcr.io/navikt/baseimages/temurin:17
+FROM ghcr.io/navikt/baseimages/temurin:21
 
 COPY target/dp-oppdrag-simulering.jar "app.jar"
 

@@ -23,9 +23,7 @@
         <revision>1.0</revision>
         <sha1/>
         <changelist>-SNAPSHOT</changelist>
-
-        <jvmTarget>17</jvmTarget>
-
+        <jvmTarget>21</jvmTarget>
         <kotlin.version>1.9.22</kotlin.version>
         <jetty.version>11.0.19</jetty.version>
         <dp-kontrakter.version>3.0_20240130102707_8ff4810</dp-kontrakter.version>
