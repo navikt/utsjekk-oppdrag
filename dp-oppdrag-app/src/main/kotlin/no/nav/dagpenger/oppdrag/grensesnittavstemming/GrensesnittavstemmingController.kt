@@ -29,7 +29,7 @@ internal class GrensesnittavstemmingController(
             onFailure = {
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Grensesnittavstemming feilet")
             },
-            onSuccess = { ResponseEntity.ok("Grensesnittavstemming sendt ok") },
+            onSuccess = { ResponseEntity.status(HttpStatus.CREATED).build() },
         )
 
     companion object {
