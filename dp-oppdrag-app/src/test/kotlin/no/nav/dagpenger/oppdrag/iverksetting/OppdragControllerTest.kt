@@ -7,6 +7,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
+import no.nav.dagpenger.kontrakter.felles.Satstype
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
@@ -37,18 +38,18 @@ internal class OppdragControllerTest {
             utbetalingsperiode =
             listOf(
                 Utbetalingsperiode(
-                    true,
-                    Opphør(localDateNow),
-                    2,
-                    1,
-                    localDateNow,
-                    "BATR",
-                    localDateNow,
-                    localDateNow,
-                    BigDecimal.ONE,
-                    Utbetalingsperiode.Satstype.MND,
-                    "UTEBETALES_TIL",
-                    GeneriskIdSomUUID(UUID.randomUUID()),
+                    erEndringPåEksisterendePeriode = true,
+                    opphør = Opphør(localDateNow),
+                    periodeId = 2,
+                    forrigePeriodeId = 1,
+                    vedtaksdato = localDateNow,
+                    klassifisering = "BATR",
+                    fom = localDateNow,
+                    tom = localDateNow,
+                    sats = BigDecimal.ONE,
+                    satstype = Satstype.MÅNEDLIG,
+                    utbetalesTil = "UTEBETALES_TIL",
+                    behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
                 ),
             ),
         )

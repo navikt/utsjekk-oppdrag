@@ -2,6 +2,7 @@ package no.nav.dagpenger.oppdrag.iverksetting
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
+import no.nav.dagpenger.kontrakter.felles.Satstype
 import no.nav.dagpenger.kontrakter.felles.somUUID
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
@@ -15,29 +16,28 @@ import no.nav.dagpenger.oppdrag.iverksetting.domene.komprimertFagsystemId
 import no.nav.dagpenger.oppdrag.iverksetting.domene.toXMLDate
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
 import no.trygdeetaten.skjema.oppdrag.OppdragsLinje150
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.UUID
 
-class KontraktTilOppdragTest {
-    private val iDag: LocalDate = LocalDate.now()
-
+class OppdragMapperTest {
     @Test
-    fun `mappe vedtaket til mari berg`() {
+    fun `mappe vedtak`() {
         val utbetalingsperiode1 =
             Utbetalingsperiode(
                 erEndringPåEksisterendePeriode = false,
                 opphør = null,
                 periodeId = 1,
                 forrigePeriodeId = null,
-                vedtaksdato = iDag,
+                vedtaksdato = LocalDate.now(),
                 klassifisering = "BATR",
-                fom = iDag,
-                tom = iDag.plusYears(6),
+                fom = LocalDate.now(),
+                tom = LocalDate.now().plusYears(6),
                 sats = BigDecimal.valueOf(1354L),
-                satstype = Utbetalingsperiode.Satstype.MND,
+                satstype = Satstype.MÅNEDLIG,
                 utbetalesTil = "12345678911",
                 behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
             )
@@ -48,12 +48,12 @@ class KontraktTilOppdragTest {
                 opphør = null,
                 periodeId = 2,
                 forrigePeriodeId = 1,
-                vedtaksdato = iDag,
+                vedtaksdato = LocalDate.now(),
                 klassifisering = "BATR",
-                fom = iDag.plusYears(6).plusMonths(1),
-                tom = iDag.plusYears(12).plusMonths(1),
+                fom = LocalDate.now().plusYears(6).plusMonths(1),
+                tom = LocalDate.now().plusYears(12).plusMonths(1),
                 sats = BigDecimal.valueOf(1054L),
-                satstype = Utbetalingsperiode.Satstype.MND,
+                satstype = Satstype.MÅNEDLIG,
                 utbetalesTil = "12345678911",
                 behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
                 utbetalingsgrad = 60,
@@ -77,19 +77,19 @@ class KontraktTilOppdragTest {
     }
 
     @Test
-    fun mappeOpphørPåVedtaketTilMariBerg() {
+    fun `mappe opphør på vedtak`() {
         val utbetalingsperiode1 =
             Utbetalingsperiode(
                 erEndringPåEksisterendePeriode = true,
-                opphør = Opphør(iDag.plusMonths(1)),
+                opphør = Opphør(LocalDate.now().plusMonths(1)),
                 periodeId = 3,
                 forrigePeriodeId = 2,
-                vedtaksdato = iDag,
+                vedtaksdato = LocalDate.now(),
                 klassifisering = "BATR",
-                fom = iDag,
-                tom = iDag.plusYears(2),
+                fom = LocalDate.now(),
+                tom = LocalDate.now().plusYears(2),
                 sats = BigDecimal.valueOf(1354L),
-                satstype = Utbetalingsperiode.Satstype.MND,
+                satstype = Satstype.MÅNEDLIG,
                 utbetalesTil = "12345678911",
                 behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
             )
@@ -113,26 +113,26 @@ class KontraktTilOppdragTest {
         utbetalingsoppdrag: Utbetalingsoppdrag,
         oppdrag110: Oppdrag110,
     ) {
-        Assertions.assertEquals(OppdragSkjemaConstants.KODE_AKSJON, oppdrag110.kodeAksjon)
-        Assertions.assertEquals(utbetalingsoppdrag.kodeEndring.name, oppdrag110.kodeEndring.toString())
-        Assertions.assertEquals(utbetalingsoppdrag.fagsystem.kode, oppdrag110.kodeFagomraade)
-        Assertions.assertEquals(utbetalingsoppdrag.komprimertFagsystemId, oppdrag110.fagsystemId)
-        Assertions.assertEquals(Utbetalingsfrekvens.MÅNEDLIG.kode, oppdrag110.utbetFrekvens)
-        Assertions.assertEquals(utbetalingsoppdrag.aktør, oppdrag110.oppdragGjelderId)
-        Assertions.assertEquals(OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate(), oppdrag110.datoOppdragGjelderFom)
-        Assertions.assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdrag110.saksbehId)
-        Assertions.assertEquals(utbetalingsoppdrag.fagsystem.kode, oppdrag110.avstemming115.kodeKomponent)
-        Assertions.assertEquals(
+        assertEquals(OppdragSkjemaConstants.KODE_AKSJON, oppdrag110.kodeAksjon)
+        assertEquals(utbetalingsoppdrag.kodeEndring.name, oppdrag110.kodeEndring.toString())
+        assertEquals(utbetalingsoppdrag.fagsystem.kode, oppdrag110.kodeFagomraade)
+        assertEquals(utbetalingsoppdrag.komprimertFagsystemId, oppdrag110.fagsystemId)
+        assertEquals(Utbetalingsfrekvens.MÅNEDLIG.kode, oppdrag110.utbetFrekvens)
+        assertEquals(utbetalingsoppdrag.aktør, oppdrag110.oppdragGjelderId)
+        assertEquals(OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate(), oppdrag110.datoOppdragGjelderFom)
+        assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdrag110.saksbehId)
+        assertEquals(utbetalingsoppdrag.fagsystem.kode, oppdrag110.avstemming115.kodeKomponent)
+        assertEquals(
             utbetalingsoppdrag.avstemmingstidspunkt.format(OppdragMapper.timeFormatter),
             oppdrag110.avstemming115.nokkelAvstemming,
         )
-        Assertions.assertEquals(
+        assertEquals(
             utbetalingsoppdrag.avstemmingstidspunkt.format(OppdragMapper.timeFormatter),
             oppdrag110.avstemming115.tidspktMelding,
         )
-        Assertions.assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET, oppdrag110.oppdragsEnhet120[0].typeEnhet)
-        Assertions.assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[0].enhet)
-        Assertions.assertEquals(OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
+        assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET, oppdrag110.oppdragsEnhet120[0].typeEnhet)
+        assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[0].enhet)
+        assertEquals(OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
     }
 
     private fun assertOppdragslinje150(
@@ -140,7 +140,7 @@ class KontraktTilOppdragTest {
         utbetalingsoppdrag: Utbetalingsoppdrag,
         oppdragsLinje150: OppdragsLinje150,
     ) {
-        Assertions.assertEquals(
+        assertEquals(
             if (utbetalingsperiode.erEndringPåEksisterendePeriode) {
                 Endringskode.ENDRING.kode
             } else {
@@ -149,26 +149,25 @@ class KontraktTilOppdragTest {
             oppdragsLinje150.kodeEndringLinje,
         )
         assertOpphør(utbetalingsperiode, oppdragsLinje150)
-        Assertions.assertEquals(utbetalingsperiode.vedtaksdato.toString(), oppdragsLinje150.vedtakId)
-        Assertions.assertEquals(
+        assertEquals(utbetalingsperiode.vedtaksdato.toString(), oppdragsLinje150.vedtakId)
+        assertEquals(
             utbetalingsoppdrag.komprimertFagsystemId + "#" + utbetalingsperiode.periodeId.toString(),
             oppdragsLinje150.delytelseId,
         )
-        Assertions.assertEquals(utbetalingsperiode.klassifisering, oppdragsLinje150.kodeKlassifik)
-        Assertions.assertEquals(utbetalingsperiode.fom.toXMLDate(), oppdragsLinje150.datoVedtakFom)
-        Assertions.assertEquals(utbetalingsperiode.tom.toXMLDate(), oppdragsLinje150.datoVedtakTom)
-        Assertions.assertEquals(utbetalingsperiode.sats, oppdragsLinje150.sats)
-        Assertions.assertEquals(OppdragSkjemaConstants.FRADRAG_TILLEGG, oppdragsLinje150.fradragTillegg)
-        Assertions.assertEquals(utbetalingsperiode.satstype.name, oppdragsLinje150.typeSats)
-        Assertions.assertEquals(OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT, oppdragsLinje150.brukKjoreplan)
-        Assertions.assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.saksbehId)
-        Assertions.assertEquals(utbetalingsoppdrag.aktør, oppdragsLinje150.utbetalesTilId)
-        Assertions.assertEquals(utbetalingsperiode.behandlingId.somUUID.komprimer(), oppdragsLinje150.henvisning)
-        Assertions.assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.attestant180[0].attestantId)
-        Assertions.assertEquals(utbetalingsperiode.utbetalingsgrad, oppdragsLinje150.grad170.firstOrNull()?.grad?.toInt())
+        assertEquals(utbetalingsperiode.klassifisering, oppdragsLinje150.kodeKlassifik)
+        assertEquals(utbetalingsperiode.fom.toXMLDate(), oppdragsLinje150.datoVedtakFom)
+        assertEquals(utbetalingsperiode.tom.toXMLDate(), oppdragsLinje150.datoVedtakTom)
+        assertEquals(utbetalingsperiode.sats, oppdragsLinje150.sats)
+        assertEquals(OppdragSkjemaConstants.FRADRAG_TILLEGG, oppdragsLinje150.fradragTillegg)
+        assertEquals(OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT, oppdragsLinje150.brukKjoreplan)
+        assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.saksbehId)
+        assertEquals(utbetalingsoppdrag.aktør, oppdragsLinje150.utbetalesTilId)
+        assertEquals(utbetalingsperiode.behandlingId.somUUID.komprimer(), oppdragsLinje150.henvisning)
+        assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.attestant180[0].attestantId)
+        assertEquals(utbetalingsperiode.utbetalingsgrad, oppdragsLinje150.grad170.firstOrNull()?.grad?.toInt())
 
         if (utbetalingsperiode.forrigePeriodeId !== null && !utbetalingsperiode.erEndringPåEksisterendePeriode) {
-            Assertions.assertEquals(
+            assertEquals(
                 utbetalingsoppdrag.komprimertFagsystemId + "#" + utbetalingsperiode.forrigePeriodeId.toString(),
                 oppdragsLinje150.refDelytelseId,
             )
@@ -179,13 +178,13 @@ class KontraktTilOppdragTest {
         utbetalingsperiode: Utbetalingsperiode,
         oppdragsLinje150: OppdragsLinje150,
     ) {
-        if (utbetalingsperiode.opphør == null) {
-            Assertions.assertEquals(utbetalingsperiode.opphør, oppdragsLinje150.kodeStatusLinje)
-            Assertions.assertEquals(utbetalingsperiode.opphør, oppdragsLinje150.datoStatusFom)
-        } else {
-            utbetalingsperiode.opphør?.let {
-                Assertions.assertEquals("OPPH", oppdragsLinje150.kodeStatusLinje.name)
-                Assertions.assertEquals(it.fom.toXMLDate(), oppdragsLinje150.datoStatusFom)
+        utbetalingsperiode.opphør.let { opphør ->
+            if (opphør == null) {
+                assertNull(oppdragsLinje150.kodeStatusLinje)
+                assertNull(oppdragsLinje150.datoStatusFom)
+            } else {
+                assertEquals("OPPH", oppdragsLinje150.kodeStatusLinje.name)
+                assertEquals(opphør.fom.toXMLDate(), oppdragsLinje150.datoStatusFom)
             }
         }
     }

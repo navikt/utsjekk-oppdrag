@@ -5,10 +5,11 @@ import com.ibm.msg.client.jakarta.wmq.WMQConstants
 import io.mockk.called
 import io.mockk.spyk
 import io.mockk.verify
+import no.nav.dagpenger.kontrakter.felles.Satstype
 import no.nav.dagpenger.oppdrag.iverksetting.domene.Endringskode
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragSkjemaConstants
-import no.nav.dagpenger.oppdrag.iverksetting.domene.Satstype
 import no.nav.dagpenger.oppdrag.iverksetting.domene.Utbetalingsfrekvens
+import no.nav.dagpenger.oppdrag.iverksetting.domene.tilOppdragskode
 import no.nav.dagpenger.oppdrag.iverksetting.domene.toXMLDate
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragSender
 import no.nav.dagpenger.oppdrag.util.Containers
@@ -91,7 +92,7 @@ class OppdragMQSenderTest {
                 datoVedtakTom = LocalDate.now().plusDays(1).toXMLDate()
                 sats = SATS_BARNETRYGD.toBigDecimal()
                 fradragTillegg = OppdragSkjemaConstants.FRADRAG_TILLEGG
-                typeSats = Satstype.MÅNEDLIG.kode
+                typeSats = Satstype.MÅNEDLIG.tilOppdragskode()
                 brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
                 saksbehId = "Z999999"
                 utbetalesTilId = "12345678911"

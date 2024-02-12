@@ -112,7 +112,7 @@ internal object OppdragMapper {
             datoVedtakTom = utbetalingsperiode.tom.toXMLDate()
             sats = utbetalingsperiode.sats
             fradragTillegg = OppdragSkjemaConstants.FRADRAG_TILLEGG
-            typeSats = Satstype.fromKode(utbetalingsperiode.satstype.name).kode
+            typeSats = utbetalingsperiode.satstype.tilOppdragskode()
             brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil

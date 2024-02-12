@@ -14,8 +14,11 @@ import no.nav.dagpenger.oppdrag.util.Containers
 import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
 import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.util.somOppdragLager
-import org.junit.jupiter.api.Assertions
+import no.trygdeetaten.skjema.oppdrag.Mmel
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
@@ -27,7 +30,6 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
-import kotlin.test.assertFailsWith
 
 @JdbcTest
 @ActiveProfiles("jdbc-test")
@@ -52,7 +54,7 @@ internal class OppdragLagerRepositoryJdbcTest {
 
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
 
-        assertFailsWith<DuplicateKeyException> {
+        assertThrows<DuplicateKeyException> {
             oppdragLagerRepository.opprettOppdrag(oppdragLager)
         }
     }
@@ -66,12 +68,12 @@ internal class OppdragLagerRepositoryJdbcTest {
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
 
         val hentetOppdrag = oppdragLagerRepository.hentOppdrag(oppdragLager.id)
-        Assertions.assertEquals(OppdragStatus.LAGT_PÅ_KØ, hentetOppdrag.status)
+        assertEquals(OppdragStatus.LAGT_PÅ_KØ, hentetOppdrag.status)
 
         oppdragLagerRepository.oppdaterStatus(hentetOppdrag.id, OppdragStatus.KVITTERT_OK)
 
         val hentetOppdatertOppdrag = oppdragLagerRepository.hentOppdrag(hentetOppdrag.id)
-        Assertions.assertEquals(OppdragStatus.KVITTERT_OK, hentetOppdatertOppdrag.status)
+        assertEquals(OppdragStatus.KVITTERT_OK, hentetOppdatertOppdrag.status)
     }
 
     @Test
@@ -87,9 +89,7 @@ internal class OppdragLagerRepositoryJdbcTest {
         oppdragLagerRepository.oppdaterKvitteringsmelding(hentetOppdrag.id, kvitteringsmelding)
 
         val hentetOppdatertOppdrag = oppdragLagerRepository.hentOppdrag(oppdragLager.id)
-        org.assertj.core.api.Assertions.assertThat(
-            kvitteringsmelding,
-        ).isEqualToComparingFieldByField(hentetOppdatertOppdrag.kvitteringsmelding)
+        assertTrue(kvitteringerErLike(kvitteringsmelding, hentetOppdatertOppdrag.kvitteringsmelding!!))
     }
 
     @Test
@@ -112,9 +112,9 @@ internal class OppdragLagerRepositoryJdbcTest {
                 Fagsystem.DAGPENGER,
             )
 
-        Assertions.assertEquals(1, oppdrageneTilGrensesnittavstemming.size)
-        Assertions.assertEquals("DP", oppdrageneTilGrensesnittavstemming.first().fagsystem)
-        Assertions.assertEquals(
+        assertEquals(1, oppdrageneTilGrensesnittavstemming.size)
+        assertEquals("DP", oppdrageneTilGrensesnittavstemming.first().fagsystem)
+        assertEquals(
             dag.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss")),
             oppdrageneTilGrensesnittavstemming.first().avstemmingTidspunkt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss")),
         )
@@ -135,3 +135,19 @@ private val OppdragLager.id: OppdragId get() {
         )
     return OppdragId(this.fagsystem.tilFagsystem(), this.personIdent, behandlingId)
 }
+
+private fun kvitteringerErLike(
+    a: Mmel,
+    b: Mmel,
+): Boolean =
+    a.systemId == b.systemId &&
+        a.kodeMelding == b.kodeMelding &&
+        a.alvorlighetsgrad == b.alvorlighetsgrad &&
+        a.beskrMelding == b.beskrMelding &&
+        a.sqlKode == b.sqlKode &&
+        a.sqlState == b.sqlState &&
+        a.sqlMelding == b.sqlMelding &&
+        a.mqCompletionKode == b.mqCompletionKode &&
+        a.mqReasonKode == b.mqReasonKode &&
+        a.programId == b.programId &&
+        a.sectionNavn == b.sectionNavn

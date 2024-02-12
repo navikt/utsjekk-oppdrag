@@ -2,6 +2,7 @@ package no.nav.dagpenger.oppdrag.util
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
+import no.nav.dagpenger.kontrakter.felles.Satstype
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
@@ -24,18 +25,18 @@ object TestUtbetalingsoppdrag {
             utbetalingsperiode =
             listOf(
                 Utbetalingsperiode(
-                    false,
-                    Opphør(localDateNow),
-                    1,
-                    null,
-                    localDateNow,
-                    "KLASSE A",
-                    localDateNow,
-                    localDateNow,
-                    BigDecimal.ONE,
-                    Utbetalingsperiode.Satstype.MND,
-                    "UTEBETALES_TIL",
-                    GeneriskIdSomUUID(UUID.randomUUID()),
+                    erEndringPåEksisterendePeriode = false,
+                    opphør = Opphør(localDateNow),
+                    periodeId = 1,
+                    forrigePeriodeId = null,
+                    vedtaksdato = localDateNow,
+                    klassifisering = "KLASSE A",
+                    fom = localDateNow,
+                    tom = localDateNow,
+                    sats = BigDecimal.ONE,
+                    satstype = Satstype.MÅNEDLIG,
+                    utbetalesTil = "UTEBETALES_TIL",
+                    behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
                 ),
             ),
         )

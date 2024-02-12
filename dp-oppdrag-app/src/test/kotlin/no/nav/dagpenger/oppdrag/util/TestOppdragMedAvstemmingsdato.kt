@@ -3,6 +3,7 @@ package no.nav.dagpenger.oppdrag.util
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.GeneriskId
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
+import no.nav.dagpenger.kontrakter.felles.Satstype
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingstype
@@ -46,7 +47,7 @@ internal object TestOppdragMedAvstemmingsdato {
         fom = fom,
         tom = tom,
         sats = beløp.toBigDecimal(),
-        satstype = Utbetalingsperiode.Satstype.MND,
+        satstype = Satstype.MÅNEDLIG,
         utbetalesTil = AKTØR,
         behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
         utbetalingsgrad = 50,
