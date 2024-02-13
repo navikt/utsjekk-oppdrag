@@ -69,14 +69,14 @@ internal object OppdragMapper {
         } else {
             listOf(
                 objectFactory.createOppdragsEnhet120().apply {
-                    enhet = OppdragSkjemaConstants.ENHET
-                    typeEnhet = OppdragSkjemaConstants.ENHET_TYPE_BEHANDLENDE_ENHET
-                    datoEnhetFom = OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate()
-                },
-                objectFactory.createOppdragsEnhet120().apply {
                     enhet = utbetalingsoppdrag.brukersNavKontor?.enhet
                     typeEnhet = OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET
                     datoEnhetFom = utbetalingsoppdrag.brukersNavKontor?.gjelderFom?.toXMLDate()
+                },
+                objectFactory.createOppdragsEnhet120().apply {
+                    enhet = OppdragSkjemaConstants.ENHET
+                    typeEnhet = OppdragSkjemaConstants.ENHET_TYPE_BEHANDLENDE_ENHET
+                    datoEnhetFom = OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate()
                 },
             )
         }

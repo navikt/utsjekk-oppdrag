@@ -1,5 +1,6 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
+import no.nav.dagpenger.kontrakter.felles.BrukersNavKontor
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.Satstype
@@ -109,6 +110,40 @@ class OppdragMapperTest {
         assertOppdragslinje150(utbetalingsperiode1, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[0])
     }
 
+    @Test
+    fun `mappe vedtak for tiltakspenger`() {
+        val utbetalingsperiode1 =
+            Utbetalingsperiode(
+                erEndringPåEksisterendePeriode = false,
+                opphør = null,
+                periodeId = 1,
+                forrigePeriodeId = null,
+                vedtaksdato = LocalDate.now(),
+                klassifisering = "TPTPATT",
+                fom = LocalDate.now(),
+                tom = LocalDate.now().plusDays(6),
+                sats = BigDecimal.valueOf(1354L),
+                satstype = Satstype.DAGLIG,
+                utbetalesTil = "12345678911",
+                behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
+            )
+        val utbetalingsoppdrag =
+            Utbetalingsoppdrag(
+                kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+                fagsystem = Fagsystem.TILTAKSPENGER,
+                saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
+                aktør = "12345678911",
+                saksbehandlerId = "Z992991",
+                brukersNavKontor = BrukersNavKontor(enhet = "0220", gjelderFom = LocalDate.now().minusMonths(1)),
+                utbetalingsperiode = listOf(utbetalingsperiode1),
+            )
+
+        val oppdrag110 = OppdragMapper.tilOppdrag110(utbetalingsoppdrag)
+
+        assertOppdrag110(utbetalingsoppdrag, oppdrag110)
+        assertOppdragslinje150(utbetalingsperiode1, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[0])
+    }
+
     private fun assertOppdrag110(
         utbetalingsoppdrag: Utbetalingsoppdrag,
         oppdrag110: Oppdrag110,
@@ -131,8 +166,17 @@ class OppdragMapperTest {
             oppdrag110.avstemming115.tidspktMelding,
         )
         assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET, oppdrag110.oppdragsEnhet120[0].typeEnhet)
-        assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[0].enhet)
-        assertEquals(OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
+        utbetalingsoppdrag.brukersNavKontor?.let {
+            assertEquals(it.enhet, oppdrag110.oppdragsEnhet120[0].enhet)
+            assertEquals(it.gjelderFom.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
+            assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BEHANDLENDE_ENHET, oppdrag110.oppdragsEnhet120[1].typeEnhet)
+            assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[1].enhet)
+            assertEquals(OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[1].datoEnhetFom)
+        }
+            ?: {
+                assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[0].enhet)
+                assertEquals(OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
+            }
     }
 
     private fun assertOppdragslinje150(
