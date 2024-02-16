@@ -1,7 +1,11 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.iverksetting.domene.komprimertFagsystemId
+import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
 import no.nav.dagpenger.oppdrag.util.somOppdragLager
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AksjonType
@@ -51,10 +55,57 @@ internal class GrensesnittavstemmingMapperTest {
         assertAksjon(fom, tom, AksjonType.DATA, meldinger[1].aksjon)
         assertAksjon(fom, tom, AksjonType.AVSL, meldinger.last().aksjon)
 
-        assertDetaljData(utbetalingsoppdrag, meldinger[1].detalj.first())
-        assertTotalData(utbetalingsoppdrag, meldinger[1].total)
+        assertDetaljData(oppdragLager, DetaljType.MANG, meldinger[1].detalj.first())
+        assertTotalData(
+            forventetAntall = 1,
+            forventetTotalbeløp = BigDecimal(100),
+            actual = meldinger[1].total,
+        )
         assertPeriodeData(utbetalingsoppdrag, meldinger[1].periode)
-        assertGrunnlagsdata(utbetalingsoppdrag, meldinger[1].grunnlag)
+        assertGrunnlagsdata(
+            forventetManglerAntall = 1,
+            forventetManglerBeløp = BigDecimal(100),
+            actual = meldinger[1].grunnlag,
+        )
+    }
+
+    @Test
+    fun `test mapping til grensesnittavstemming med feilede oppdrag`() {
+        val avstemmingstidspunkt = LocalDateTime.now().minusDays(1).withHour(13)
+        val fom = avstemmingstidspunkt.toLocalDate().atStartOfDay()
+        val tom = avstemmingstidspunkt.toLocalDate().atTime(LocalTime.MAX)
+        val utbetalingsoppdrag =
+            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(
+                avstemmingstidspunkt,
+                Fagsystem.DAGPENGER,
+            )
+        val oppdragLager = utbetalingsoppdrag.somOppdragLager
+        val oppdragLager2 =
+            utbetalingsoppdrag.somOppdragLager.copy(
+                kvitteringsmelding = avvistKvitteringsmelding(),
+                status = OppdragStatus.KVITTERT_FUNKSJONELL_FEIL,
+            )
+        val mapper =
+            GrensesnittavstemmingMapper(listOf(oppdragLager, oppdragLager2), Fagsystem.DAGPENGER, fom, tom)
+        val meldinger = mapper.lagAvstemmingsmeldinger()
+
+        assertEquals(3, meldinger.size)
+        assertAksjon(fom, tom, AksjonType.START, meldinger.first().aksjon)
+        assertAksjon(fom, tom, AksjonType.DATA, meldinger[1].aksjon)
+        assertAksjon(fom, tom, AksjonType.AVSL, meldinger.last().aksjon)
+
+        assertEquals(2, meldinger[1].detalj.size)
+        assertDetaljData(oppdragLager, DetaljType.MANG, meldinger[1].detalj.first())
+        assertDetaljData(oppdragLager2, DetaljType.AVVI, meldinger[1].detalj.last())
+        assertTotalData(2, BigDecimal(200), meldinger[1].total)
+        assertPeriodeData(utbetalingsoppdrag, meldinger[1].periode)
+        assertGrunnlagsdata(
+            forventetManglerAntall = 1,
+            forventetManglerBeløp = BigDecimal(100),
+            forventetAvvistAntall = 1,
+            forventetAvvistBeløp = BigDecimal(100),
+            actual = meldinger[1].grunnlag,
+        )
     }
 
     @Test
@@ -64,9 +115,15 @@ internal class GrensesnittavstemmingMapperTest {
         val avstemmingFom = førsteAvstemmingstidspunkt.toLocalDate().atStartOfDay()
         val avstemmingTom = andreAvstemmingstidspunkt.toLocalDate().atTime(LocalTime.MAX)
         val baOppdragLager1 =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(førsteAvstemmingstidspunkt, Fagsystem.DAGPENGER).somOppdragLager
+            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(
+                førsteAvstemmingstidspunkt,
+                Fagsystem.DAGPENGER,
+            ).somOppdragLager
         val baOppdragLager2 =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(andreAvstemmingstidspunkt, Fagsystem.DAGPENGER).somOppdragLager
+            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(
+                andreAvstemmingstidspunkt,
+                Fagsystem.DAGPENGER,
+            ).somOppdragLager
         val mapper =
             GrensesnittavstemmingMapper(
                 listOf(baOppdragLager1, baOppdragLager2),
@@ -98,24 +155,26 @@ internal class GrensesnittavstemmingMapperTest {
     }
 
     private fun assertDetaljData(
-        utbetalingsoppdrag: Utbetalingsoppdrag,
+        oppdragLager: OppdragLager,
+        forventetDetaljtype: DetaljType,
         actual: Detaljdata,
     ) {
-        assertEquals(DetaljType.MANG, actual.detaljType)
-        assertEquals(utbetalingsoppdrag.aktør, actual.offnr)
-        assertEquals(Fagsystem.DAGPENGER.kode, actual.avleverendeTransaksjonNokkel)
-        assertEquals(utbetalingsoppdrag.avstemmingstidspunkt.format(timeFormatter), actual.tidspunkt)
-        assertEquals(null, actual.meldingKode)
-        assertEquals(null, actual.alvorlighetsgrad)
-        assertEquals(null, actual.tekstMelding)
+        assertEquals(oppdragLager.utbetalingsoppdrag.aktør, actual.offnr)
+        assertEquals(oppdragLager.utbetalingsoppdrag.komprimertFagsystemId, actual.avleverendeTransaksjonNokkel)
+        assertEquals(oppdragLager.utbetalingsoppdrag.avstemmingstidspunkt.format(timeFormatter), actual.tidspunkt)
+        assertEquals(forventetDetaljtype, actual.detaljType)
+        assertEquals(oppdragLager.kvitteringsmelding?.kodeMelding, actual.meldingKode)
+        assertEquals(oppdragLager.kvitteringsmelding?.alvorlighetsgrad, actual.alvorlighetsgrad)
+        assertEquals(oppdragLager.kvitteringsmelding?.beskrMelding, actual.tekstMelding)
     }
 
     private fun assertTotalData(
-        utbetalingsoppdrag: Utbetalingsoppdrag,
+        forventetAntall: Int,
+        forventetTotalbeløp: BigDecimal,
         actual: Totaldata,
     ) {
-        assertEquals(1, actual.totalAntall)
-        assertEquals(utbetalingsoppdrag.utbetalingsperiode.first().sats, actual.totalBelop)
+        assertEquals(forventetAntall, actual.totalAntall)
+        assertEquals(forventetTotalbeløp, actual.totalBelop)
         assertEquals(Fortegn.T, actual.fortegn)
     }
 
@@ -134,21 +193,32 @@ internal class GrensesnittavstemmingMapperTest {
     }
 
     private fun assertGrunnlagsdata(
-        utbetalingsoppdrag: Utbetalingsoppdrag,
+        forventetManglerAntall: Int = 0,
+        forventetManglerBeløp: BigDecimal = BigDecimal.ZERO,
+        forventetAvvistAntall: Int = 0,
+        forventetAvvistBeløp: BigDecimal = BigDecimal.ZERO,
+        forventetGodkjentAntall: Int = 0,
+        forventetGodkjentBeløp: BigDecimal = BigDecimal.ZERO,
         actual: Grunnlagsdata,
     ) {
-        assertEquals(1, actual.manglerAntall)
-        assertEquals(utbetalingsoppdrag.utbetalingsperiode.first().sats, actual.manglerBelop)
+        assertEquals(forventetManglerAntall, actual.manglerAntall)
+        assertEquals(forventetManglerBeløp, actual.manglerBelop)
         assertEquals(Fortegn.T, actual.manglerFortegn)
 
-        assertEquals(0, actual.godkjentAntall)
-        assertEquals(BigDecimal.ZERO, actual.godkjentBelop)
+        assertEquals(forventetGodkjentAntall, actual.godkjentAntall)
+        assertEquals(forventetGodkjentBeløp, actual.godkjentBelop)
         assertEquals(Fortegn.T, actual.godkjentFortegn)
 
-        assertEquals(0, actual.avvistAntall)
-        assertEquals(BigDecimal.ZERO, actual.avvistBelop)
+        assertEquals(forventetAvvistAntall, actual.avvistAntall)
+        assertEquals(forventetAvvistBeløp, actual.avvistBelop)
         assertEquals(Fortegn.T, actual.avvistFortegn)
     }
+
+    private fun avvistKvitteringsmelding() =
+        OppdragXmlMapper.tilOppdrag(
+            this::class.java.getResourceAsStream("/kvittering-avvist.xml")
+                ?.bufferedReader().use { it?.readText() ?: "" },
+        ).mmel
 
     companion object {
         private val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")

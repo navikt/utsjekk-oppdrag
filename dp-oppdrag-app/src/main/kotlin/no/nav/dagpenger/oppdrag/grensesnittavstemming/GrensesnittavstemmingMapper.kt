@@ -2,6 +2,7 @@ package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
+import no.nav.dagpenger.oppdrag.iverksetting.domene.komprimertFagsystemId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AksjonType
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Aksjonsdata
@@ -53,21 +54,21 @@ internal class GrensesnittavstemmingMapper(
     private val detaljdataliste
         get() =
             oppdragsliste.mapNotNull { oppdrag ->
-                val detaljtype = opprettDetaljType(oppdrag)
+                val detaljtype = oppdrag.status.tilDetaljType()
                 if (detaljtype != null) {
                     val utbetalingsoppdrag = oppdrag.utbetalingsoppdrag
 
                     Detaljdata().apply {
                         detaljType = detaljtype
                         offnr = utbetalingsoppdrag.aktør
-                        avleverendeTransaksjonNokkel = fagsystem.kode
+                        avleverendeTransaksjonNokkel = utbetalingsoppdrag.komprimertFagsystemId
                         tidspunkt = oppdrag.avstemmingTidspunkt.format(timeFormatter)
 
                         if (detaljtype in
                             listOf(
-                                    DetaljType.AVVI,
-                                    DetaljType.VARS,
-                                ) && oppdrag.kvitteringsmelding != null
+                                DetaljType.AVVI,
+                                DetaljType.VARS,
+                            ) && oppdrag.kvitteringsmelding != null
                         ) {
                             val kvitteringsmelding = oppdrag.kvitteringsmelding
 
@@ -116,8 +117,8 @@ internal class GrensesnittavstemmingMapper(
                 }
         }
 
-    private fun opprettDetaljType(oppdrag: OppdragLager) =
-        when (oppdrag.status) {
+    private fun OppdragStatus.tilDetaljType() =
+        when (this) {
             OppdragStatus.LAGT_PÅ_KØ -> DetaljType.MANG
             OppdragStatus.KVITTERT_MED_MANGLER -> DetaljType.VARS
             OppdragStatus.KVITTERT_FUNKSJONELL_FEIL, OppdragStatus.KVITTERT_TEKNISK_FEIL -> DetaljType.AVVI
