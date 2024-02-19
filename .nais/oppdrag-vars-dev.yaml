@@ -2,7 +2,7 @@ limitsMemory: 512Mi
 requestsMemory: 256Mi
 requestsCpu: 50m
 db_tier: "db-f1-micro"
-postgres_version: "POSTGRES_14"
+postgres_version: "POSTGRES_15"
 postgres_name: "dp-oppdrag-db"
 ingresses:
   - https://dp-oppdrag.intern.dev.nav.no
