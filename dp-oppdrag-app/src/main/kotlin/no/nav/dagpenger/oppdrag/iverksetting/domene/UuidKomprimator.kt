@@ -23,7 +23,7 @@ internal object UuidKomprimator {
             val byteBuffer: ByteBuffer = ByteBuffer.wrap(Base64.getDecoder().decode(this))
 
             GeneriskIdSomUUID(UUID(byteBuffer.long, byteBuffer.long))
-        } catch (_: IllegalArgumentException) {
+        } catch (_: Throwable) {
             GeneriskIdSomString(this)
         }
     }
