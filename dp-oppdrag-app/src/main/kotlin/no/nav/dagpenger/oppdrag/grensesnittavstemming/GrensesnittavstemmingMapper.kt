@@ -66,9 +66,9 @@ internal class GrensesnittavstemmingMapper(
 
                         if (detaljtype in
                             listOf(
-                                DetaljType.AVVI,
-                                DetaljType.VARS,
-                            ) && oppdrag.kvitteringsmelding != null
+                                    DetaljType.AVVI,
+                                    DetaljType.VARS,
+                                ) && oppdrag.kvitteringsmelding != null
                         ) {
                             val kvitteringsmelding = oppdrag.kvitteringsmelding
 

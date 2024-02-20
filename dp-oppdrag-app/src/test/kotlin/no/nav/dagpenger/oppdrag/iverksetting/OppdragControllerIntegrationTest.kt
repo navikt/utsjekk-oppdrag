@@ -1,8 +1,8 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
-import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.util.Containers
 import no.nav.dagpenger.oppdrag.util.TestConfig
@@ -78,4 +78,4 @@ internal class OppdragControllerIntegrationTest {
 }
 
 private val Utbetalingsoppdrag.oppdragId
-    get() = OppdragId(fagsystem, aktør, utbetalingsperiode[0].behandlingId)
+    get() = OppdragId(fagsystem = fagsystem, personIdent = aktør, behandlingId = utbetalingsperiode[0].behandlingId)

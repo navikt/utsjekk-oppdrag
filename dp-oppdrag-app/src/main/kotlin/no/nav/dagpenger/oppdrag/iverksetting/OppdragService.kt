@@ -1,9 +1,9 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
-import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.domene.id
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragSender
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
 import no.trygdeetaten.skjema.oppdrag.Oppdrag

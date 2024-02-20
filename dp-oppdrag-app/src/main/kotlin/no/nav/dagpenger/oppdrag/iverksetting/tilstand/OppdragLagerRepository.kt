@@ -3,7 +3,6 @@ package no.nav.dagpenger.oppdrag.iverksetting.tilstand
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.somString
-import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.config.objectMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
@@ -22,18 +21,33 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
         oppdragId: OppdragId,
         versjon: Int = 0,
     ): OppdragLager {
-        val hentStatement =
-            "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND person_ident = ? AND fagsystem = ? AND versjon = ?"
-
         val listeAvOppdrag =
-            jdbcTemplate.query(
-                hentStatement,
-                OppdragLagerRowMapper(),
-                oppdragId.behandlingId.somString,
-                oppdragId.personIdent,
-                oppdragId.fagsystem.kode,
-                versjon,
-            )
+            if (oppdragId.iverksettingId != null) {
+                val hentStatement =
+                    "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND person_ident = ? AND fagsystem = ? AND iverksetting_id = ? AND versjon = ?"
+
+                jdbcTemplate.query(
+                    hentStatement,
+                    OppdragLagerRowMapper(),
+                    oppdragId.behandlingId.somString,
+                    oppdragId.personIdent,
+                    oppdragId.fagsystem.kode,
+                    oppdragId.iverksettingId,
+                    versjon,
+                )
+            } else {
+                val hentStatement =
+                    "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND person_ident = ? AND fagsystem = ? AND iverksetting_id is null AND versjon = ?"
+
+                jdbcTemplate.query(
+                    hentStatement,
+                    OppdragLagerRowMapper(),
+                    oppdragId.behandlingId.somString,
+                    oppdragId.personIdent,
+                    oppdragId.fagsystem.kode,
+                    versjon,
+                )
+            }
 
         return when (listeAvOppdrag.size) {
             0 -> {
@@ -55,8 +69,8 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
     ) {
         val insertStatement =
             """
-                INSERT INTO oppdrag_lager (id, utgaaende_oppdrag, status, opprettet_tidspunkt, person_ident, fagsak_id, behandling_id, fagsystem, avstemming_tidspunkt, utbetalingsoppdrag, versjon) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?)
+                INSERT INTO oppdrag_lager (id, utgaaende_oppdrag, status, opprettet_tidspunkt, person_ident, fagsak_id, behandling_id, iverksetting_id, fagsystem, avstemming_tidspunkt, utbetalingsoppdrag, versjon) 
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
             """.trimMargin()
 
         jdbcTemplate.update(
@@ -68,6 +82,7 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
             oppdragLager.personIdent,
             oppdragLager.fagsakId,
             oppdragLager.behandlingId,
+            oppdragLager.iverksettingId,
             oppdragLager.fagsystem,
             oppdragLager.avstemmingTidspunkt,
             objectMapper.writeValueAsString(oppdragLager.utbetalingsoppdrag),
@@ -141,41 +156,26 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
 }
 
 internal class OppdragLagerRowMapper : RowMapper<OppdragLager> {
-    /*
-    1    id                   UUID PRIMARY KEY,
-    2 utgaaende_oppdrag    TEXT                                NOT NULL,
-    3 status               VARCHAR(150) DEFAULT 'LAGT_PAA_KOE':: character varying NOT NULL,
-    4 opprettet_tidspunkt  TIMESTAMP(6) DEFAULT LOCALTIMESTAMP NOT NULL,
-    5 person_ident         VARCHAR(50)                         NOT NULL,
-    6 fagsak_id            VARCHAR(50)                         NOT NULL,
-    7 behandling_id        VARCHAR(50)                         NOT NULL,
-    8 fagsystem            VARCHAR(10)                         NOT NULL,
-    9 avstemming_tidspunkt TIMESTAMP(6)                        NOT NULL,
-    10 utbetalingsoppdrag   JSON                                NOT NULL,
-    11 kvitteringsmelding   JSON,
-    12 versjon              BIGINT       DEFAULT 0              NOT NULL
-
-     */
-
     override fun mapRow(
         resultSet: ResultSet,
         rowNumbers: Int,
     ): OppdragLager {
-        val kvittering = resultSet.getString(11)
+        val kvittering = resultSet.getString("kvitteringsmelding")
 
         return OppdragLager(
-            uuid = UUID.fromString(resultSet.getString(1) ?: UUID.randomUUID().toString()),
-            fagsystem = resultSet.getString(8),
-            personIdent = resultSet.getString(5),
-            fagsakId = resultSet.getString(6),
-            behandlingId = resultSet.getString(7),
-            utbetalingsoppdrag = objectMapper.readValue(resultSet.getString(10)),
-            utgåendeOppdrag = resultSet.getString(2),
-            status = OppdragStatus.valueOf(resultSet.getString(3)),
-            avstemmingTidspunkt = resultSet.getTimestamp(9).toLocalDateTime(),
-            opprettetTidspunkt = resultSet.getTimestamp(4).toLocalDateTime(),
-            kvitteringsmelding = if (kvittering == null) null else objectMapper.readValue(kvittering),
-            versjon = resultSet.getInt(12),
+            uuid = UUID.fromString(resultSet.getString("id") ?: UUID.randomUUID().toString()),
+            fagsystem = resultSet.getString("fagsystem"),
+            personIdent = resultSet.getString("person_ident"),
+            fagsakId = resultSet.getString("fagsak_id"),
+            behandlingId = resultSet.getString("behandling_id"),
+            iverksettingId = resultSet.getString("iverksetting_id"),
+            utbetalingsoppdrag = objectMapper.readValue(resultSet.getString("utbetalingsoppdrag")),
+            utgåendeOppdrag = resultSet.getString("utgaaende_oppdrag"),
+            status = OppdragStatus.valueOf(resultSet.getString("status")),
+            avstemmingTidspunkt = resultSet.getTimestamp("avstemming_tidspunkt").toLocalDateTime(),
+            opprettetTidspunkt = resultSet.getTimestamp("opprettet_tidspunkt").toLocalDateTime(),
+            kvitteringsmelding = kvittering?.let { objectMapper.readValue(it) },
+            versjon = resultSet.getInt("versjon"),
         )
     }
 }

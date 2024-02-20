@@ -4,10 +4,10 @@ import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomString
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.tilFagsystem
-import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.config.DatabaseConfiguration
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.util.Containers
@@ -18,6 +18,7 @@ import no.trygdeetaten.skjema.oppdrag.Mmel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -39,7 +40,7 @@ import java.util.UUID
     classes = [DatabaseConfiguration::class, OppdragLagerTestConfig::class],
 )
 @Testcontainers
-internal class OppdragLagerRepositoryJdbcTest {
+internal class OppdragLagerRepositoryTest {
     @Autowired
     lateinit var oppdragLagerRepository: OppdragLagerRepository
 
@@ -56,6 +57,17 @@ internal class OppdragLagerRepositoryJdbcTest {
 
         assertThrows<DuplicateKeyException> {
             oppdragLagerRepository.opprettOppdrag(oppdragLager)
+        }
+    }
+
+    @Test
+    fun skal_lagre_to_ulike_iverksettinger_samme_behandling() {
+        val oppdragLager = TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer().somOppdragLager.copy(iverksettingId = "1")
+
+        oppdragLagerRepository.opprettOppdrag(oppdragLager)
+
+        assertDoesNotThrow {
+            oppdragLagerRepository.opprettOppdrag(oppdragLager.copy(iverksettingId = "2"))
         }
     }
 
@@ -127,14 +139,20 @@ internal class OppdragLagerRepositoryJdbcTest {
         ).mmel
 }
 
-private val OppdragLager.id: OppdragId get() {
-    val behandlingId =
-        Result.runCatching { UUID.fromString(this@id.behandlingId) }.fold(
-            onSuccess = { GeneriskIdSomUUID(it) },
-            onFailure = { GeneriskIdSomString(this.behandlingId) },
+private val OppdragLager.id: OppdragId
+    get() {
+        val behandlingId =
+            Result.runCatching { UUID.fromString(this@id.behandlingId) }.fold(
+                onSuccess = { GeneriskIdSomUUID(it) },
+                onFailure = { GeneriskIdSomString(this.behandlingId) },
+            )
+        return OppdragId(
+            fagsystem = this.fagsystem.tilFagsystem(),
+            personIdent = this.personIdent,
+            behandlingId = behandlingId,
+            iverksettingId = this.iverksettingId,
         )
-    return OppdragId(this.fagsystem.tilFagsystem(), this.personIdent, behandlingId)
-}
+    }
 
 private fun kvitteringerErLike(
     a: Mmel,

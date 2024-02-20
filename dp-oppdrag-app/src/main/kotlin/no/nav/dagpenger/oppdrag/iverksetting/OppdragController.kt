@@ -53,13 +53,26 @@ internal class OppdragController(
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], path = ["/status"])
     fun hentStatus(
         @Valid @RequestBody oppdragId: OppdragId,
-    ) = Result.runCatching { oppdragService.hentStatusForOppdrag(oppdragId) }
+    ) = Result.runCatching {
+        oppdragService.hentStatusForOppdrag(
+            no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId(
+                fagsystem = oppdragId.fagsystem,
+                personIdent = oppdragId.personIdent,
+                behandlingId = oppdragId.behandlingId,
+            ),
+        )
+    }
         .fold(
             onFailure = {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fant ikke oppdrag med id $oppdragId")
             },
             onSuccess = {
-                ResponseEntity.ok(OppdragStatusDto(status = it.status, feilmelding = it.kvitteringsmelding?.beskrMelding))
+                ResponseEntity.ok(
+                    OppdragStatusDto(
+                        status = it.status,
+                        feilmelding = it.kvitteringsmelding?.beskrMelding,
+                    ),
+                )
             },
         )
 
