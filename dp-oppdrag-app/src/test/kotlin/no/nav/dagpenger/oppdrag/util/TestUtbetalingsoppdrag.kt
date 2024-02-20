@@ -39,6 +39,7 @@ object TestUtbetalingsoppdrag {
                     behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
                 ),
             ),
+            iverksettingId = null,
         )
 }
 

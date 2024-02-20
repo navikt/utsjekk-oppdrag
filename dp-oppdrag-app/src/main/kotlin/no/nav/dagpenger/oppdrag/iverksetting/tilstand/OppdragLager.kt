@@ -38,8 +38,7 @@ internal data class OppdragLager(
             fagsystem = utbetalingsoppdrag.fagsystem.kode,
             fagsakId = utbetalingsoppdrag.fagsystemId,
             behandlingId = utbetalingsoppdrag.utbetalingsperiode.first().behandlingId.somString,
-            // TODO fiks denne når kontrakter er oppdatert
-            iverksettingId = null,
+            iverksettingId = utbetalingsoppdrag.iverksettingId,
             avstemmingTidspunkt = utbetalingsoppdrag.avstemmingstidspunkt,
             utbetalingsoppdrag = utbetalingsoppdrag,
             utgåendeOppdrag = OppdragXmlMapper.tilXml(oppdrag),

@@ -1,7 +1,6 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
-import no.nav.dagpenger.oppdrag.iverksetting.domene.id
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragSender
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
@@ -25,14 +24,14 @@ internal class OppdragService(
         versjon: Int,
     ) {
         try {
-            logger.debug("Lagrer oppdrag i databasen " + oppdrag.id)
+            logger.debug("Lagrer oppdrag med saksnummer ${utbetalingsoppdrag.saksnummer} i databasen")
             oppdragLagerRepository.opprettOppdrag(OppdragLager.lagFraOppdrag(utbetalingsoppdrag, oppdrag), versjon)
         } catch (e: org.springframework.dao.DuplicateKeyException) {
-            logger.info("Oppdrag ${oppdrag.id} er allerede sendt.")
+            logger.info("Oppdrag med saksnummer ${utbetalingsoppdrag.saksnummer} er allerede sendt.")
             throw OppdragAlleredeSendtException()
         }
 
-        logger.debug("Legger oppdrag på kø " + oppdrag.id)
+        logger.debug("Legger oppdrag med saksnummer ${utbetalingsoppdrag.saksnummer} på kø")
         oppdragSender.sendOppdrag(oppdrag)
     }
 

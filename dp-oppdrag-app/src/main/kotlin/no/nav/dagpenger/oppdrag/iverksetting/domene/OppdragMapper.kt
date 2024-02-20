@@ -1,17 +1,13 @@
 package no.nav.dagpenger.oppdrag.iverksetting.domene
 
-import no.nav.dagpenger.kontrakter.felles.GeneriskId
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomString
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.somString
 import no.nav.dagpenger.kontrakter.felles.somUUID
-import no.nav.dagpenger.kontrakter.felles.tilFagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
-import no.nav.dagpenger.oppdrag.iverksetting.domene.UuidKomprimator.dekomprimer
 import no.nav.dagpenger.oppdrag.iverksetting.domene.UuidKomprimator.komprimer
-import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
 import no.trygdeetaten.skjema.oppdrag.ObjectFactory
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
@@ -30,7 +26,6 @@ internal object OppdragMapper {
     val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")
 
     fun tilOppdrag110(utbetalingsoppdrag: Utbetalingsoppdrag): Oppdrag110 =
-
         objectFactory.createOppdrag110().apply {
             kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
             kodeEndring = Endringskode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
@@ -139,20 +134,6 @@ internal object OppdragMapper {
             this.oppdrag110 = oppdrag110
         }
 }
-
-internal val Oppdrag.id: OppdragId
-    get() =
-        OppdragId(
-            oppdrag110.kodeFagomraade.tilFagsystem(),
-            oppdrag110.oppdragGjelderId,
-            oppdrag110.oppdragsLinje150?.get(0)?.henvisning!!.dekomprimerOgLagGeneriskId(),
-        )
-
-private fun String.dekomprimerOgLagGeneriskId(): GeneriskId =
-    Result.runCatching { this@dekomprimerOgLagGeneriskId.dekomprimer() }.fold(
-        onSuccess = { GeneriskIdSomUUID(it) },
-        onFailure = { GeneriskIdSomString(this) },
-    )
 
 internal val Utbetalingsoppdrag.fagsystemId get() = this.saksnummer.somString
 

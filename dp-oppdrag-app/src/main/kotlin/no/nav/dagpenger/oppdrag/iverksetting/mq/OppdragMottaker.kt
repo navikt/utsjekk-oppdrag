@@ -2,10 +2,10 @@ package no.nav.dagpenger.oppdrag.iverksetting.mq
 
 import jakarta.jms.TextMessage
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
-import no.nav.dagpenger.oppdrag.iverksetting.domene.id
 import no.nav.dagpenger.oppdrag.iverksetting.domene.kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.status
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.dekomprimertId
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.jms.annotation.JmsListener
@@ -37,7 +37,7 @@ internal class OppdragMottaker(
 
     private fun behandleMelding(melding: TextMessage) {
         val kvittering = lesKvittering(parseTextMessage(melding))
-        val oppdragId = kvittering.id
+        val oppdragId = kvittering.dekomprimertId
 
         logger.info(
             "Mottatt melding på kvitteringskø for fagsak $oppdragId: Status ${kvittering.kvitteringstatus}, " +

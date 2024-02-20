@@ -15,6 +15,7 @@ import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragSender
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.HttpStatus
@@ -22,7 +23,6 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
-import kotlin.test.assertEquals
 
 internal class OppdragControllerTest {
     private val localDateTimeNow = LocalDateTime.now()
@@ -36,22 +36,23 @@ internal class OppdragControllerTest {
             aktør = "PERSONID",
             saksbehandlerId = "SAKSBEHANDLERID",
             utbetalingsperiode =
-            listOf(
-                Utbetalingsperiode(
-                    erEndringPåEksisterendePeriode = true,
-                    opphør = Opphør(localDateNow),
-                    periodeId = 2,
-                    forrigePeriodeId = 1,
-                    vedtaksdato = localDateNow,
-                    klassifisering = "BATR",
-                    fom = localDateNow,
-                    tom = localDateNow,
-                    sats = BigDecimal.ONE,
-                    satstype = Satstype.MÅNEDLIG,
-                    utbetalesTil = "UTEBETALES_TIL",
-                    behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
+                listOf(
+                    Utbetalingsperiode(
+                        erEndringPåEksisterendePeriode = true,
+                        opphør = Opphør(localDateNow),
+                        periodeId = 2,
+                        forrigePeriodeId = 1,
+                        vedtaksdato = localDateNow,
+                        klassifisering = "BATR",
+                        fom = localDateNow,
+                        tom = localDateNow,
+                        sats = BigDecimal.ONE,
+                        satstype = Satstype.MÅNEDLIG,
+                        utbetalesTil = "UTEBETALES_TIL",
+                        behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
+                    ),
                 ),
-            ),
+            iverksettingId = null,
         )
 
     @Test

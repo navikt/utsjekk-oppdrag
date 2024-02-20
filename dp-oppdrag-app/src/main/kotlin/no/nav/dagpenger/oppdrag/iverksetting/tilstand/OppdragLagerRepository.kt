@@ -24,26 +24,26 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
         val listeAvOppdrag =
             if (oppdragId.iverksettingId != null) {
                 val hentStatement =
-                    "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND person_ident = ? AND fagsystem = ? AND iverksetting_id = ? AND versjon = ?"
+                    "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND fagsak_id = ? AND fagsystem = ? AND iverksetting_id = ? AND versjon = ?"
 
                 jdbcTemplate.query(
                     hentStatement,
                     OppdragLagerRowMapper(),
                     oppdragId.behandlingId.somString,
-                    oppdragId.personIdent,
+                    oppdragId.fagsakId.somString,
                     oppdragId.fagsystem.kode,
                     oppdragId.iverksettingId,
                     versjon,
                 )
             } else {
                 val hentStatement =
-                    "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND person_ident = ? AND fagsystem = ? AND iverksetting_id is null AND versjon = ?"
+                    "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND fagsak_id = ? AND fagsystem = ? AND iverksetting_id is null AND versjon = ?"
 
                 jdbcTemplate.query(
                     hentStatement,
                     OppdragLagerRowMapper(),
                     oppdragId.behandlingId.somString,
-                    oppdragId.personIdent,
+                    oppdragId.fagsakId.somString,
                     oppdragId.fagsystem.kode,
                     versjon,
                 )
@@ -98,7 +98,7 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
         jdbcTemplate.execute(
             """
             UPDATE oppdrag_lager SET status = '${oppdragStatus.name}' 
-            WHERE person_ident = '${oppdragId.personIdent}' 
+            WHERE fagsak_id = '${oppdragId.fagsakId.somString}' 
                 AND fagsystem = '${oppdragId.fagsystem.kode}' 
                 AND behandling_id = '${oppdragId.behandlingId.somString}'
                 AND versjon = $versjon
@@ -112,12 +112,12 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
         versjon: Int = 0,
     ) {
         val updateStatement =
-            "UPDATE oppdrag_lager SET kvitteringsmelding = ? WHERE person_ident = ? AND fagsystem = ? AND behandling_id = ? AND versjon = ?"
+            "UPDATE oppdrag_lager SET kvitteringsmelding = ? WHERE fagsak_id = ? AND fagsystem = ? AND behandling_id = ? AND versjon = ?"
 
         jdbcTemplate.update(
             updateStatement,
             objectMapper.writeValueAsString(kvittering),
-            oppdragId.personIdent,
+            oppdragId.fagsakId.somString,
             oppdragId.fagsystem.kode,
             oppdragId.behandlingId.somString,
             versjon,
@@ -143,10 +143,10 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
 
     fun hentAlleVersjonerAvOppdrag(oppdragId: OppdragId): List<OppdragLager> =
         jdbcTemplate.query(
-            "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND person_ident = ? AND fagsystem = ?",
+            "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND fagsak_id = ? AND fagsystem = ?",
             OppdragLagerRowMapper(),
             oppdragId.behandlingId.somString,
-            oppdragId.personIdent,
+            oppdragId.fagsakId.somString,
             oppdragId.fagsystem.kode,
         )
 

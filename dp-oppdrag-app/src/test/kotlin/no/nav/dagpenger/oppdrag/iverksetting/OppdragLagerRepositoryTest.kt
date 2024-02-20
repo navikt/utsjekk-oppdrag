@@ -10,6 +10,7 @@ import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.tilGeneriskId
 import no.nav.dagpenger.oppdrag.util.Containers
 import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
 import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag
@@ -148,7 +149,7 @@ private val OppdragLager.id: OppdragId
             )
         return OppdragId(
             fagsystem = this.fagsystem.tilFagsystem(),
-            personIdent = this.personIdent,
+            fagsakId = this.fagsakId.tilGeneriskId(),
             behandlingId = behandlingId,
             iverksettingId = this.iverksettingId,
         )

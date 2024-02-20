@@ -122,7 +122,7 @@ internal class GrensesnittavstemmingMapper(
             OppdragStatus.LAGT_PÅ_KØ -> DetaljType.MANG
             OppdragStatus.KVITTERT_MED_MANGLER -> DetaljType.VARS
             OppdragStatus.KVITTERT_FUNKSJONELL_FEIL, OppdragStatus.KVITTERT_TEKNISK_FEIL -> DetaljType.AVVI
-            OppdragStatus.KVITTERT_OK, OppdragStatus.KVITTERT_UKJENT -> null
+            OppdragStatus.KVITTERT_OK, OppdragStatus.KVITTERT_UKJENT, OppdragStatus.OK_UTEN_UTBETALING -> null
         }
 
     private val totaldata
