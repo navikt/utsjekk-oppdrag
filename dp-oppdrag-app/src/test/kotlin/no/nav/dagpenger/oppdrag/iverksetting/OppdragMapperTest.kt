@@ -68,6 +68,7 @@ class OppdragMapperTest {
                 aktør = "12345678911",
                 saksbehandlerId = "Z992991",
                 utbetalingsperiode = listOf(utbetalingsperiode1, utbetalingsperiode2),
+                iverksettingId = null,
             )
 
         val oppdrag110 = OppdragMapper.tilOppdrag110(utbetalingsoppdrag)
@@ -102,6 +103,7 @@ class OppdragMapperTest {
                 aktør = "12345678911",
                 saksbehandlerId = "Z992991",
                 utbetalingsperiode = listOf(utbetalingsperiode1),
+                iverksettingId = null,
             )
 
         val oppdrag110 = OppdragMapper.tilOppdrag110(utbetalingsoppdrag)
@@ -136,6 +138,7 @@ class OppdragMapperTest {
                 saksbehandlerId = "Z992991",
                 brukersNavKontor = BrukersNavKontor(enhet = "0220", gjelderFom = LocalDate.now().minusMonths(1)),
                 utbetalingsperiode = listOf(utbetalingsperiode1),
+                iverksettingId = null,
             )
 
         val oppdrag110 = OppdragMapper.tilOppdrag110(utbetalingsoppdrag)

@@ -66,9 +66,9 @@ internal class GrensesnittavstemmingMapper(
 
                         if (detaljtype in
                             listOf(
-                                DetaljType.AVVI,
-                                DetaljType.VARS,
-                            ) && oppdrag.kvitteringsmelding != null
+                                    DetaljType.AVVI,
+                                    DetaljType.VARS,
+                                ) && oppdrag.kvitteringsmelding != null
                         ) {
                             val kvitteringsmelding = oppdrag.kvitteringsmelding
 
@@ -122,7 +122,7 @@ internal class GrensesnittavstemmingMapper(
             OppdragStatus.LAGT_PÅ_KØ -> DetaljType.MANG
             OppdragStatus.KVITTERT_MED_MANGLER -> DetaljType.VARS
             OppdragStatus.KVITTERT_FUNKSJONELL_FEIL, OppdragStatus.KVITTERT_TEKNISK_FEIL -> DetaljType.AVVI
-            OppdragStatus.KVITTERT_OK, OppdragStatus.KVITTERT_UKJENT -> null
+            OppdragStatus.KVITTERT_OK, OppdragStatus.KVITTERT_UKJENT, OppdragStatus.OK_UTEN_UTBETALING -> null
         }
 
     private val totaldata

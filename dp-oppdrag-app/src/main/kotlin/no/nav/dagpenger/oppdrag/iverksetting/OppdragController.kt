@@ -1,11 +1,12 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
 import jakarta.validation.Valid
-import no.nav.dagpenger.kontrakter.oppdrag.OppdragId
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragIdDto
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatusDto
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
 import no.nav.dagpenger.oppdrag.iverksetting.domene.fagsystemId
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -52,14 +53,28 @@ internal class OppdragController(
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], path = ["/status"])
     fun hentStatus(
-        @Valid @RequestBody oppdragId: OppdragId,
-    ) = Result.runCatching { oppdragService.hentStatusForOppdrag(oppdragId) }
+        @Valid @RequestBody oppdragId: OppdragIdDto,
+    ) = Result.runCatching {
+        oppdragService.hentStatusForOppdrag(
+            OppdragId(
+                fagsystem = oppdragId.fagsystem,
+                fagsakId = oppdragId.sakId,
+                behandlingId = oppdragId.behandlingId,
+                iverksettingId = oppdragId.iverksettingId,
+            ),
+        )
+    }
         .fold(
             onFailure = {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fant ikke oppdrag med id $oppdragId")
             },
             onSuccess = {
-                ResponseEntity.ok(OppdragStatusDto(status = it.status, feilmelding = it.kvitteringsmelding?.beskrMelding))
+                ResponseEntity.ok(
+                    OppdragStatusDto(
+                        status = it.status,
+                        feilmelding = it.kvitteringsmelding?.beskrMelding,
+                    ),
+                )
             },
         )
 

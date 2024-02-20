@@ -29,6 +29,7 @@ internal object TestOppdragMedAvstemmingsdato {
         saksbehandlerId = "Z999999",
         avstemmingstidspunkt = avstemmingstidspunkt,
         utbetalingsperiode = utbetalingsperiode.toList(),
+        iverksettingId = null,
     )
 
     private fun lagUtbetalingsperiode(
