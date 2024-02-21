@@ -6,6 +6,7 @@ import no.nav.dagpenger.oppdrag.iverksetting.domene.kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.status
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.dekomprimertId
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.id
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.jms.annotation.JmsListener
@@ -37,29 +38,30 @@ internal class OppdragMottaker(
 
     private fun behandleMelding(melding: TextMessage) {
         val kvittering = lesKvittering(parseTextMessage(melding))
-        val oppdragId = kvittering.dekomprimertId
+        val oppdragIdKvittering = kvittering.dekomprimertId
 
         logger.info(
-            "Mottatt melding på kvitteringskø for fagsak $oppdragId: Status ${kvittering.kvitteringstatus}, " +
+            "Mottatt melding på kvitteringskø for fagsak $oppdragIdKvittering: Status ${kvittering.kvitteringstatus}, " +
                 "svar ${kvittering.mmel?.beskrMelding ?: "Beskrivende melding ikke satt fra OS"}",
         )
-        logger.debug("Henter oppdrag $oppdragId fra databasen")
+        logger.debug("Henter oppdrag {} fra databasen", oppdragIdKvittering)
 
         val førsteOppdragUtenKvittering =
-            oppdragLagerRepository.hentAlleVersjonerAvOppdrag(oppdragId)
+            oppdragLagerRepository.hentAlleVersjonerAvOppdrag(oppdragIdKvittering)
                 .find { it.status == OppdragStatus.LAGT_PÅ_KØ }
 
         if (førsteOppdragUtenKvittering == null) {
-            logger.warn("Oppdraget tilknyttet mottatt kvittering har uventet status i databasen. Oppdraget er: $oppdragId")
+            logger.warn("Oppdraget tilknyttet mottatt kvittering har uventet status i databasen. Oppdraget er: $oppdragIdKvittering")
             return
         }
+        val oppdragId = førsteOppdragUtenKvittering.id
 
         if (kvittering.mmel != null) {
             oppdragLagerRepository.oppdaterKvitteringsmelding(oppdragId, kvittering.mmel, førsteOppdragUtenKvittering.versjon)
         }
 
         if (!kjørerLokalt) {
-            logger.debug("Lagrer oppdatert oppdrag $oppdragId i databasen med ny status ${kvittering.status}")
+            logger.debug("Lagrer oppdatert oppdrag {} i databasen med ny status {}", oppdragId, kvittering.status)
             oppdragLagerRepository.oppdaterStatus(oppdragId, kvittering.status, førsteOppdragUtenKvittering.versjon)
         } else {
             oppdragLagerRepository.oppdaterStatus(oppdragId, OppdragStatus.KVITTERT_OK, førsteOppdragUtenKvittering.versjon)

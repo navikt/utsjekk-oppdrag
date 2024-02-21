@@ -15,7 +15,7 @@ import java.util.UUID
 object TestUtbetalingsoppdrag {
     private val localDateNow = LocalDate.now()
 
-    fun utbetalingsoppdragMedTilfeldigAktoer() =
+    fun utbetalingsoppdragMedTilfeldigAktoer(iverksettingId: String? = null) =
         Utbetalingsoppdrag(
             kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
             fagsystem = Fagsystem.DAGPENGER,
@@ -39,7 +39,7 @@ object TestUtbetalingsoppdrag {
                     behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
                 ),
             ),
-            iverksettingId = null,
+            iverksettingId = iverksettingId,
         )
 }
 

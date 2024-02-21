@@ -13,7 +13,7 @@ data class OppdragId(
     val fagsystem: Fagsystem,
     val fagsakId: GeneriskId,
     val behandlingId: GeneriskId,
-    val iverksettingId: String? = null,
+    val iverksettingId: String?,
 )
 
 internal val Oppdrag.id: OppdragId
@@ -22,6 +22,7 @@ internal val Oppdrag.id: OppdragId
             fagsystem = oppdrag110.kodeFagomraade.tilFagsystem(),
             fagsakId = oppdrag110.fagsystemId.tilGeneriskId(),
             behandlingId = oppdrag110.oppdragsLinje150?.get(0)?.henvisning!!.tilGeneriskId(),
+            iverksettingId = null,
         )
 
 internal val Oppdrag.dekomprimertId: OppdragId
@@ -30,6 +31,16 @@ internal val Oppdrag.dekomprimertId: OppdragId
             fagsystem = oppdrag110.kodeFagomraade.tilFagsystem(),
             fagsakId = oppdrag110.fagsystemId.dekomprimer(),
             behandlingId = oppdrag110.oppdragsLinje150?.get(0)?.henvisning!!.dekomprimer(),
+            iverksettingId = null,
+        )
+
+internal val OppdragLager.id: OppdragId
+    get() =
+        OppdragId(
+            fagsystem = this.fagsystem.tilFagsystem(),
+            fagsakId = this.fagsakId.tilGeneriskId(),
+            behandlingId = this.behandlingId.tilGeneriskId(),
+            iverksettingId = this.iverksettingId,
         )
 
 internal fun String.tilGeneriskId(): GeneriskId =

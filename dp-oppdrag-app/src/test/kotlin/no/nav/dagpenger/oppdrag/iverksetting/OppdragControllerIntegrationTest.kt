@@ -24,14 +24,18 @@ import kotlin.test.assertEquals
 @EnableJms
 @Testcontainers
 internal class OppdragControllerIntegrationTest {
-    @Autowired lateinit var oppdragService: OppdragService
+    @Autowired
+    lateinit var oppdragService: OppdragService
 
-    @Autowired lateinit var oppdragLagerRepository: OppdragLagerRepository
+    @Autowired
+    lateinit var oppdragLagerRepository: OppdragLagerRepository
 
     companion object {
-        @Container var postgreSQLContainer = Containers.postgreSQLContainer
+        @Container
+        var postgreSQLContainer = Containers.postgreSQLContainer
 
-        @Container var ibmMQContainer = Containers.ibmMQContainer
+        @Container
+        var ibmMQContainer = Containers.ibmMQContainer
     }
 
     @Test
@@ -78,4 +82,10 @@ internal class OppdragControllerIntegrationTest {
 }
 
 private val Utbetalingsoppdrag.oppdragId
-    get() = OppdragId(fagsystem = fagsystem, fagsakId = saksnummer, behandlingId = utbetalingsperiode[0].behandlingId)
+    get() =
+        OppdragId(
+            fagsystem = this.fagsystem,
+            fagsakId = this.saksnummer,
+            behandlingId = this.utbetalingsperiode[0].behandlingId,
+            iverksettingId = this.iverksettingId,
+        )

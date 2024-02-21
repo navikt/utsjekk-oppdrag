@@ -14,6 +14,7 @@ import no.nav.dagpenger.oppdrag.iverksetting.domene.kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragMottaker
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.id
 import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer
 import no.nav.dagpenger.oppdrag.util.somOppdragLager
 import org.junit.jupiter.api.BeforeEach
@@ -94,6 +95,37 @@ class OppdragMQMottakTest {
         verify(exactly = 1) { oppdragLagerRepository.oppdaterStatus(any(), any(), 1) }
         verify(exactly = 0) { oppdragLagerRepository.oppdaterKvitteringsmelding(any(), any(), 0) }
         verify(exactly = 1) { oppdragLagerRepository.oppdaterKvitteringsmelding(any(), any(), 1) }
+    }
+
+    @Test
+    fun skal_lagre_kvittering_på_riktig_iverksetting_ved_flere_iverksettinger() {
+        val iverksettingId1 = "1"
+        val iverksettingId2 = "2"
+        val oppdragLager1 =
+            utbetalingsoppdragMedTilfeldigAktoer(
+                iverksettingId1,
+            ).somOppdragLager.apply { status = OppdragStatus.KVITTERT_OK }
+        val oppdragLager2 =
+            utbetalingsoppdragMedTilfeldigAktoer(
+                iverksettingId2,
+            ).somOppdragLager.apply { status = OppdragStatus.LAGT_PÅ_KØ }
+
+        val oppdragLagerRepository = mockk<OppdragLagerRepository>()
+
+        every { oppdragLagerRepository.hentAlleVersjonerAvOppdrag(any()) } returns
+            listOf(oppdragLager1, oppdragLager2)
+
+        every { oppdragLagerRepository.oppdaterStatus(any(), any(), any()) } just Runs
+        every { oppdragLagerRepository.oppdaterKvitteringsmelding(any(), any(), any()) } just Runs
+
+        val oppdragMottaker = OppdragMottaker(oppdragLagerRepository, localEnv)
+
+        oppdragMottaker.mottaKvitteringFraOppdrag("kvittering-akseptert.xml".fraRessursSomTextMessage)
+
+        verify(exactly = 0) { oppdragLagerRepository.oppdaterStatus(oppdragLager1.id, any(), any()) }
+        verify(exactly = 1) { oppdragLagerRepository.oppdaterStatus(oppdragLager2.id, any(), any()) }
+        verify(exactly = 0) { oppdragLagerRepository.oppdaterKvitteringsmelding(oppdragLager1.id, any(), any()) }
+        verify(exactly = 1) { oppdragLagerRepository.oppdaterKvitteringsmelding(oppdragLager2.id, any(), any()) }
     }
 
     @Test
