@@ -28,7 +28,7 @@
         <dp-kontrakter.version>3.0_20240220095958_4033640</dp-kontrakter.version>
         <cxf.version>4.0.3</cxf.version>
         <springdoc.version>2.3.0</springdoc.version>
-        <testcontainers.version>1.19.5</testcontainers.version>
+        <testcontainers.version>1.19.6</testcontainers.version>
     </properties>
 
     <dependencies>
