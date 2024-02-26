@@ -16,7 +16,6 @@ internal data class OppdragLager(
     @Id
     @Column("id") val uuid: UUID = UUID.randomUUID(),
     val fagsystem: String,
-    @Column("person_ident") val personIdent: String,
     @Column("fagsak_id") val fagsakId: String,
     @Column("behandling_id") val behandlingId: String,
     @Column("iverksetting_id") val iverksettingId: String?,
@@ -34,7 +33,6 @@ internal data class OppdragLager(
             oppdrag: Oppdrag,
             versjon: Int = 0,
         ) = OppdragLager(
-            personIdent = utbetalingsoppdrag.aktør,
             fagsystem = utbetalingsoppdrag.fagsystem.kode,
             fagsakId = utbetalingsoppdrag.fagsystemId,
             behandlingId = utbetalingsoppdrag.utbetalingsperiode.first().behandlingId.somString,

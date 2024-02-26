@@ -69,8 +69,8 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
     ) {
         val insertStatement =
             """
-                INSERT INTO oppdrag_lager (id, utgaaende_oppdrag, status, opprettet_tidspunkt, person_ident, fagsak_id, behandling_id, iverksetting_id, fagsystem, avstemming_tidspunkt, utbetalingsoppdrag, versjon) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+                INSERT INTO oppdrag_lager (id, utgaaende_oppdrag, status, opprettet_tidspunkt, fagsak_id, behandling_id, iverksetting_id, fagsystem, avstemming_tidspunkt, utbetalingsoppdrag, versjon) 
+                VALUES (?,?,?,?,?,?,?,?,?,?,?)
             """.trimMargin()
 
         jdbcTemplate.update(
@@ -79,7 +79,6 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
             oppdragLager.utgåendeOppdrag,
             oppdragLager.status.name,
             oppdragLager.opprettetTidspunkt,
-            oppdragLager.personIdent,
             oppdragLager.fagsakId,
             oppdragLager.behandlingId,
             oppdragLager.iverksettingId,
@@ -165,7 +164,6 @@ internal class OppdragLagerRowMapper : RowMapper<OppdragLager> {
         return OppdragLager(
             uuid = UUID.fromString(resultSet.getString("id") ?: UUID.randomUUID().toString()),
             fagsystem = resultSet.getString("fagsystem"),
-            personIdent = resultSet.getString("person_ident"),
             fagsakId = resultSet.getString("fagsak_id"),
             behandlingId = resultSet.getString("behandling_id"),
             iverksettingId = resultSet.getString("iverksetting_id"),
