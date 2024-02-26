@@ -28,7 +28,7 @@ internal object OppdragMapper {
     fun tilOppdrag110(utbetalingsoppdrag: Utbetalingsoppdrag): Oppdrag110 =
         objectFactory.createOppdrag110().apply {
             kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
-            kodeEndring = Endringskode.fromKode(utbetalingsoppdrag.kodeEndring.name).kode
+            kodeEndring = if (utbetalingsoppdrag.erFørsteUtbetalingPåSak) Endringskode.NY.kode else Endringskode.ENDRING.kode
             kodeFagomraade = utbetalingsoppdrag.fagsystem.kode
             fagsystemId = utbetalingsoppdrag.komprimertFagsystemId
             utbetFrekvens = Utbetalingsfrekvens.MÅNEDLIG.kode
@@ -64,7 +64,7 @@ internal object OppdragMapper {
         } else {
             listOf(
                 objectFactory.createOppdragsEnhet120().apply {
-                    enhet = utbetalingsoppdrag.brukersNavKontor?.enhet
+                    enhet = utbetalingsoppdrag.brukersNavKontor
                     typeEnhet = OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET
                     datoEnhetFom = OppdragSkjemaConstants.BRUKERS_NAVKONTOR_FOM.toXMLDate()
                 },

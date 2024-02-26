@@ -17,28 +17,28 @@ object TestUtbetalingsoppdrag {
 
     fun utbetalingsoppdragMedTilfeldigAktoer(iverksettingId: String? = null) =
         Utbetalingsoppdrag(
-            kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+            erFørsteUtbetalingPåSak = true,
             fagsystem = Fagsystem.DAGPENGER,
             saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
             aktør = UUID.randomUUID().toString(),
             saksbehandlerId = "SAKSBEHANDLERID",
             utbetalingsperiode =
-            listOf(
-                Utbetalingsperiode(
-                    erEndringPåEksisterendePeriode = false,
-                    opphør = Opphør(localDateNow),
-                    periodeId = 1,
-                    forrigePeriodeId = null,
-                    vedtaksdato = localDateNow,
-                    klassifisering = "KLASSE A",
-                    fom = localDateNow,
-                    tom = localDateNow,
-                    sats = BigDecimal.ONE,
-                    satstype = Satstype.MÅNEDLIG,
-                    utbetalesTil = "UTEBETALES_TIL",
-                    behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
+                listOf(
+                    Utbetalingsperiode(
+                        erEndringPåEksisterendePeriode = false,
+                        opphør = Opphør(localDateNow),
+                        periodeId = 1,
+                        forrigePeriodeId = null,
+                        vedtaksdato = localDateNow,
+                        klassifisering = "KLASSE A",
+                        fom = localDateNow,
+                        tom = localDateNow,
+                        sats = BigDecimal.ONE,
+                        satstype = Satstype.MÅNEDLIG,
+                        utbetalesTil = "UTEBETALES_TIL",
+                        behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
+                    ),
                 ),
-            ),
             iverksettingId = iverksettingId,
         )
 }

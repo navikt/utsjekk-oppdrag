@@ -30,28 +30,28 @@ internal class OppdragControllerTest {
 
     private val utbetalingsoppdrag =
         Utbetalingsoppdrag(
-            kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+            erFørsteUtbetalingPåSak = true,
             fagsystem = Fagsystem.DAGPENGER,
             saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
             aktør = "PERSONID",
             saksbehandlerId = "SAKSBEHANDLERID",
             utbetalingsperiode =
-            listOf(
-                Utbetalingsperiode(
-                    erEndringPåEksisterendePeriode = true,
-                    opphør = Opphør(localDateNow),
-                    periodeId = 2,
-                    forrigePeriodeId = 1,
-                    vedtaksdato = localDateNow,
-                    klassifisering = "BATR",
-                    fom = localDateNow,
-                    tom = localDateNow,
-                    sats = BigDecimal.ONE,
-                    satstype = Satstype.MÅNEDLIG,
-                    utbetalesTil = "UTEBETALES_TIL",
-                    behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
+                listOf(
+                    Utbetalingsperiode(
+                        erEndringPåEksisterendePeriode = true,
+                        opphør = Opphør(localDateNow),
+                        periodeId = 2,
+                        forrigePeriodeId = 1,
+                        vedtaksdato = localDateNow,
+                        klassifisering = "BATR",
+                        fom = localDateNow,
+                        tom = localDateNow,
+                        sats = BigDecimal.ONE,
+                        satstype = Satstype.MÅNEDLIG,
+                        utbetalesTil = "UTEBETALES_TIL",
+                        behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
+                    ),
                 ),
-            ),
             iverksettingId = null,
         )
 

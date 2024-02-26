@@ -6,7 +6,6 @@ import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.Satstype
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
-import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingstype
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
@@ -20,9 +19,9 @@ internal object TestOppdragMedAvstemmingsdato {
         fagsystem: Fagsystem = Fagsystem.DAGPENGER,
         stønadstype: String = "DPORAS",
         fagsak: GeneriskId = GeneriskIdSomUUID(FAGSAKID),
-        vararg utbetalingsperiode: Utbetalingsperiode = arrayOf(lagUtbetalingsperiode(utbetalingstypeForKode(stønadstype))),
+        vararg utbetalingsperiode: Utbetalingsperiode = arrayOf(lagUtbetalingsperiode(stønadstype)),
     ) = Utbetalingsoppdrag(
-        kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+        erFørsteUtbetalingPåSak = true,
         fagsystem = fagsystem,
         saksnummer = fagsak,
         aktør = AKTØR,
@@ -33,7 +32,7 @@ internal object TestOppdragMedAvstemmingsdato {
     )
 
     private fun lagUtbetalingsperiode(
-        utbetalingstype: Utbetalingstype = Utbetalingstype.DAGPENGER_ARBEIDSSØKER_ORDINÆR,
+        klassifisering: String,
         periodeId: Long = 1,
         beløp: Int = 100,
         fom: LocalDate = LocalDate.now().withDayOfMonth(1),
@@ -44,7 +43,7 @@ internal object TestOppdragMedAvstemmingsdato {
         periodeId = periodeId,
         forrigePeriodeId = null,
         vedtaksdato = LocalDate.now(),
-        klassifisering = utbetalingstype.kode,
+        klassifisering = klassifisering,
         fom = fom,
         tom = tom,
         sats = beløp.toBigDecimal(),
@@ -53,11 +52,4 @@ internal object TestOppdragMedAvstemmingsdato {
         behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
         utbetalingsgrad = 50,
     )
-
-    private fun utbetalingstypeForKode(kode: String) =
-        requireNotNull(
-            Utbetalingstype.entries.find {
-                it.kode == kode
-            },
-        )
 }

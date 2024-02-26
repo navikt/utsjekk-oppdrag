@@ -1,6 +1,5 @@
 package no.nav.dagpenger.oppdrag.iverksetting
 
-import no.nav.dagpenger.kontrakter.felles.BrukersNavKontor
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.Satstype
@@ -62,7 +61,7 @@ class OppdragMapperTest {
 
         val utbetalingsoppdrag =
             Utbetalingsoppdrag(
-                kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+                erFørsteUtbetalingPåSak = true,
                 fagsystem = Fagsystem.DAGPENGER,
                 saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
                 aktør = "12345678911",
@@ -97,7 +96,7 @@ class OppdragMapperTest {
             )
         val utbetalingsoppdrag =
             Utbetalingsoppdrag(
-                kodeEndring = Utbetalingsoppdrag.KodeEndring.ENDR,
+                erFørsteUtbetalingPåSak = false,
                 fagsystem = Fagsystem.DAGPENGER,
                 saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
                 aktør = "12345678911",
@@ -131,12 +130,12 @@ class OppdragMapperTest {
             )
         val utbetalingsoppdrag =
             Utbetalingsoppdrag(
-                kodeEndring = Utbetalingsoppdrag.KodeEndring.NY,
+                erFørsteUtbetalingPåSak = true,
                 fagsystem = Fagsystem.TILTAKSPENGER,
                 saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
                 aktør = "12345678911",
                 saksbehandlerId = "Z992991",
-                brukersNavKontor = BrukersNavKontor(enhet = "0220", gjelderFom = LocalDate.now().minusMonths(1)),
+                brukersNavKontor = "0220",
                 utbetalingsperiode = listOf(utbetalingsperiode1),
                 iverksettingId = null,
             )
@@ -151,8 +150,9 @@ class OppdragMapperTest {
         utbetalingsoppdrag: Utbetalingsoppdrag,
         oppdrag110: Oppdrag110,
     ) {
+        val forventetEndringskode = if (utbetalingsoppdrag.erFørsteUtbetalingPåSak) Endringskode.NY else Endringskode.ENDRING
         assertEquals(OppdragSkjemaConstants.KODE_AKSJON, oppdrag110.kodeAksjon)
-        assertEquals(utbetalingsoppdrag.kodeEndring.name, oppdrag110.kodeEndring.toString())
+        assertEquals(forventetEndringskode.kode, oppdrag110.kodeEndring.toString())
         assertEquals(utbetalingsoppdrag.fagsystem.kode, oppdrag110.kodeFagomraade)
         assertEquals(utbetalingsoppdrag.komprimertFagsystemId, oppdrag110.fagsystemId)
         assertEquals(Utbetalingsfrekvens.MÅNEDLIG.kode, oppdrag110.utbetFrekvens)
@@ -170,7 +170,7 @@ class OppdragMapperTest {
         )
         assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET, oppdrag110.oppdragsEnhet120[0].typeEnhet)
         utbetalingsoppdrag.brukersNavKontor?.let {
-            assertEquals(it.enhet, oppdrag110.oppdragsEnhet120[0].enhet)
+            assertEquals(it, oppdrag110.oppdragsEnhet120[0].enhet)
             assertEquals(OppdragSkjemaConstants.BRUKERS_NAVKONTOR_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
             assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BEHANDLENDE_ENHET, oppdrag110.oppdragsEnhet120[1].typeEnhet)
             assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[1].enhet)
