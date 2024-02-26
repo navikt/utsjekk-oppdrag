@@ -10,7 +10,8 @@ object OppdragSkjemaConstants {
     const val ENHET_TYPE_BOSTEDSENHET = "BOS"
     const val ENHET_TYPE_BEHANDLENDE_ENHET = "BEH"
     const val ENHET = "8020"
-    val ENHET_DATO_FOM: LocalDate = LocalDate.of(1900, 1, 1)
+    val ENHET_FOM: LocalDate = LocalDate.of(1900, 1, 1)
+    val BRUKERS_NAVKONTOR_FOM: LocalDate = LocalDate.of(1970, 1, 1)
 
     val FRADRAG_TILLEGG = TfradragTillegg.T
     const val BRUK_KJØREPLAN_DEFAULT = "N"

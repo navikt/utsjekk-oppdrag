@@ -171,14 +171,14 @@ class OppdragMapperTest {
         assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET, oppdrag110.oppdragsEnhet120[0].typeEnhet)
         utbetalingsoppdrag.brukersNavKontor?.let {
             assertEquals(it.enhet, oppdrag110.oppdragsEnhet120[0].enhet)
-            assertEquals(it.gjelderFom.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
+            assertEquals(OppdragSkjemaConstants.BRUKERS_NAVKONTOR_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
             assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BEHANDLENDE_ENHET, oppdrag110.oppdragsEnhet120[1].typeEnhet)
             assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[1].enhet)
-            assertEquals(OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[1].datoEnhetFom)
+            assertEquals(OppdragSkjemaConstants.ENHET_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[1].datoEnhetFom)
         }
             ?: {
                 assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[0].enhet)
-                assertEquals(OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
+                assertEquals(OppdragSkjemaConstants.ENHET_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
             }
     }
 

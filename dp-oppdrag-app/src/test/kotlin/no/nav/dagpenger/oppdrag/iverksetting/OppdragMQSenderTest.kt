@@ -118,7 +118,7 @@ class OppdragMQSenderTest {
                     objectFactory.createOppdragsEnhet120().apply {
                         enhet = OppdragSkjemaConstants.ENHET
                         typeEnhet = OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET
-                        datoEnhetFom = OppdragSkjemaConstants.ENHET_DATO_FOM.toXMLDate()
+                        datoEnhetFom = OppdragSkjemaConstants.ENHET_FOM.toXMLDate()
                     },
                 )
                 avstemming115 =
