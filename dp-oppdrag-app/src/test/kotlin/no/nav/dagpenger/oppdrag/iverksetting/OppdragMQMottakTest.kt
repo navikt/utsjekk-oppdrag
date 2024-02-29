@@ -12,6 +12,7 @@ import no.nav.dagpenger.oppdrag.iverksetting.domene.Kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
 import no.nav.dagpenger.oppdrag.iverksetting.domene.kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragMottaker
+import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.id
@@ -40,7 +41,7 @@ class OppdragMQMottakTest {
     @Test
     fun skal_tolke_kvittering_riktig_ved_OK() {
         val kvittering = lesKvittering("kvittering-akseptert.xml")
-        val statusFraKvittering = oppdragMottaker.lesKvittering(kvittering).kvitteringstatus
+        val statusFraKvittering = OppdragXmlMapper.tilOppdrag(kvittering).kvitteringstatus
 
         assertEquals(Kvitteringstatus.OK, statusFraKvittering)
     }
@@ -48,7 +49,7 @@ class OppdragMQMottakTest {
     @Test
     fun skal_tolke_kvittering_riktig_ved_feil() {
         val kvittering: String = lesKvittering("kvittering-avvist.xml")
-        val statusFraKvittering = oppdragMottaker.lesKvittering(kvittering).kvitteringstatus
+        val statusFraKvittering = OppdragXmlMapper.tilOppdrag(kvittering).kvitteringstatus
 
         assertEquals(Kvitteringstatus.AVVIST_FUNKSJONELLE_FEIL, statusFraKvittering)
     }

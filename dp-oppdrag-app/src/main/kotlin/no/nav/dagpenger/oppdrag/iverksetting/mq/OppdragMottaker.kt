@@ -31,13 +31,13 @@ internal class OppdragMottaker(
         try {
             behandleMelding(melding)
         } catch (e: Exception) {
-            logger.warn("Feilet lesing av melding med id: ${melding.jmsMessageID}, innhold: ${melding.text}", e)
+            secureLogger.warn("Feilet lesing av melding med id: ${melding.jmsMessageID}, innhold: ${melding.text}", e)
             throw e
         }
     }
 
     private fun behandleMelding(melding: TextMessage) {
-        val kvittering = lesKvittering(parseTextMessage(melding))
+        val kvittering = OppdragXmlMapper.tilOppdrag(melding.text)
         val oppdragIdKvittering = kvittering.dekomprimertId
 
         logger.info(
@@ -67,15 +67,4 @@ internal class OppdragMottaker(
             oppdragLagerRepository.oppdaterStatus(oppdragId, OppdragStatus.KVITTERT_OK, førsteOppdragUtenKvittering.versjon)
         }
     }
-
-    private fun parseTextMessage(melding: TextMessage) =
-        melding.text.let { text ->
-            if (!kjørerLokalt) {
-                text.replace("oppdrag xmlns", "ns2:oppdrag xmlns:ns2")
-            } else {
-                text
-            }
-        }
-
-    fun lesKvittering(melding: String) = OppdragXmlMapper.tilOppdrag(melding)
 }
