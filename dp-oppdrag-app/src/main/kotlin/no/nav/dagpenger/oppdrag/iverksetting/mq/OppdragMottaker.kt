@@ -31,7 +31,7 @@ internal class OppdragMottaker(
         try {
             behandleMelding(melding)
         } catch (e: Exception) {
-            secureLogger.warn("Feilet lesing av melding=${melding.jmsMessageID}", e)
+            logger.warn("Feilet lesing av melding med id: ${melding.jmsMessageID}, innhold: ${melding.text}", e)
             throw e
         }
     }
