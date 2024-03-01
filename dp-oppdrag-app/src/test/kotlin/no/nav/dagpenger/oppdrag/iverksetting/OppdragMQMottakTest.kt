@@ -20,6 +20,7 @@ import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag.utbetalingsoppdragMe
 import no.nav.dagpenger.oppdrag.util.somOppdragLager
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.springframework.core.env.Environment
 import kotlin.test.assertEquals
@@ -44,6 +45,12 @@ class OppdragMQMottakTest {
         val statusFraKvittering = OppdragXmlMapper.tilOppdrag(kvittering).kvitteringstatus
 
         assertEquals(Kvitteringstatus.OK, statusFraKvittering)
+    }
+
+    @Test
+    fun `skal deserialisere kvittering som feilet i testmiljø`() {
+        val kvittering = "kvittering-test.xml".fraRessursSomTextMessage
+        assertDoesNotThrow { OppdragXmlMapper.tilOppdrag(kvittering.text) }
     }
 
     @Test
