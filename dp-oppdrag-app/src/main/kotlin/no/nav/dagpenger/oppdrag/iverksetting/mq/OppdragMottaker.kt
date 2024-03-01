@@ -37,7 +37,7 @@ internal class OppdragMottaker(
     }
 
     private fun behandleMelding(melding: TextMessage) {
-        val kvittering = OppdragXmlMapper.tilOppdrag(melding.text)
+        val kvittering = OppdragXmlMapper.tilOppdrag(leggTilNamespacePrefiks(melding.text))
         val oppdragIdKvittering = kvittering.dekomprimertId
 
         logger.info(
@@ -66,5 +66,11 @@ internal class OppdragMottaker(
         } else {
             oppdragLagerRepository.oppdaterStatus(oppdragId, OppdragStatus.KVITTERT_OK, førsteOppdragUtenKvittering.versjon)
         }
+    }
+
+    fun leggTilNamespacePrefiks(xml: String): String {
+        return xml
+            .replace("<oppdrag xmlns=", "<ns2:oppdrag xmlns:ns2=", ignoreCase = true)
+            .replace("</oppdrag>", "</ns2:oppdrag>", ignoreCase = true)
     }
 }

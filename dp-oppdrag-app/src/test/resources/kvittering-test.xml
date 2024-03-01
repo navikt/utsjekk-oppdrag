@@ -8,15 +8,15 @@
         <kodeAksjon>1</kodeAksjon>
         <kodeEndring>NY</kodeEndring>
         <kodeFagomraade>DP</kodeFagomraade>
-        <fagsystemId>mvQXjWUpTCWgyXDp+zw+tQ==</fagsystemId>
+        <fagsystemId>QwrXGaEqS3WB3RZc9NoQRQ==</fagsystemId>
         <utbetFrekvens>MND</utbetFrekvens>
-        <oppdragGjelderId>08817797106</oppdragGjelderId>
+        <oppdragGjelderId>01816598733</oppdragGjelderId>
         <datoOppdragGjelderFom>2000-01-01+01:00</datoOppdragGjelderFom>
         <saksbehId>Z999999</saksbehId>
         <avstemming-115>
             <kodeKomponent>DP</kodeKomponent>
-            <nokkelAvstemming>2024-02-29-15.35.51.747340</nokkelAvstemming>
-            <tidspktMelding>2024-02-29-15.35.51.747340</tidspktMelding>
+            <nokkelAvstemming>2024-03-01-09.56.47.291289</nokkelAvstemming>
+            <tidspktMelding>2024-03-01-09.56.47.291289</tidspktMelding>
         </avstemming-115>
         <oppdrags-enhet-120>
             <typeEnhet>BOS</typeEnhet>
@@ -26,7 +26,7 @@
         <oppdrags-linje-150>
             <kodeEndringLinje>NY</kodeEndringLinje>
             <vedtakId>2024-02-29</vedtakId>
-            <delytelseId>mvQXjWUpTCWgyXDp+zw+tQ==#0</delytelseId>
+            <delytelseId>QwrXGaEqS3WB3RZc9NoQRQ==#0</delytelseId>
             <kodeKlassifik>DPORAS</kodeKlassifik>
             <datoVedtakFom>2024-02-12+01:00</datoVedtakFom>
             <datoVedtakTom>2024-02-16+01:00</datoVedtakTom>
@@ -35,8 +35,8 @@
             <typeSats>DAG</typeSats>
             <brukKjoreplan>N</brukKjoreplan>
             <saksbehId>Z999999</saksbehId>
-            <utbetalesTilId>08817797106</utbetalesTilId>
-            <henvisning>SwPeJKwNT92+McCz0Ql18g==</henvisning>
+            <utbetalesTilId>01816598733</utbetalesTilId>
+            <henvisning>z3XoZbD8QwWU3JwD+DjB5A==</henvisning>
             <attestant-180>
                 <attestantId>Z999999</attestantId>
             </attestant-180>
@@ -44,7 +44,7 @@
         <oppdrags-linje-150>
             <kodeEndringLinje>NY</kodeEndringLinje>
             <vedtakId>2024-02-29</vedtakId>
-            <delytelseId>mvQXjWUpTCWgyXDp+zw+tQ==#1</delytelseId>
+            <delytelseId>QwrXGaEqS3WB3RZc9NoQRQ==#1</delytelseId>
             <kodeKlassifik>DPORAS</kodeKlassifik>
             <datoVedtakFom>2024-02-19+01:00</datoVedtakFom>
             <datoVedtakTom>2024-02-23+01:00</datoVedtakTom>
@@ -53,10 +53,10 @@
             <typeSats>DAG</typeSats>
             <brukKjoreplan>N</brukKjoreplan>
             <saksbehId>Z999999</saksbehId>
-            <utbetalesTilId>08817797106</utbetalesTilId>
-            <henvisning>SwPeJKwNT92+McCz0Ql18g==</henvisning>
-            <refFagsystemId>mvQXjWUpTCWgyXDp+zw+tQ==</refFagsystemId>
-            <refDelytelseId>mvQXjWUpTCWgyXDp+zw+tQ==#0</refDelytelseId>
+            <utbetalesTilId>01816598733</utbetalesTilId>
+            <henvisning>z3XoZbD8QwWU3JwD+DjB5A==</henvisning>
+            <refFagsystemId>QwrXGaEqS3WB3RZc9NoQRQ==</refFagsystemId>
+            <refDelytelseId>QwrXGaEqS3WB3RZc9NoQRQ==#0</refDelytelseId>
             <attestant-180>
                 <attestantId>Z999999</attestantId>
             </attestant-180>

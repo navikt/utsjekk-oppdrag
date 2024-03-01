@@ -15,6 +15,7 @@ import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragMottaker
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.dekomprimertId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.id
 import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer
 import no.nav.dagpenger.oppdrag.util.somOppdragLager
@@ -50,7 +51,8 @@ class OppdragMQMottakTest {
     @Test
     fun `skal deserialisere kvittering som feilet i testmiljø`() {
         val kvittering = "kvittering-test.xml".fraRessursSomTextMessage
-        assertDoesNotThrow { OppdragXmlMapper.tilOppdrag(kvittering.text) }
+        val deserialisert = OppdragXmlMapper.tilOppdrag(oppdragMottaker.leggTilNamespacePrefiks(kvittering.text))
+        assertDoesNotThrow { deserialisert.dekomprimertId }
     }
 
     @Test
