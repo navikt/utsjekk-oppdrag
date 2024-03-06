@@ -1,4 +1,4 @@
-package no.nav.dagpenger.oppdrag.iverksetting
+package no.nav.dagpenger.oppdrag.iverksetting.domene
 
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomString
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID

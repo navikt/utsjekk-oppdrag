@@ -1,24 +1,21 @@
-package no.nav.dagpenger.oppdrag.iverksetting
+package no.nav.dagpenger.oppdrag.iverksetting.mq
 
-import com.ibm.mq.jakarta.jms.MQConnectionFactory
-import com.ibm.msg.client.jakarta.wmq.WMQConstants
 import io.mockk.called
-import io.mockk.spyk
 import io.mockk.verify
 import no.nav.dagpenger.kontrakter.felles.Satstype
+import no.nav.dagpenger.oppdrag.MQInitializer
+import no.nav.dagpenger.oppdrag.MQInitializer.Companion.TESTKØ
 import no.nav.dagpenger.oppdrag.iverksetting.domene.Endringskode
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragSkjemaConstants
 import no.nav.dagpenger.oppdrag.iverksetting.domene.Utbetalingsfrekvens
 import no.nav.dagpenger.oppdrag.iverksetting.domene.tilOppdragskode
 import no.nav.dagpenger.oppdrag.iverksetting.domene.toXMLDate
-import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragSender
-import no.nav.dagpenger.oppdrag.util.Containers
 import no.trygdeetaten.skjema.oppdrag.ObjectFactory
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.junit.jupiter.Container
@@ -28,47 +25,32 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.test.assertEquals
 
-private const val FAGOMRÅDE_BARNETRYGD = "BA"
-private const val KLASSEKODE_BARNETRYGD = "BATR"
-private const val SATS_BARNETRYGD = 1054
-private const val TESTKØ = "DEV.QUEUE.1"
-private const val TEST_FAGSAKID = "123456789"
-
 @Testcontainers
-@ContextConfiguration(initializers = [Containers.MQInitializer::class])
+@ContextConfiguration(initializers = [MQInitializer::class])
 class OppdragMQSenderTest {
+    private lateinit var jmsTemplate: JmsTemplate
+
     companion object {
-        @Container var ibmMQContainer: Containers.MyGeneralContainer = Containers.ibmMQContainer
+        @Container
+        val ibmMQContainer = MQInitializer.container
     }
 
-    private val mqConn =
-        MQConnectionFactory().apply {
-            hostName = "localhost"
-            port = ibmMQContainer.getMappedPort(1414)
-            channel = "DEV.ADMIN.SVRCONN"
-            queueManager = "QM1"
-            transportType = WMQConstants.WMQ_CM_CLIENT
-        }
-
-    private val cf =
-        UserCredentialsConnectionFactoryAdapter().apply {
-            setUsername("admin")
-            setPassword("passw0rd")
-            setTargetConnectionFactory(mqConn)
-        }
-
-    private val jmsTemplate = spyk(JmsTemplate(cf).apply { defaultDestinationName = TESTKØ })
+    @BeforeEach
+    fun setup() {
+        jmsTemplate = MQInitializer.getJmsTemplate()
+    }
 
     @Test
-    fun skal_sende_oppdrag_når_skrudd_på() {
+    fun `skal sende oppdrag når skrudd på`() {
         val oppdragSender = OppdragSender(jmsTemplate, "true", TESTKØ)
-        val fagsakId = oppdragSender.sendOppdrag(lagTestOppdrag())
+        val delytelseId = "123456789"
+        val fagsakId = oppdragSender.sendOppdrag(lagTestOppdrag(delytelseId))
 
-        assertEquals(TEST_FAGSAKID, fagsakId)
+        assertEquals(delytelseId, fagsakId)
     }
 
     @Test
-    fun skal_ikke_sende_oppdrag_når_skrudd_av() {
+    fun `skal ikke sende oppdrag når skrudd av`() {
         val oppdragSender = OppdragSender(jmsTemplate, "false", TESTKØ)
 
         Assertions.assertThrows(UnsupportedOperationException::class.java) {
@@ -78,7 +60,7 @@ class OppdragMQSenderTest {
         verify { jmsTemplate wasNot called }
     }
 
-    private fun lagTestOppdrag(): Oppdrag {
+    private fun lagTestOppdrag(delytelseId: String = "123456789"): Oppdrag {
         val avstemmingsTidspunkt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS"))
         val objectFactory = ObjectFactory()
 
@@ -86,11 +68,11 @@ class OppdragMQSenderTest {
             objectFactory.createOppdragsLinje150().apply {
                 kodeEndringLinje = Endringskode.NY.kode
                 vedtakId = avstemmingsTidspunkt
-                delytelseId = TEST_FAGSAKID
-                kodeKlassifik = KLASSEKODE_BARNETRYGD
+                this.delytelseId = delytelseId
+                kodeKlassifik = "BATR"
                 datoVedtakFom = LocalDate.now().toXMLDate()
                 datoVedtakTom = LocalDate.now().plusDays(1).toXMLDate()
-                sats = SATS_BARNETRYGD.toBigDecimal()
+                sats = 1054.toBigDecimal()
                 fradragTillegg = OppdragSkjemaConstants.FRADRAG_TILLEGG
                 typeSats = Satstype.MÅNEDLIG.tilOppdragskode()
                 brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
@@ -108,8 +90,8 @@ class OppdragMQSenderTest {
             Oppdrag110().apply {
                 kodeAksjon = "1"
                 kodeEndring = Endringskode.NY.kode
-                kodeFagomraade = FAGOMRÅDE_BARNETRYGD
-                fagsystemId = TEST_FAGSAKID
+                kodeFagomraade = "BA"
+                fagsystemId = delytelseId
                 utbetFrekvens = Utbetalingsfrekvens.MÅNEDLIG.kode
                 oppdragGjelderId = "12345678911"
                 datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
@@ -124,7 +106,7 @@ class OppdragMQSenderTest {
                 avstemming115 =
                     objectFactory.createAvstemming115().apply {
                         nokkelAvstemming = avstemmingsTidspunkt
-                        kodeKomponent = FAGOMRÅDE_BARNETRYGD
+                        kodeKomponent = "BA"
                         tidspktMelding = avstemmingsTidspunkt
                     }
                 oppdragsLinje150.add(testOppdragsLinje150)

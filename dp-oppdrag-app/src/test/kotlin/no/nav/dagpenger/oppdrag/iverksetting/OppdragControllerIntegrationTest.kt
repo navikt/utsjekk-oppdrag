@@ -2,11 +2,11 @@ package no.nav.dagpenger.oppdrag.iverksetting
 
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.MQInitializer
+import no.nav.dagpenger.oppdrag.PostgreSQLInitializer
+import no.nav.dagpenger.oppdrag.etUtbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
-import no.nav.dagpenger.oppdrag.util.Containers
-import no.nav.dagpenger.oppdrag.util.TestConfig
-import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -19,8 +19,8 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import kotlin.test.assertEquals
 
 @ActiveProfiles("local")
-@ContextConfiguration(initializers = [Containers.PostgresSQLInitializer::class, Containers.MQInitializer::class])
-@SpringBootTest(classes = [TestConfig::class])
+@ContextConfiguration(initializers = [PostgreSQLInitializer::class, MQInitializer::class])
+@SpringBootTest
 @EnableJms
 @Testcontainers
 internal class OppdragControllerIntegrationTest {
@@ -32,16 +32,16 @@ internal class OppdragControllerIntegrationTest {
 
     companion object {
         @Container
-        var postgreSQLContainer = Containers.postgreSQLContainer
+        var postgreSQLContainer = PostgreSQLInitializer.container
 
         @Container
-        var ibmMQContainer = Containers.ibmMQContainer
+        var ibmMQContainer = MQInitializer.container
     }
 
     @Test
-    fun `Test skal lagre oppdrag for utbetalingoppdrag`() {
+    fun `skal lagre oppdrag for utbetalingoppdrag`() {
         val oppdragController = OppdragController(oppdragService)
-        val utbetalingsoppdrag = utbetalingsoppdragMedTilfeldigAktoer()
+        val utbetalingsoppdrag = etUtbetalingsoppdrag()
 
         oppdragController.sendOppdrag(utbetalingsoppdrag)
 
@@ -57,9 +57,9 @@ internal class OppdragControllerIntegrationTest {
     }
 
     @Test
-    fun `Test skal returnere https statuscode 409 ved dobbel sending`() {
+    fun `skal returnere https statuscode 409 ved dobbel sending`() {
         val oppdragController = OppdragController(oppdragService)
-        val utbetalingsoppdrag = utbetalingsoppdragMedTilfeldigAktoer()
+        val utbetalingsoppdrag = etUtbetalingsoppdrag()
 
         oppdragController.sendOppdrag(utbetalingsoppdrag).also {
             assertEquals(HttpStatus.CREATED, it.statusCode)

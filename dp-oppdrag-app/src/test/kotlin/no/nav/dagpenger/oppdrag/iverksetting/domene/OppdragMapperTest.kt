@@ -1,156 +1,124 @@
-package no.nav.dagpenger.oppdrag.iverksetting
+package no.nav.dagpenger.oppdrag.iverksetting.domene
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
-import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.Satstype
 import no.nav.dagpenger.kontrakter.felles.somUUID
+import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
-import no.nav.dagpenger.oppdrag.iverksetting.domene.Endringskode
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
-import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragSkjemaConstants
-import no.nav.dagpenger.oppdrag.iverksetting.domene.Utbetalingsfrekvens
+import no.nav.dagpenger.oppdrag.enUtbetalingsperiode
+import no.nav.dagpenger.oppdrag.etUtbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.domene.UuidKomprimator.komprimer
-import no.nav.dagpenger.oppdrag.iverksetting.domene.komprimertFagsystemId
-import no.nav.dagpenger.oppdrag.iverksetting.domene.toXMLDate
+import no.trygdeetaten.skjema.oppdrag.Mmel
+import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
 import no.trygdeetaten.skjema.oppdrag.OppdragsLinje150
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.UUID
 
 class OppdragMapperTest {
     @Test
     fun `mappe vedtak`() {
-        val utbetalingsperiode1 =
-            Utbetalingsperiode(
-                erEndringPåEksisterendePeriode = false,
-                opphør = null,
-                periodeId = 1,
-                forrigePeriodeId = null,
-                vedtaksdato = LocalDate.now(),
-                klassifisering = "BATR",
+        val periode1 =
+            enUtbetalingsperiode(
+                beløp = 1234,
                 fom = LocalDate.now(),
                 tom = LocalDate.now().plusYears(6),
-                sats = BigDecimal.valueOf(1354L),
-                satstype = Satstype.MÅNEDLIG,
-                utbetalesTil = "12345678911",
-                behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
             )
 
-        val utbetalingsperiode2 =
-            Utbetalingsperiode(
-                erEndringPåEksisterendePeriode = false,
-                opphør = null,
-                periodeId = 2,
-                forrigePeriodeId = 1,
-                vedtaksdato = LocalDate.now(),
-                klassifisering = "BATR",
-                fom = LocalDate.now().plusYears(6).plusMonths(1),
-                tom = LocalDate.now().plusYears(12).plusMonths(1),
-                sats = BigDecimal.valueOf(1054L),
-                satstype = Satstype.MÅNEDLIG,
-                utbetalesTil = "12345678911",
-                behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
-                utbetalingsgrad = 60,
+        val periode2 =
+            enUtbetalingsperiode(
+                beløp = 2345,
+                fom = LocalDate.now().plusMonths(1),
+                tom = LocalDate.now().plusYears(6).plusMonths(1),
             )
 
         val utbetalingsoppdrag =
-            Utbetalingsoppdrag(
-                erFørsteUtbetalingPåSak = true,
-                fagsystem = Fagsystem.DAGPENGER,
-                saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
-                aktør = "12345678911",
-                saksbehandlerId = "Z992991",
-                utbetalingsperiode = listOf(utbetalingsperiode1, utbetalingsperiode2),
-                iverksettingId = null,
+            etUtbetalingsoppdrag(
+                utbetalingsperiode =
+                arrayOf(
+                    periode1,
+                    periode2,
+                ),
             )
 
         val oppdrag110 = OppdragMapper.tilOppdrag110(utbetalingsoppdrag)
 
         assertOppdrag110(utbetalingsoppdrag, oppdrag110)
-        assertOppdragslinje150(utbetalingsperiode1, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[0])
-        assertOppdragslinje150(utbetalingsperiode2, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[1])
+        assertOppdragslinje150(periode1, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[0])
+        assertOppdragslinje150(periode2, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[1])
     }
 
     @Test
     fun `mappe opphør på vedtak`() {
-        val utbetalingsperiode1 =
-            Utbetalingsperiode(
-                erEndringPåEksisterendePeriode = true,
+        val periode =
+            enUtbetalingsperiode(
                 opphør = Opphør(LocalDate.now().plusMonths(1)),
                 periodeId = 3,
                 forrigePeriodeId = 2,
-                vedtaksdato = LocalDate.now(),
-                klassifisering = "BATR",
                 fom = LocalDate.now(),
                 tom = LocalDate.now().plusYears(2),
-                sats = BigDecimal.valueOf(1354L),
-                satstype = Satstype.MÅNEDLIG,
-                utbetalesTil = "12345678911",
-                behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
             )
+
         val utbetalingsoppdrag =
-            Utbetalingsoppdrag(
+            etUtbetalingsoppdrag(
                 erFørsteUtbetalingPåSak = false,
-                fagsystem = Fagsystem.DAGPENGER,
-                saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
-                aktør = "12345678911",
-                saksbehandlerId = "Z992991",
-                utbetalingsperiode = listOf(utbetalingsperiode1),
-                iverksettingId = null,
+                utbetalingsperiode = arrayOf(periode),
             )
 
         val oppdrag110 = OppdragMapper.tilOppdrag110(utbetalingsoppdrag)
 
         assertOppdrag110(utbetalingsoppdrag, oppdrag110)
-        assertOppdragslinje150(utbetalingsperiode1, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[0])
+        assertOppdragslinje150(periode, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[0])
     }
 
     @Test
     fun `mappe vedtak for tiltakspenger`() {
-        val utbetalingsperiode1 =
-            Utbetalingsperiode(
-                erEndringPåEksisterendePeriode = false,
-                opphør = null,
-                periodeId = 1,
-                forrigePeriodeId = null,
-                vedtaksdato = LocalDate.now(),
+        val periode =
+            enUtbetalingsperiode(
                 klassifisering = "TPTPATT",
                 fom = LocalDate.now(),
                 tom = LocalDate.now().plusDays(6),
-                sats = BigDecimal.valueOf(1354L),
+                beløp = 1354,
                 satstype = Satstype.DAGLIG,
-                utbetalesTil = "12345678911",
-                behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
             )
         val utbetalingsoppdrag =
-            Utbetalingsoppdrag(
-                erFørsteUtbetalingPåSak = true,
+            etUtbetalingsoppdrag(
                 fagsystem = Fagsystem.TILTAKSPENGER,
-                saksnummer = GeneriskIdSomUUID(UUID.randomUUID()),
-                aktør = "12345678911",
-                saksbehandlerId = "Z992991",
                 brukersNavKontor = "0220",
-                utbetalingsperiode = listOf(utbetalingsperiode1),
-                iverksettingId = null,
+                utbetalingsperiode = arrayOf(periode),
             )
 
         val oppdrag110 = OppdragMapper.tilOppdrag110(utbetalingsoppdrag)
 
         assertOppdrag110(utbetalingsoppdrag, oppdrag110)
-        assertOppdragslinje150(utbetalingsperiode1, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[0])
+        assertOppdragslinje150(periode, utbetalingsoppdrag, oppdrag110.oppdragsLinje150[0])
     }
+
+    @Test
+    fun `konverterer status`() {
+        assertEquals(OppdragStatus.KVITTERT_OK, oppdragMedAlvorlighetsgrad("00").status)
+        assertEquals(OppdragStatus.KVITTERT_MED_MANGLER, oppdragMedAlvorlighetsgrad("04").status)
+        assertEquals(OppdragStatus.KVITTERT_FUNKSJONELL_FEIL, oppdragMedAlvorlighetsgrad("08").status)
+        assertEquals(OppdragStatus.KVITTERT_TEKNISK_FEIL, oppdragMedAlvorlighetsgrad("12").status)
+        assertEquals(OppdragStatus.KVITTERT_UKJENT, oppdragMedAlvorlighetsgrad("Ukjent").status)
+    }
+
+    private fun oppdragMedAlvorlighetsgrad(alvorlighetsgrad: String) =
+        Oppdrag().apply {
+            mmel = Mmel()
+            mmel.alvorlighetsgrad = alvorlighetsgrad
+        }
 
     private fun assertOppdrag110(
         utbetalingsoppdrag: Utbetalingsoppdrag,
         oppdrag110: Oppdrag110,
     ) {
-        val forventetEndringskode = if (utbetalingsoppdrag.erFørsteUtbetalingPåSak) Endringskode.NY else Endringskode.ENDRING
+        val forventetEndringskode =
+            if (utbetalingsoppdrag.erFørsteUtbetalingPåSak) Endringskode.NY else Endringskode.ENDRING
         assertEquals(OppdragSkjemaConstants.KODE_AKSJON, oppdrag110.kodeAksjon)
         assertEquals(forventetEndringskode.kode, oppdrag110.kodeEndring.toString())
         assertEquals(utbetalingsoppdrag.fagsystem.kode, oppdrag110.kodeFagomraade)
@@ -171,7 +139,10 @@ class OppdragMapperTest {
         assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BOSTEDSENHET, oppdrag110.oppdragsEnhet120[0].typeEnhet)
         utbetalingsoppdrag.brukersNavKontor?.let {
             assertEquals(it, oppdrag110.oppdragsEnhet120[0].enhet)
-            assertEquals(OppdragSkjemaConstants.BRUKERS_NAVKONTOR_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
+            assertEquals(
+                OppdragSkjemaConstants.BRUKERS_NAVKONTOR_FOM.toXMLDate(),
+                oppdrag110.oppdragsEnhet120[0].datoEnhetFom,
+            )
             assertEquals(OppdragSkjemaConstants.ENHET_TYPE_BEHANDLENDE_ENHET, oppdrag110.oppdragsEnhet120[1].typeEnhet)
             assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[1].enhet)
             assertEquals(OppdragSkjemaConstants.ENHET_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[1].datoEnhetFom)

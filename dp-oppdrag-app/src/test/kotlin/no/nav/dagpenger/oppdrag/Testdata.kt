@@ -1,0 +1,71 @@
+package no.nav.dagpenger.oppdrag
+
+import no.nav.dagpenger.kontrakter.felles.Fagsystem
+import no.nav.dagpenger.kontrakter.felles.GeneriskId
+import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
+import no.nav.dagpenger.kontrakter.felles.Satstype
+import no.nav.dagpenger.kontrakter.oppdrag.Opphør
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
+import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
+import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.UUID
+
+fun etUtbetalingsoppdrag(
+    avstemmingstidspunkt: LocalDateTime = LocalDateTime.now(),
+    fagsystem: Fagsystem = Fagsystem.DAGPENGER,
+    stønadstype: String = "DPORAS",
+    fagsak: GeneriskId = GeneriskIdSomUUID(UUID.randomUUID()),
+    aktør: String = "12345678911",
+    saksbehandlerId: String = "Z999999",
+    iverksettingId: String? = null,
+    erFørsteUtbetalingPåSak: Boolean = true,
+    brukersNavKontor: String? = null,
+    vararg utbetalingsperiode: Utbetalingsperiode = arrayOf(enUtbetalingsperiode(stønadstype, aktør)),
+) = Utbetalingsoppdrag(
+    erFørsteUtbetalingPåSak = erFørsteUtbetalingPåSak,
+    fagsystem = fagsystem,
+    saksnummer = fagsak,
+    aktør = aktør,
+    saksbehandlerId = saksbehandlerId,
+    avstemmingstidspunkt = avstemmingstidspunkt,
+    utbetalingsperiode = utbetalingsperiode.toList(),
+    iverksettingId = iverksettingId,
+    brukersNavKontor = brukersNavKontor,
+)
+
+fun enUtbetalingsperiode(
+    klassifisering: String = "DPORAS",
+    aktør: String = "12345678911",
+    periodeId: Long = 1,
+    forrigePeriodeId: Long? = null,
+    beløp: Int = 100,
+    fom: LocalDate = LocalDate.now().withDayOfMonth(1),
+    tom: LocalDate = LocalDate.now().plusYears(6),
+    opphør: Opphør? = null,
+    satstype: Satstype = Satstype.MÅNEDLIG,
+) = Utbetalingsperiode(
+    erEndringPåEksisterendePeriode = false,
+    opphør = opphør,
+    periodeId = periodeId,
+    forrigePeriodeId = forrigePeriodeId,
+    vedtaksdato = LocalDate.now(),
+    klassifisering = klassifisering,
+    fom = fom,
+    tom = tom,
+    sats = beløp.toBigDecimal(),
+    satstype = satstype,
+    utbetalesTil = aktør,
+    behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
+    utbetalingsgrad = 50,
+)
+
+internal val Utbetalingsoppdrag.somOppdragLager: OppdragLager
+    get() {
+        val tilOppdrag110 = OppdragMapper.tilOppdrag110(this)
+        val oppdrag = OppdragMapper.tilOppdrag(tilOppdrag110)
+
+        return OppdragLager.lagFraOppdrag(this, oppdrag)
+    }

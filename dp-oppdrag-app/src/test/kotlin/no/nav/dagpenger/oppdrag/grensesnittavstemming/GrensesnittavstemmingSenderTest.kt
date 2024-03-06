@@ -1,65 +1,51 @@
 package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
-import com.ibm.mq.jakarta.jms.MQConnectionFactory
-import com.ibm.msg.client.jakarta.wmq.WMQConstants
-import io.mockk.spyk
 import io.mockk.verify
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
-import no.nav.dagpenger.oppdrag.util.Containers
-import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
-import no.nav.dagpenger.oppdrag.util.somOppdragLager
-import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Avstemmingsdata
+import no.nav.dagpenger.oppdrag.MQInitializer
+import no.nav.dagpenger.oppdrag.etUtbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.somOppdragLager
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter
+import org.junit.jupiter.api.TestInstance
 import org.springframework.jms.core.JmsTemplate
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
 
-private const val TESTKØ = "DEV.QUEUE.2"
-private val FAGSYSTEM = Fagsystem.DAGPENGER
-private val IDAG = LocalDateTime.now()
-
 @Testcontainers
-@ContextConfiguration(initializers = [Containers.MQInitializer::class])
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ContextConfiguration(initializers = [MQInitializer::class])
 class GrensesnittavstemmingSenderTest {
+    private lateinit var jmsTemplate: JmsTemplate
+
     companion object {
         @Container
-        var ibmMQContainer = Containers.ibmMQContainer
+        val container = MQInitializer.container
     }
 
-    private val mqConn =
-        MQConnectionFactory().apply {
-            hostName = "localhost"
-            port = ibmMQContainer.getMappedPort(1414)
-            channel = "DEV.ADMIN.SVRCONN"
-            queueManager = "QM1"
-            transportType = WMQConstants.WMQ_CM_CLIENT
-        }
-
-    private val cf =
-        UserCredentialsConnectionFactoryAdapter().apply {
-            setUsername("admin")
-            setPassword("passw0rd")
-            setTargetConnectionFactory(mqConn)
-        }
-
-    private val jmsTemplate = spyk(JmsTemplate(cf).apply { defaultDestinationName = TESTKØ })
+    @BeforeEach
+    fun setup() {
+        jmsTemplate = MQInitializer.getJmsTemplate()
+    }
 
     @Test
-    fun skal_sende_grensesnittavstemming_når_påskrudd() {
+    fun `skal sende grensesnittavstemming når påskrudd`() {
         val avstemmingSender = GrensesnittavstemmingSender(jmsTemplate, "true")
 
-        avstemmingSender.sendGrensesnittAvstemming(lagTestGrensesnittavstemming()[0])
+        avstemmingSender.sendGrensesnittAvstemming(avstemmingsdata()[0])
 
         verify(exactly = 1) { jmsTemplate.convertAndSend(any<String>(), any<String>()) }
     }
 
-    private fun lagTestGrensesnittavstemming(): List<Avstemmingsdata> {
-        val utbetalingsoppdrag = TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(IDAG, FAGSYSTEM)
-        val mapper =
-            GrensesnittavstemmingMapper(listOf(utbetalingsoppdrag.somOppdragLager), FAGSYSTEM, IDAG.minusDays(1), IDAG)
-        return mapper.lagAvstemmingsmeldinger()
-    }
+    private fun avstemmingsdata() =
+        LocalDateTime.now().let { timestamp ->
+            GrensesnittavstemmingMapper(
+                oppdragsliste = listOf(etUtbetalingsoppdrag(timestamp).somOppdragLager),
+                fagsystem = Fagsystem.DAGPENGER,
+                fom = timestamp.minusDays(1),
+                tom = timestamp,
+            )
+        }.lagAvstemmingsmeldinger()
 }

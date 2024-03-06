@@ -3,11 +3,11 @@ package no.nav.dagpenger.oppdrag.grensesnittavstemming
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
+import no.nav.dagpenger.oppdrag.etUtbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.domene.komprimertFagsystemId
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
-import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
-import no.nav.dagpenger.oppdrag.util.somOppdragLager
+import no.nav.dagpenger.oppdrag.somOppdragLager
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AksjonType
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Aksjonsdata
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AvstemmingType
@@ -29,21 +29,26 @@ internal class GrensesnittavstemmingMapperTest {
     @Test
     fun `test mapping av tom liste`() {
         val mapper =
-            GrensesnittavstemmingMapper(emptyList(), Fagsystem.DAGPENGER, LocalDateTime.now(), LocalDateTime.now())
+            GrensesnittavstemmingMapper(
+                oppdragsliste = emptyList(),
+                fagsystem = Fagsystem.DAGPENGER,
+                fom = LocalDateTime.now(),
+                tom = LocalDateTime.now(),
+            )
         val meldinger = mapper.lagAvstemmingsmeldinger()
 
         assertEquals(0, meldinger.size)
     }
 
     @Test
-    fun `test mapping til grensesnittavstemming`() {
+    fun `mapping til grensesnittavstemming`() {
         val avstemmingstidspunkt = LocalDateTime.now().minusDays(1).withHour(13)
         val fom = avstemmingstidspunkt.toLocalDate().atStartOfDay()
         val tom = avstemmingstidspunkt.toLocalDate().atTime(LocalTime.MAX)
         val utbetalingsoppdrag =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(
-                avstemmingstidspunkt,
-                Fagsystem.DAGPENGER,
+            etUtbetalingsoppdrag(
+                avstemmingstidspunkt = avstemmingstidspunkt,
+                fagsystem = Fagsystem.DAGPENGER,
             )
         val oppdragLager = utbetalingsoppdrag.somOppdragLager
         val mapper =
@@ -70,14 +75,14 @@ internal class GrensesnittavstemmingMapperTest {
     }
 
     @Test
-    fun `test mapping til grensesnittavstemming med feilede oppdrag`() {
+    fun `mapping til grensesnittavstemming med feilede oppdrag`() {
         val avstemmingstidspunkt = LocalDateTime.now().minusDays(1).withHour(13)
         val fom = avstemmingstidspunkt.toLocalDate().atStartOfDay()
         val tom = avstemmingstidspunkt.toLocalDate().atTime(LocalTime.MAX)
         val utbetalingsoppdrag =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(
-                avstemmingstidspunkt,
-                Fagsystem.DAGPENGER,
+            etUtbetalingsoppdrag(
+                avstemmingstidspunkt = avstemmingstidspunkt,
+                fagsystem = Fagsystem.DAGPENGER,
             )
         val oppdragLager = utbetalingsoppdrag.somOppdragLager
         val oppdragLager2 =
@@ -109,18 +114,18 @@ internal class GrensesnittavstemmingMapperTest {
     }
 
     @Test
-    fun `tester at fom og tom blir satt riktig ved grensesnittavstemming`() {
+    fun `fom og tom blir satt riktig ved grensesnittavstemming`() {
         val førsteAvstemmingstidspunkt = LocalDateTime.now().minusDays(1).withHour(13)
         val andreAvstemmingstidspunkt = LocalDateTime.now().minusDays(1).withHour(15)
         val avstemmingFom = førsteAvstemmingstidspunkt.toLocalDate().atStartOfDay()
         val avstemmingTom = andreAvstemmingstidspunkt.toLocalDate().atTime(LocalTime.MAX)
         val baOppdragLager1 =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(
-                førsteAvstemmingstidspunkt,
-                Fagsystem.DAGPENGER,
+            etUtbetalingsoppdrag(
+                avstemmingstidspunkt = førsteAvstemmingstidspunkt,
+                fagsystem = Fagsystem.DAGPENGER,
             ).somOppdragLager
         val baOppdragLager2 =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(
+            etUtbetalingsoppdrag(
                 andreAvstemmingstidspunkt,
                 Fagsystem.DAGPENGER,
             ).somOppdragLager

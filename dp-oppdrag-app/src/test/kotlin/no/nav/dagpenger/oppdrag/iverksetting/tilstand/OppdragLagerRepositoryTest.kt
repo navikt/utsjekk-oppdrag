@@ -1,20 +1,15 @@
-package no.nav.dagpenger.oppdrag.iverksetting
+package no.nav.dagpenger.oppdrag.iverksetting.tilstand
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomString
 import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.tilFagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
+import no.nav.dagpenger.oppdrag.PostgreSQLInitializer
 import no.nav.dagpenger.oppdrag.config.DatabaseConfiguration
+import no.nav.dagpenger.oppdrag.etUtbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
-import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
-import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
-import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
-import no.nav.dagpenger.oppdrag.iverksetting.tilstand.tilGeneriskId
-import no.nav.dagpenger.oppdrag.util.Containers
-import no.nav.dagpenger.oppdrag.util.TestOppdragMedAvstemmingsdato
-import no.nav.dagpenger.oppdrag.util.TestUtbetalingsoppdrag
-import no.nav.dagpenger.oppdrag.util.somOppdragLager
+import no.nav.dagpenger.oppdrag.somOppdragLager
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -25,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.dao.DuplicateKeyException
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -34,10 +28,9 @@ import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @JdbcTest
-@ActiveProfiles("jdbc-test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(
-    initializers = [Containers.PostgresSQLInitializer::class],
+    initializers = [PostgreSQLInitializer::class],
     classes = [DatabaseConfiguration::class, OppdragLagerTestConfig::class],
 )
 @Testcontainers
@@ -47,12 +40,12 @@ internal class OppdragLagerRepositoryTest {
 
     companion object {
         @Container
-        var postgreSQLContainer = Containers.postgreSQLContainer
+        val postgreSQLContainer = PostgreSQLInitializer.container
     }
 
     @Test
-    fun skal_ikke_lagre_duplikat() {
-        val oppdragLager = TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer().somOppdragLager
+    fun `skal ikke lagre duplikat`() {
+        val oppdragLager = etUtbetalingsoppdrag().somOppdragLager
 
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
 
@@ -62,8 +55,8 @@ internal class OppdragLagerRepositoryTest {
     }
 
     @Test
-    fun skal_lagre_to_ulike_iverksettinger_samme_behandling() {
-        val oppdragLager = TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer().somOppdragLager.copy(iverksettingId = "1")
+    fun `skal lagre to ulike iverksettinger samme behandling`() {
+        val oppdragLager = etUtbetalingsoppdrag().somOppdragLager.copy(iverksettingId = "1")
 
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
 
@@ -73,9 +66,9 @@ internal class OppdragLagerRepositoryTest {
     }
 
     @Test
-    fun skal_lagre_status() {
+    fun `skal lagre status`() {
         val oppdragLager =
-            TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer().somOppdragLager
+            etUtbetalingsoppdrag().somOppdragLager
                 .copy(status = OppdragStatus.LAGT_PÅ_KØ)
 
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
@@ -90,9 +83,9 @@ internal class OppdragLagerRepositoryTest {
     }
 
     @Test
-    fun skal_lagre_kvitteringsmelding() {
+    fun `skal lagre kvitteringsmelding`() {
         val oppdragLager =
-            TestUtbetalingsoppdrag.utbetalingsoppdragMedTilfeldigAktoer().somOppdragLager
+            etUtbetalingsoppdrag().somOppdragLager
                 .copy(status = OppdragStatus.LAGT_PÅ_KØ)
 
         oppdragLagerRepository.opprettOppdrag(oppdragLager)
@@ -102,18 +95,18 @@ internal class OppdragLagerRepositoryTest {
         oppdragLagerRepository.oppdaterKvitteringsmelding(hentetOppdrag.id, kvitteringsmelding)
 
         val hentetOppdatertOppdrag = oppdragLagerRepository.hentOppdrag(oppdragLager.id)
-        assertTrue(kvitteringerErLike(kvitteringsmelding, hentetOppdatertOppdrag.kvitteringsmelding!!))
+
+        assertTrue(kvitteringsmelding.erLik(hentetOppdatertOppdrag.kvitteringsmelding!!))
     }
 
     @Test
-    fun skal_kun_hente_ut_ett_DP_oppdrag_for_grensesnittavstemming() {
+    fun `skal kun hente ut ett dp oppdrag for grensesnittavstemming`() {
         val dag = LocalDateTime.now()
         val startenPåDagen = dag.withHour(0).withMinute(0)
         val sluttenAvDagen = dag.withHour(23).withMinute(59)
 
-        val baOppdragLager =
-            TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(dag).somOppdragLager
-        val baOppdragLager2 = TestOppdragMedAvstemmingsdato.lagTestUtbetalingsoppdrag(dag.minusDays(1)).somOppdragLager
+        val baOppdragLager = etUtbetalingsoppdrag(dag).somOppdragLager
+        val baOppdragLager2 = etUtbetalingsoppdrag(dag.minusDays(1)).somOppdragLager
 
         oppdragLagerRepository.opprettOppdrag(baOppdragLager)
         oppdragLagerRepository.opprettOppdrag(baOppdragLager2)
@@ -138,35 +131,32 @@ internal class OppdragLagerRepositoryTest {
             this::class.java.getResourceAsStream("/kvittering-avvist.xml")
                 ?.bufferedReader().use { it?.readText() ?: "" },
         ).mmel
-}
 
-private val OppdragLager.id: OppdragId
-    get() {
-        val behandlingId =
-            Result.runCatching { UUID.fromString(this@id.behandlingId) }.fold(
-                onSuccess = { GeneriskIdSomUUID(it) },
-                onFailure = { GeneriskIdSomString(this.behandlingId) },
+    private val OppdragLager.id: OppdragId
+        get() {
+            val behandlingId =
+                Result.runCatching { UUID.fromString(this@id.behandlingId) }.fold(
+                    onSuccess = { GeneriskIdSomUUID(it) },
+                    onFailure = { GeneriskIdSomString(this.behandlingId) },
+                )
+            return OppdragId(
+                fagsystem = this.fagsystem.tilFagsystem(),
+                fagsakId = this.fagsakId.tilGeneriskId(),
+                behandlingId = behandlingId,
+                iverksettingId = this.iverksettingId,
             )
-        return OppdragId(
-            fagsystem = this.fagsystem.tilFagsystem(),
-            fagsakId = this.fagsakId.tilGeneriskId(),
-            behandlingId = behandlingId,
-            iverksettingId = this.iverksettingId,
-        )
-    }
+        }
 
-private fun kvitteringerErLike(
-    a: Mmel,
-    b: Mmel,
-): Boolean =
-    a.systemId == b.systemId &&
-        a.kodeMelding == b.kodeMelding &&
-        a.alvorlighetsgrad == b.alvorlighetsgrad &&
-        a.beskrMelding == b.beskrMelding &&
-        a.sqlKode == b.sqlKode &&
-        a.sqlState == b.sqlState &&
-        a.sqlMelding == b.sqlMelding &&
-        a.mqCompletionKode == b.mqCompletionKode &&
-        a.mqReasonKode == b.mqReasonKode &&
-        a.programId == b.programId &&
-        a.sectionNavn == b.sectionNavn
+    private fun Mmel.erLik(andre: Mmel) =
+        systemId == andre.systemId &&
+            kodeMelding == andre.kodeMelding &&
+            alvorlighetsgrad == andre.alvorlighetsgrad &&
+            beskrMelding == andre.beskrMelding &&
+            sqlKode == andre.sqlKode &&
+            sqlState == andre.sqlState &&
+            sqlMelding == andre.sqlMelding &&
+            mqCompletionKode == andre.mqCompletionKode &&
+            mqReasonKode == andre.mqReasonKode &&
+            programId == andre.programId &&
+            sectionNavn == andre.sectionNavn
+}

@@ -10,7 +10,6 @@ import jakarta.jms.Session
 import jakarta.jms.TextMessage
 import no.nav.dagpenger.oppdrag.iverksetting.domene.Kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
-import no.nav.dagpenger.oppdrag.util.Containers
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
@@ -22,7 +21,7 @@ internal class TestOppdragKø(private val kvitteringStatus: Kvitteringstatus, pr
     MessageListener,
     ApplicationContextInitializer<ConfigurableApplicationContext>,
     Closeable {
-    private val mq = Containers.MyGeneralContainer("ibmcom/mq")
+    private val mq = GenericMQContainer("ibmcom/mq")
     private lateinit var queueConnection: QueueConnection
 
     private fun startMQ(context: ConfigurableApplicationContext) {
@@ -38,7 +37,7 @@ internal class TestOppdragKø(private val kvitteringStatus: Kvitteringstatus, pr
             .withExposedPorts(port)
             .start()
 
-        System.setProperty("oppdrag.mq.mottak", "DEV.QUEUE.2")
+        System.setProperty("oppdrag.mq.mottak", "DEV.QUEUE.1")
         TestPropertyValues.of(
             "oppdrag.mq.port=${mq.getMappedPort(port)}",
         ).applyTo(context.environment)
