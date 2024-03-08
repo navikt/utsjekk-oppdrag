@@ -94,22 +94,22 @@ class SimuleringControllerTest {
             saksbehandler = "TEST",
             utbetalingsfrekvens = Utbetalingsfrekvens.UKENTLIG,
             utbetalingslinjer =
-                listOf(
-                    Utbetalingslinje(
-                        delytelseId = "",
-                        endringskode = Endringskode.NY,
-                        klassekode = "",
-                        fom = LocalDate.of(2023, 1, 1),
-                        tom = LocalDate.of(2023, 1, 30),
-                        sats = 1000,
-                        grad = 100,
-                        refDelytelseId = null,
-                        refFagsystemId = null,
-                        datoStatusFom = null,
-                        statuskode = null,
-                        satstype = Satstype.MÅNED,
-                    ),
+            listOf(
+                Utbetalingslinje(
+                    delytelseId = "",
+                    endringskode = Endringskode.NY,
+                    klassekode = "",
+                    fom = LocalDate.of(2023, 1, 1),
+                    tom = LocalDate.of(2023, 1, 30),
+                    sats = 1000,
+                    grad = 100,
+                    refDelytelseId = null,
+                    refFagsystemId = null,
+                    datoStatusFom = null,
+                    statuskode = null,
+                    satstype = Satstype.MÅNED,
                 ),
+            ),
         )
 
     private fun enSimulerBeregningResponse(request: SimulerBeregningRequest) =

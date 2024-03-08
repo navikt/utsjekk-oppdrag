@@ -10,7 +10,6 @@ no.nav.security.jwt:
   issuer.azuread:
     discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
     accepted_audience: ${AZURE_APP_CLIENT_ID}
-    cookie_name: azure_token
 
 OPPDRAG_SERVICE_URL: https://wasapp.adeo.no/cics/services/simulerFpServiceWSBinding
 SECURITYTOKENSERVICE_URL: https://sts.adeo.no/SecurityTokenServiceProvider/

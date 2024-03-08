@@ -10,7 +10,6 @@ no.nav.security.jwt:
     discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
     accepted_audience: ${AZURE_APP_CLIENT_ID}
     proxyurl: http://webproxy-nais.nav.no:8088
-    cookie_name: azure_token
 
 OPPDRAG_SERVICE_URL: https://cics-q1.adeo.no/oppdrag/simulerFpServiceWSBinding
 SECURITYTOKENSERVICE_URL: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
