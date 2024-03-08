@@ -181,7 +181,10 @@ class OppdragMapperTest {
         assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.saksbehId)
         assertEquals(utbetalingsoppdrag.aktør, oppdragsLinje150.utbetalesTilId)
         assertEquals(utbetalingsperiode.behandlingId.somUUID.komprimer(), oppdragsLinje150.henvisning)
-        assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.attestant180[0].attestantId)
+        utbetalingsoppdrag.beslutterId?.let {
+            assertEquals(it, oppdragsLinje150.attestant180[0].attestantId)
+        }
+            ?: assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.attestant180[0].attestantId)
         assertEquals(utbetalingsperiode.utbetalingsgrad, oppdragsLinje150.grad170.firstOrNull()?.grad?.toInt())
 
         if (utbetalingsperiode.forrigePeriodeId !== null && !utbetalingsperiode.erEndringPåEksisterendePeriode) {

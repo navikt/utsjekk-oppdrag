@@ -84,7 +84,7 @@ internal object OppdragMapper {
 
         val attestant =
             objectFactory.createAttestant180().apply {
-                attestantId = utbetalingsoppdrag.saksbehandlerId
+                attestantId = utbetalingsoppdrag.beslutterId ?: utbetalingsoppdrag.saksbehandlerId
             }
 
         return objectFactory.createOppdragsLinje150().apply {
