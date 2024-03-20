@@ -5,7 +5,6 @@ import no.nav.dagpenger.kontrakter.oppdrag.OppdragIdDto
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatusDto
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
-import no.nav.dagpenger.oppdrag.iverksetting.domene.fagsystemId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragId
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,9 +27,9 @@ internal class OppdragController(
     ) = Result.runCatching { opprettOppdrag(utbetalingsoppdrag, 0) }.fold(
         onFailure = {
             if (it is OppdragAlleredeSendtException) {
-                OppdragAlleredeSendtResponse(utbetalingsoppdrag.fagsystemId)
+                OppdragAlleredeSendtResponse(utbetalingsoppdrag.saksnummer)
             } else {
-                KlarteIkkeSendeOppdragResponse(utbetalingsoppdrag.fagsystemId)
+                KlarteIkkeSendeOppdragResponse(utbetalingsoppdrag.saksnummer)
             }
         },
         onSuccess = {
@@ -44,7 +43,7 @@ internal class OppdragController(
         @PathVariable versjon: Int,
     ) = Result.runCatching { opprettOppdrag(utbetalingsoppdrag, versjon) }.fold(
         onFailure = {
-            KlarteIkkeSendeOppdragResponse(utbetalingsoppdrag.fagsystemId)
+            KlarteIkkeSendeOppdragResponse(utbetalingsoppdrag.saksnummer)
         },
         onSuccess = {
             ResponseEntity.status(HttpStatus.CREATED).build()

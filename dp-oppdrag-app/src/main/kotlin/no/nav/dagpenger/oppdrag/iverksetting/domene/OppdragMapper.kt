@@ -1,13 +1,8 @@
 package no.nav.dagpenger.oppdrag.iverksetting.domene
 
-import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomString
-import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
-import no.nav.dagpenger.kontrakter.felles.somString
-import no.nav.dagpenger.kontrakter.felles.somUUID
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
-import no.nav.dagpenger.oppdrag.iverksetting.domene.UuidKomprimator.komprimer
 import no.trygdeetaten.skjema.oppdrag.ObjectFactory
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
@@ -30,7 +25,7 @@ internal object OppdragMapper {
             kodeAksjon = OppdragSkjemaConstants.KODE_AKSJON
             kodeEndring = if (utbetalingsoppdrag.erFørsteUtbetalingPåSak) Endringskode.NY.kode else Endringskode.ENDRING.kode
             kodeFagomraade = utbetalingsoppdrag.fagsystem.kode
-            fagsystemId = utbetalingsoppdrag.komprimertFagsystemId
+            fagsystemId = utbetalingsoppdrag.saksnummer
             utbetFrekvens = Utbetalingsfrekvens.MÅNEDLIG.kode
             oppdragGjelderId = utbetalingsoppdrag.aktør
             datoOppdragGjelderFom = OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate()
@@ -80,7 +75,7 @@ internal object OppdragMapper {
         utbetalingsperiode: Utbetalingsperiode,
         utbetalingsoppdrag: Utbetalingsoppdrag,
     ): OppdragsLinje150 {
-        val sakIdKomprimert = utbetalingsoppdrag.komprimertFagsystemId
+        val sakIdKomprimert = utbetalingsoppdrag.saksnummer
 
         val attestant =
             objectFactory.createAttestant180().apply {
@@ -111,11 +106,7 @@ internal object OppdragMapper {
             brukKjoreplan = OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT
             saksbehId = utbetalingsoppdrag.saksbehandlerId
             utbetalesTilId = utbetalingsperiode.utbetalesTil
-            henvisning =
-                when (utbetalingsperiode.behandlingId) {
-                    is GeneriskIdSomString -> utbetalingsperiode.behandlingId.somString
-                    is GeneriskIdSomUUID -> utbetalingsperiode.behandlingId.somUUID.komprimer()
-                }
+            henvisning = utbetalingsperiode.behandlingId
             attestant180.add(attestant)
 
             utbetalingsperiode.utbetalingsgrad?.let { utbetalingsgrad ->
@@ -133,15 +124,6 @@ internal object OppdragMapper {
         objectFactory.createOppdrag().apply {
             this.oppdrag110 = oppdrag110
         }
-}
-
-internal val Utbetalingsoppdrag.fagsystemId get() = this.saksnummer.somString
-
-internal val Utbetalingsoppdrag.komprimertFagsystemId get(): String {
-    return when (this.saksnummer) {
-        is GeneriskIdSomString -> this.saksnummer.somString
-        is GeneriskIdSomUUID -> this.saksnummer.somUUID.komprimer()
-    }
 }
 
 internal val Oppdrag.status: OppdragStatus

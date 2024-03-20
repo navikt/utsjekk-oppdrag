@@ -2,7 +2,6 @@ package no.nav.dagpenger.oppdrag.iverksetting.tilstand
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
-import no.nav.dagpenger.kontrakter.felles.somString
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.config.objectMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
@@ -29,8 +28,8 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
                 jdbcTemplate.query(
                     hentStatement,
                     OppdragLagerRowMapper(),
-                    oppdragId.behandlingId.somString,
-                    oppdragId.fagsakId.somString,
+                    oppdragId.behandlingId,
+                    oppdragId.fagsakId,
                     oppdragId.fagsystem.kode,
                     oppdragId.iverksettingId,
                     versjon,
@@ -42,8 +41,8 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
                 jdbcTemplate.query(
                     hentStatement,
                     OppdragLagerRowMapper(),
-                    oppdragId.behandlingId.somString,
-                    oppdragId.fagsakId.somString,
+                    oppdragId.behandlingId,
+                    oppdragId.fagsakId,
                     oppdragId.fagsystem.kode,
                     versjon,
                 )
@@ -97,9 +96,9 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
         jdbcTemplate.execute(
             """
             UPDATE oppdrag_lager SET status = '${oppdragStatus.name}' 
-            WHERE fagsak_id = '${oppdragId.fagsakId.somString}' 
+            WHERE fagsak_id = '${oppdragId.fagsakId}' 
                 AND fagsystem = '${oppdragId.fagsystem.kode}' 
-                AND behandling_id = '${oppdragId.behandlingId.somString}'
+                AND behandling_id = '${oppdragId.behandlingId}'
                 AND versjon = $versjon
             """.trimIndent(),
         )
@@ -116,9 +115,9 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
         jdbcTemplate.update(
             updateStatement,
             objectMapper.writeValueAsString(kvittering),
-            oppdragId.fagsakId.somString,
+            oppdragId.fagsakId,
             oppdragId.fagsystem.kode,
-            oppdragId.behandlingId.somString,
+            oppdragId.behandlingId,
             versjon,
         )
     }
@@ -144,8 +143,8 @@ internal class OppdragLagerRepository(val jdbcTemplate: JdbcTemplate) {
         jdbcTemplate.query(
             "SELECT * FROM oppdrag_lager WHERE behandling_id = ? AND fagsak_id = ? AND fagsystem = ?",
             OppdragLagerRowMapper(),
-            oppdragId.behandlingId.somString,
-            oppdragId.fagsakId.somString,
+            oppdragId.behandlingId,
+            oppdragId.fagsakId,
             oppdragId.fagsystem.kode,
         )
 

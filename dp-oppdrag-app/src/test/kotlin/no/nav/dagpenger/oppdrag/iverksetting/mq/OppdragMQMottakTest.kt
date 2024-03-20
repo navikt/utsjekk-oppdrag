@@ -15,7 +15,6 @@ import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
 import no.nav.dagpenger.oppdrag.iverksetting.domene.kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
-import no.nav.dagpenger.oppdrag.iverksetting.tilstand.dekomprimertId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.id
 import no.nav.dagpenger.oppdrag.somOppdragLager
 import org.junit.jupiter.api.AfterEach
@@ -61,7 +60,7 @@ class OppdragMQMottakTest {
     fun `skal deserialisere kvittering som feilet i testmiljø`() {
         val kvittering = "kvittering-test.xml".fraRessursSomTextMessage
         val deserialisert = OppdragXmlMapper.tilOppdrag(oppdragMottaker.leggTilNamespacePrefiks(kvittering.text))
-        assertDoesNotThrow { deserialisert.dekomprimertId }
+        assertDoesNotThrow { deserialisert.id }
     }
 
     @Test

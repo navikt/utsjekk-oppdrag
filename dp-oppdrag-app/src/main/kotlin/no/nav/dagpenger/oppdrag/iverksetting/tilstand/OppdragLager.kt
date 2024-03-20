@@ -1,9 +1,7 @@
 package no.nav.dagpenger.oppdrag.iverksetting.tilstand
 
-import no.nav.dagpenger.kontrakter.felles.somString
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
-import no.nav.dagpenger.oppdrag.iverksetting.domene.fagsystemId
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
@@ -34,8 +32,8 @@ internal data class OppdragLager(
             versjon: Int = 0,
         ) = OppdragLager(
             fagsystem = utbetalingsoppdrag.fagsystem.kode,
-            fagsakId = utbetalingsoppdrag.fagsystemId,
-            behandlingId = utbetalingsoppdrag.utbetalingsperiode.first().behandlingId.somString,
+            fagsakId = utbetalingsoppdrag.saksnummer,
+            behandlingId = utbetalingsoppdrag.utbetalingsperiode.first().behandlingId,
             iverksettingId = utbetalingsoppdrag.iverksettingId,
             avstemmingTidspunkt = utbetalingsoppdrag.avstemmingstidspunkt,
             utbetalingsoppdrag = utbetalingsoppdrag,

@@ -1,8 +1,6 @@
 package no.nav.dagpenger.oppdrag
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
-import no.nav.dagpenger.kontrakter.felles.GeneriskId
-import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.Satstype
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
@@ -11,13 +9,22 @@ import no.nav.dagpenger.oppdrag.iverksetting.domene.OppdragMapper
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.UUID
+import kotlin.random.Random
+
+object RandomOSURId {
+    private val chars: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+
+    fun generate() =
+        (1..20)
+            .map { Random.nextInt(0, chars.size).let { chars[it] } }
+            .joinToString("")
+}
 
 fun etUtbetalingsoppdrag(
     avstemmingstidspunkt: LocalDateTime = LocalDateTime.now(),
     fagsystem: Fagsystem = Fagsystem.DAGPENGER,
     stønadstype: String = "DPORAS",
-    fagsak: GeneriskId = GeneriskIdSomUUID(UUID.randomUUID()),
+    fagsak: String = RandomOSURId.generate(),
     aktør: String = "12345678911",
     saksbehandlerId: String = "Z999999",
     beslutterId: String? = "Z888888",
@@ -60,7 +67,7 @@ fun enUtbetalingsperiode(
     sats = beløp.toBigDecimal(),
     satstype = satstype,
     utbetalesTil = aktør,
-    behandlingId = GeneriskIdSomUUID(UUID.randomUUID()),
+    behandlingId = RandomOSURId.generate(),
     utbetalingsgrad = 50,
 )
 

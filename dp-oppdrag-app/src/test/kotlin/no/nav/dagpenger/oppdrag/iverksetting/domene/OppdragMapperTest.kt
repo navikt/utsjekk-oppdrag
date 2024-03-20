@@ -2,14 +2,12 @@ package no.nav.dagpenger.oppdrag.iverksetting.domene
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.felles.Satstype
-import no.nav.dagpenger.kontrakter.felles.somUUID
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Opphør
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsperiode
 import no.nav.dagpenger.oppdrag.enUtbetalingsperiode
 import no.nav.dagpenger.oppdrag.etUtbetalingsoppdrag
-import no.nav.dagpenger.oppdrag.iverksetting.domene.UuidKomprimator.komprimer
 import no.trygdeetaten.skjema.oppdrag.Mmel
 import no.trygdeetaten.skjema.oppdrag.Oppdrag
 import no.trygdeetaten.skjema.oppdrag.Oppdrag110
@@ -122,7 +120,7 @@ class OppdragMapperTest {
         assertEquals(OppdragSkjemaConstants.KODE_AKSJON, oppdrag110.kodeAksjon)
         assertEquals(forventetEndringskode.kode, oppdrag110.kodeEndring.toString())
         assertEquals(utbetalingsoppdrag.fagsystem.kode, oppdrag110.kodeFagomraade)
-        assertEquals(utbetalingsoppdrag.komprimertFagsystemId, oppdrag110.fagsystemId)
+        assertEquals(utbetalingsoppdrag.saksnummer, oppdrag110.fagsystemId)
         assertEquals(Utbetalingsfrekvens.MÅNEDLIG.kode, oppdrag110.utbetFrekvens)
         assertEquals(utbetalingsoppdrag.aktør, oppdrag110.oppdragGjelderId)
         assertEquals(OppdragSkjemaConstants.OPPDRAG_GJELDER_DATO_FOM.toXMLDate(), oppdrag110.datoOppdragGjelderFom)
@@ -169,7 +167,7 @@ class OppdragMapperTest {
         assertOpphør(utbetalingsperiode, oppdragsLinje150)
         assertEquals(utbetalingsperiode.vedtaksdato.toString(), oppdragsLinje150.vedtakId)
         assertEquals(
-            utbetalingsoppdrag.komprimertFagsystemId + "#" + utbetalingsperiode.periodeId.toString(),
+            utbetalingsoppdrag.saksnummer + "#" + utbetalingsperiode.periodeId.toString(),
             oppdragsLinje150.delytelseId,
         )
         assertEquals(utbetalingsperiode.klassifisering, oppdragsLinje150.kodeKlassifik)
@@ -180,7 +178,7 @@ class OppdragMapperTest {
         assertEquals(OppdragSkjemaConstants.BRUK_KJØREPLAN_DEFAULT, oppdragsLinje150.brukKjoreplan)
         assertEquals(utbetalingsoppdrag.saksbehandlerId, oppdragsLinje150.saksbehId)
         assertEquals(utbetalingsoppdrag.aktør, oppdragsLinje150.utbetalesTilId)
-        assertEquals(utbetalingsperiode.behandlingId.somUUID.komprimer(), oppdragsLinje150.henvisning)
+        assertEquals(utbetalingsperiode.behandlingId, oppdragsLinje150.henvisning)
         utbetalingsoppdrag.beslutterId?.let {
             assertEquals(it, oppdragsLinje150.attestant180[0].attestantId)
         }
@@ -189,7 +187,7 @@ class OppdragMapperTest {
 
         if (utbetalingsperiode.forrigePeriodeId !== null && !utbetalingsperiode.erEndringPåEksisterendePeriode) {
             assertEquals(
-                utbetalingsoppdrag.komprimertFagsystemId + "#" + utbetalingsperiode.forrigePeriodeId.toString(),
+                utbetalingsoppdrag.saksnummer + "#" + utbetalingsperiode.forrigePeriodeId.toString(),
                 oppdragsLinje150.refDelytelseId,
             )
         }

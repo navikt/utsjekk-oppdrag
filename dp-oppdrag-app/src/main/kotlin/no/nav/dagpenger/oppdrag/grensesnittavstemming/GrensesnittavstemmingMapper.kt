@@ -2,7 +2,6 @@ package no.nav.dagpenger.oppdrag.grensesnittavstemming
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
-import no.nav.dagpenger.oppdrag.iverksetting.domene.komprimertFagsystemId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.AksjonType
 import no.nav.virksomhet.tjenester.avstemming.meldinger.v1.Aksjonsdata
@@ -61,7 +60,7 @@ internal class GrensesnittavstemmingMapper(
                     Detaljdata().apply {
                         detaljType = detaljtype
                         offnr = utbetalingsoppdrag.aktør
-                        avleverendeTransaksjonNokkel = utbetalingsoppdrag.komprimertFagsystemId
+                        avleverendeTransaksjonNokkel = utbetalingsoppdrag.saksnummer
                         tidspunkt = oppdrag.avstemmingTidspunkt.format(timeFormatter)
 
                         if (detaljtype in

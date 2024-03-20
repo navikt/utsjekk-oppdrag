@@ -5,7 +5,6 @@ import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.kvitteringstatus
 import no.nav.dagpenger.oppdrag.iverksetting.domene.status
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLagerRepository
-import no.nav.dagpenger.oppdrag.iverksetting.tilstand.dekomprimertId
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.id
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
@@ -38,7 +37,7 @@ internal class OppdragMottaker(
 
     private fun behandleMelding(melding: TextMessage) {
         val kvittering = OppdragXmlMapper.tilOppdrag(leggTilNamespacePrefiks(melding.text))
-        val oppdragIdKvittering = kvittering.dekomprimertId
+        val oppdragIdKvittering = kvittering.id
 
         logger.info(
             "Mottatt melding på kvitteringskø for fagsak $oppdragIdKvittering: Status ${kvittering.kvitteringstatus}, " +

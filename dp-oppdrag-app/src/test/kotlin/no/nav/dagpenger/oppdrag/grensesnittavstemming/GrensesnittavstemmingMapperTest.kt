@@ -4,7 +4,6 @@ import no.nav.dagpenger.kontrakter.felles.Fagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.kontrakter.oppdrag.Utbetalingsoppdrag
 import no.nav.dagpenger.oppdrag.etUtbetalingsoppdrag
-import no.nav.dagpenger.oppdrag.iverksetting.domene.komprimertFagsystemId
 import no.nav.dagpenger.oppdrag.iverksetting.mq.OppdragXmlMapper
 import no.nav.dagpenger.oppdrag.iverksetting.tilstand.OppdragLager
 import no.nav.dagpenger.oppdrag.somOppdragLager
@@ -165,7 +164,7 @@ internal class GrensesnittavstemmingMapperTest {
         actual: Detaljdata,
     ) {
         assertEquals(oppdragLager.utbetalingsoppdrag.aktør, actual.offnr)
-        assertEquals(oppdragLager.utbetalingsoppdrag.komprimertFagsystemId, actual.avleverendeTransaksjonNokkel)
+        assertEquals(oppdragLager.utbetalingsoppdrag.saksnummer, actual.avleverendeTransaksjonNokkel)
         assertEquals(oppdragLager.utbetalingsoppdrag.avstemmingstidspunkt.format(timeFormatter), actual.tidspunkt)
         assertEquals(forventetDetaljtype, actual.detaljType)
         assertEquals(oppdragLager.kvitteringsmelding?.kodeMelding, actual.meldingKode)

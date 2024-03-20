@@ -1,8 +1,6 @@
 package no.nav.dagpenger.oppdrag.iverksetting.tilstand
 
 import no.nav.dagpenger.kontrakter.felles.Fagsystem
-import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomString
-import no.nav.dagpenger.kontrakter.felles.GeneriskIdSomUUID
 import no.nav.dagpenger.kontrakter.felles.tilFagsystem
 import no.nav.dagpenger.kontrakter.oppdrag.OppdragStatus
 import no.nav.dagpenger.oppdrag.PostgreSQLInitializer
@@ -25,7 +23,6 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.UUID
 
 @JdbcTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -134,15 +131,10 @@ internal class OppdragLagerRepositoryTest {
 
     private val OppdragLager.id: OppdragId
         get() {
-            val behandlingId =
-                Result.runCatching { UUID.fromString(this@id.behandlingId) }.fold(
-                    onSuccess = { GeneriskIdSomUUID(it) },
-                    onFailure = { GeneriskIdSomString(this.behandlingId) },
-                )
             return OppdragId(
                 fagsystem = this.fagsystem.tilFagsystem(),
-                fagsakId = this.fagsakId.tilGeneriskId(),
-                behandlingId = behandlingId,
+                fagsakId = this.fagsakId,
+                behandlingId = this.behandlingId,
                 iverksettingId = this.iverksettingId,
             )
         }
