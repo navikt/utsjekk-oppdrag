@@ -37,10 +37,10 @@ class OppdragMapperTest {
         val utbetalingsoppdrag =
             etUtbetalingsoppdrag(
                 utbetalingsperiode =
-                arrayOf(
-                    periode1,
-                    periode2,
-                ),
+                    arrayOf(
+                        periode1,
+                        periode2,
+                    ),
             )
 
         val oppdrag110 = OppdragMapper.tilOppdrag110(utbetalingsoppdrag)
@@ -145,7 +145,7 @@ class OppdragMapperTest {
             assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[1].enhet)
             assertEquals(OppdragSkjemaConstants.ENHET_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[1].datoEnhetFom)
         }
-            ?: {
+            ?: run {
                 assertEquals(OppdragSkjemaConstants.ENHET, oppdrag110.oppdragsEnhet120[0].enhet)
                 assertEquals(OppdragSkjemaConstants.ENHET_FOM.toXMLDate(), oppdrag110.oppdragsEnhet120[0].datoEnhetFom)
             }
