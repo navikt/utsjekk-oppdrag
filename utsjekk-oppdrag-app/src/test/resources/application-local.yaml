@@ -1,0 +1,30 @@
+server:
+  port: 8087
+
+oppdrag.mq:
+  queuemanager: QM1
+  send: DEV.QUEUE.1
+  mottak: DEV.QUEUE.1
+  avstemming: DEV.QUEUE.3
+  channel: DEV.ADMIN.SVRCONN
+  hostname: localhost
+  port: 1414
+  user: admin
+  password: passw0rd
+  enabled: true
+
+no.nav.security.jwt:
+  issuer.azuread:
+    discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
+    accepted_audience: ${AZURE_APP_CLIENT_ID}
+
+spring.datasource.url: jdbc:postgresql://0.0.0.0:5432/utsjekk-oppdrag
+spring.datasource.username: postgres
+spring.datasource.password: test
+
+
+OPPDRAG_SERVICE_URL: http://localhost #Mockes ut lokalt
+SECURITYTOKENSERVICE_URL: http://localhost:8063/soap/SecurityTokenServiceProvider/
+SERVICEUSER_USERNAME: not-a-real-srvuser
+SERVICEUSER_PASSWORD: not-a-real-pw
+AZURE_APP_WELL_KNOWN_URL: "https://login.microsoftonline.com/navq.onmicrosoft.com/v2.0/.well-known/openid-configuration"

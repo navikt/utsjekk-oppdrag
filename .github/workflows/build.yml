@@ -2,7 +2,7 @@ name: Bygg med maven
 on: [pull_request, workflow_dispatch]
 
 env:
-  IMAGE: ghcr.io/navikt/dp-oppdrag:${{ github.sha }}
+  IMAGE: ghcr.io/navikt/utsjekk-oppdrag:${{ github.sha }}
 jobs:
   build:
     name: Bygg

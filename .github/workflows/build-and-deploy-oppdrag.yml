@@ -1,22 +1,24 @@
-name: DP-oppdrag Build-Deploy
+name: utsjekk-oppdrag Build-Deploy
 on:
   push:
     paths:
-      - 'dp-oppdrag-app/**'
-      - 'dp-oppdrag-felles/**'
+      - 'utsjekk-oppdrag-app/**'
+      - 'utsjekk-oppdrag-felles/**'
       - '.nais/oppdrag-**'
       - 'pom.xml'
       - '.github/workflows/build-and-deploy-oppdrag.yml'
     branches-ignore:
       - 'dependabot/**'
 
-env:
-  IMAGE: ghcr.io/navikt/dp-oppdrag:${{ github.sha }}
 jobs:
   build:
     name: Bygg app/image, push til github
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,43 +37,47 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: mvn -B --no-transfer-progress package verify --settings .m2/maven-settings.xml --file pom.xml
 
-      - name: Bygg Docker image
-        run: |
-          docker build -t $IMAGE ./dp-oppdrag-app
-
-      - name: Login to Github Package Registry
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
-
-      - name: Push Docker image med versjonstag
-        run: docker push ${IMAGE}
+      - name: Push docker image til GAR og signer
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: helved
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          docker_context: ./utsjekk-oppdrag-app
 
   deploy-dev:
     name: Deploy to dev-gcp
     needs: build
+    permissions:
+      contents: write
+      id-token: write
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v4
         - uses: nais/deploy/actions/deploy@v2
           env:
-            APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
             CLUSTER: dev-gcp
             RESOURCE: .nais/oppdrag-nais.yaml
+            IMAGE: ${{ needs.build.outputs.image }}
+            VAR: image=${{ needs.build.outputs.image }}
             VARS: .nais/oppdrag-vars-dev.yaml
 
   deploy-prod:
     name: Deploy to prod-gcp
-    needs: deploy-dev
+    needs: [build,deploy-dev]
+    permissions:
+      contents: write
+      id-token: write
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: .nais/oppdrag-nais.yaml
+          IMAGE: ${{ needs.build.outputs.image }}
+          VAR: image=${{ needs.build.outputs.image }}
           VARS: .nais/oppdrag-vars-prod.yaml

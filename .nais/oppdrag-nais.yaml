@@ -1,10 +1,10 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: dp-oppdrag
-  namespace: teamdagpenger
+  name: utsjekk-oppdrag
+  namespace: helved
   labels:
-    team: teamdagpenger
+    team: helved
 
 spec:
   image: {{ image }}
@@ -38,15 +38,14 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: dp-iverksett
-        - application: tiltakspenger-iverksett
+        - application: utsjekk
     outbound:
       external:
         - host: {{ mqHostname }}
           ports:
             - port: {{ mqPort }}
   envFrom:
-    - secret: dp-oppdrag
+    - secret: utsjekk-oppdrag
   env:
     - name: JAVA_OPTS
       value: "-XX:MinRAMPercentage=25.0 -XX:MaxRAMPercentage=75.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
@@ -63,7 +62,7 @@ spec:
     sqlInstances:
       - type: {{ postgres_version }} # IF This is changed, all data will be lost. Read on nais.io how to upgrade
         databases:
-          - name: dp-oppdrag
+          - name: utsjekk-oppdrag
             envVarPrefix: DB
         diskAutoresize: true
         tier: {{ db_tier }}

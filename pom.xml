@@ -7,11 +7,11 @@
     <groupId>no.nav</groupId>
     <packaging>pom</packaging>
     <modules>
-        <module>dp-oppdrag-simulering</module>
-        <module>dp-oppdrag-app</module>
-        <module>dp-oppdrag-felles</module>
+        <module>utsjekk-oppdrag-simulering</module>
+        <module>utsjekk-oppdrag-app</module>
+        <module>utsjekk-oppdrag-felles</module>
     </modules>
-    <artifactId>dp-oppdrag</artifactId>
+    <artifactId>utsjekk-oppdrag</artifactId>
     <version>${revision}${sha1}${changelist}</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -25,7 +25,7 @@
         <changelist>-SNAPSHOT</changelist>
         <jvmTarget>21</jvmTarget>
         <kotlin.version>1.9.23</kotlin.version>
-        <dp-kontrakter.version>3.0_20240321094104_fcbc34f</dp-kontrakter.version>
+        <utsjekk-kontrakter.version>1.0_20240408113510_4a2db84</utsjekk-kontrakter.version>
         <cxf.version>4.0.4</cxf.version>
         <springdoc.version>2.4.0</springdoc.version>
         <testcontainers.version>1.19.7</testcontainers.version>
@@ -135,14 +135,14 @@
 
         <!-- NAV-interne avhengigheter-->
         <dependency>
-            <groupId>no.nav.dagpenger.kontrakter</groupId>
+            <groupId>no.nav.utsjekk.kontrakter</groupId>
             <artifactId>oppdrag</artifactId>
-            <version>${dp-kontrakter.version}</version>
+            <version>${utsjekk-kontrakter.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.dagpenger.kontrakter</groupId>
+            <groupId>no.nav.utsjekk.kontrakter</groupId>
             <artifactId>felles</artifactId>
-            <version>${dp-kontrakter.version}</version>
+            <version>${utsjekk-kontrakter.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.security</groupId>
@@ -256,7 +256,7 @@
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/navikt/dp-kontrakter</url>
+            <url>https://maven.pkg.github.com/navikt/utsjekk-kontrakter</url>
         </repository>
         <repository>
             <id>central</id>

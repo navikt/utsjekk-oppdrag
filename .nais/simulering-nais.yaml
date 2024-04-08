@@ -1,10 +1,10 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: dp-oppdrag-simulering
-  namespace: teamdagpenger
+  name: utsjekk-oppdrag-simulering
+  namespace: helved
   labels:
-    team: teamdagpenger
+    team: helved
 
 spec:
   image: {{ image }}
@@ -38,14 +38,13 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: dp-iverksett
-        - application: tiltakspenger-iverksett
+        - application: utsjekk
     outbound:
       external:
         - host: {{ simulering_hostname }}
         - host: {{ sts_hostname }}
   envFrom:
-    - secret: dp-oppdrag-simulering
+    - secret: utsjekk-oppdrag-simulering
   env:
     - name: JAVA_OPTS
       value: "-XX:MinRAMPercentage=25.0 -XX:MaxRAMPercentage=75.0 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp"
