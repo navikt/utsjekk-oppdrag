@@ -1,5 +1,6 @@
 name: utsjekk-oppdrag Build-Deploy
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'utsjekk-oppdrag-app/**'
