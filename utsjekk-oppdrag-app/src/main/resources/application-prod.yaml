@@ -4,7 +4,7 @@ oppdrag.mq:
   mottak: QA.P_DP_OPPDRAG.OPPDRAG_DP_XML_KVITT
   avstemming: QA.P234.OB29_AVSTEMMING_XML
   channel: P_DP_OPPDRAG
-  enabled: false
+  enabled: true
 
 no.nav.security.jwt:
   issuer.azuread:
