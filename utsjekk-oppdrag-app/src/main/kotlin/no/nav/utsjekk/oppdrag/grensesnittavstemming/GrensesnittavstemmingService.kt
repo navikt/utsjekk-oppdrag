@@ -38,12 +38,13 @@ internal class GrensesnittavstemmingService(
         val avstemmingMapper = GrensesnittavstemmingMapper(oppdragSomSkalAvstemmes, fagsystem, fra, til)
         val meldinger = avstemmingMapper.lagAvstemmingsmeldinger()
 
-        if (meldinger.isEmpty()) {
+        if (oppdragSomSkalAvstemmes.isEmpty()) {
             logger.info("Ingen oppdrag å gjennomføre grensesnittavstemming for.")
             return
         }
 
-        logger.info("Utfører grensesnittavstemming for id: ${avstemmingMapper.avstemmingId}, ${meldinger.size} antall meldinger.")
+        logger.info("Utfører grensesnittavstemming med id ${avstemmingMapper.avstemmingId} for fagsystem $fagsystem, " +
+                "${meldinger.size} antall meldinger, ${oppdragSomSkalAvstemmes.size} antall oppdrag.")
 
         meldinger.forEach {
             avstemmingSender.sendGrensesnittAvstemming(it)
