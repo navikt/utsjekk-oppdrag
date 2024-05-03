@@ -25,7 +25,7 @@
         <changelist>-SNAPSHOT</changelist>
         <jvmTarget>21</jvmTarget>
         <kotlin.version>1.9.23</kotlin.version>
-        <utsjekk-kontrakter.version>1.0_20240408113510_4a2db84</utsjekk-kontrakter.version>
+        <utsjekk-kontrakter.version>1.0_20240502154138_e9c5f16</utsjekk-kontrakter.version>
         <cxf.version>4.0.4</cxf.version>
         <springdoc.version>2.5.0</springdoc.version>
         <testcontainers.version>1.19.7</testcontainers.version>
