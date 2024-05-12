@@ -28,7 +28,7 @@
         <utsjekk-kontrakter.version>1.0_20240502154138_e9c5f16</utsjekk-kontrakter.version>
         <cxf.version>4.0.4</cxf.version>
         <springdoc.version>2.5.0</springdoc.version>
-        <testcontainers.version>1.19.7</testcontainers.version>
+        <testcontainers.version>1.19.8</testcontainers.version>
     </properties>
 
     <dependencies>
