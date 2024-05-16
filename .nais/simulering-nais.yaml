@@ -39,6 +39,8 @@ spec:
     inbound:
       rules:
         - application: utsjekk
+          namespace: helved
+          cluster: dev-gcp
     outbound:
       external:
         - host: {{ simulering_hostname }}
