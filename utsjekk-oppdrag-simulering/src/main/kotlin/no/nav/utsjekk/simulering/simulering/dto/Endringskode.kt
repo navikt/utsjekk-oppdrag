@@ -1,7 +1,6 @@
 package no.nav.utsjekk.simulering.simulering.dto
 
 import com.fasterxml.jackson.annotation.JsonCreator
-import jakarta.ws.rs.BadRequestException
 
 enum class Endringskode(val verdi: String) {
     NY("NY"),
@@ -15,7 +14,7 @@ enum class Endringskode(val verdi: String) {
             try {
                 Endringskode.valueOf(json)
             } catch (e: Exception) {
-                throw BadRequestException(
+                throw RuntimeException(
                     "Ugyldig endringskode: $json. Forventet en av følgende: ${entries.toTypedArray().map { it.name }}",
                 )
             }
