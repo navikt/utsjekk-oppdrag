@@ -1,4 +1,9 @@
-# utsjekk-oppdrag
+# Dette repoet er arkivert
+
+Utsjekk-oppdrag har blitt relansert i ny drakt som en Ktor-applikasjon. Dette repoet blir ikke lenger oppdatert og Spring Boot-applikasjonene kjører ikke lenger. 
+Nytt repo finnes [her](https://github.com/navikt/helved-oppdrag). 
+
+## utsjekk-oppdrag
 
 Generell proxy mot Oppdragsystemet (OS) for Utsjekk, tjenesten som iverksetter utbetalinger for dagpenger, AAP, tilleggsstønader og tiltakspenger.
 
